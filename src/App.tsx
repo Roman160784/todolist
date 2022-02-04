@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { rootReducerTypes } from './redux/store';
 import { TodolistsType } from './redux/todolist/todolist-reducers';
 import { Todolist } from './Todolist';
-import { MainTasksType, removeTaskAC } from './redux/task/task-reducers';
+import { addTaskAC, MainTasksType, removeTaskAC } from './redux/task/task-reducers';
 
  
 function App() {
@@ -17,7 +17,9 @@ function App() {
         dispatch(removeTaskAC(todolistID, id))
     }
 
-
+    const addTask = (todolistID: string, title: string) => {
+        dispatch(addTaskAC(todolistID, title))
+    }
 
     return (
         <div className="App">
@@ -27,6 +29,7 @@ function App() {
                 title={tl.title}
                 tasks={tasks[tl.id]}
                 todolistID={tl.id}
+                addTask={addTask}
                 remuveTask={remuveTask}
                 />
             })

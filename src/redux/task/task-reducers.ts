@@ -31,19 +31,34 @@ switch (action.type) {
             : state[action.payload.todolistID]
             .filter(t => t.id !== action.payload.id)}
     }
+    case "ADD-TASK" : {
+        return {...state, [action.payload.todolistID] 
+            : [{id: v1(), title: action.payload.title, isDone: false}, 
+                ...state[action.payload.todolistID]]}
+       
+    }
     default: return state
 }
 }
 
-type MainActionsTupe = removeTaskACtype
+type MainActionsTupe = removeTaskACtype | addTaskACtype
 
 export type removeTaskACtype = ReturnType<typeof removeTaskAC>
+export type addTaskACtype = ReturnType<typeof addTaskAC>
 
 export const removeTaskAC = (todolistID: string, id: string) => {
     return {
         type: "REMOVE-TASK",
         payload: {
             todolistID, id
+        }
+    }as const
+}
+export const addTaskAC = (todolistID: string, title: string) => {
+    return {
+        type: "ADD-TASK",
+        payload: {
+            todolistID, title
         }
     }as const
 }
