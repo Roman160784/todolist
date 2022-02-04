@@ -33,3 +33,16 @@ test  ('correct task should be deleted from correct array', () => {
     })
     expect(endState["todolistID2"].length).toEqual(2)
 })
+
+test  ('correct task should be add in correct array', () => {
+
+    let title = "Axios"
+    let tlID = "todolistID1"
+
+    const endState = taskReducers(startState, {type: "ADD-TASK", payload: {todolistID: tlID, title: title}})
+    
+   
+    expect(endState["todolistID1"].length).toBe(4)
+    expect(endState["todolistID1"][0].title).toBe("Axios")
+    // expect(endState["todolistID1"][0].title).toBe("Axios")
+})
