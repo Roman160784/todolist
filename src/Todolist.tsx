@@ -1,7 +1,9 @@
 import React from 'react';
+import { MainTasksType, TasksType } from './redux/task/task-reducers';
 
 export type TodolistPropsType = {
     title: string
+    tasks: TasksType[]
 }
 
 export const Todolist = (props: TodolistPropsType) => {
@@ -13,9 +15,14 @@ export const Todolist = (props: TodolistPropsType) => {
             <button>+</button>
         </div>
         <ul>
-            <li><input type="checkbox" checked={false}/> <span>HTML&CSS</span></li>
-            <li><input type="checkbox" checked={true}/> <span>JS</span></li>
-            <li><input type="checkbox" checked={false}/> <span>React</span></li>
+            {
+               props.tasks.map(t => {
+                   return <li key={t.id}>
+                       <input type="checkbox" checked={t.isDone}/> 
+                       <span>{t.title}</span></li>
+               })
+            }
+            
         </ul>
         <div>
             <button>All</button>

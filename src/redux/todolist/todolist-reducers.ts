@@ -3,7 +3,7 @@ import { v1 } from "uuid"
 
 type fiterValueType = "all" | "active" | "completed"
 
-type TodolistsType = {
+export type TodolistsType = {
 id: string
 title: string
 filter: fiterValueType
@@ -15,10 +15,10 @@ export const todolistID2 = v1()
 
 const intitiolState : TodolistsType[] = [
     {id: todolistID1, title: "What to learn", filter: "all"},
-    {id: todolistID2, title: "What to learn", filter: "all"},
+    {id: todolistID2, title: "What to Buy", filter: "all"},
 ]
 
-export const todolistReducers = (state : TodolistsType[] = intitiolState, action: MainActionType)  => {
+export const todolistReducers = (state : TodolistsType[] = intitiolState, action: MainActionType) :TodolistsType[]   => {
 switch (action.type) {
     case "REMOVE-TODOLIST" : {
         return state

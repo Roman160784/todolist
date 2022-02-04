@@ -1,13 +1,13 @@
 import { v1 } from "uuid"
 import { todolistID1, todolistID2 } from "../todolist/todolist-reducers"
 
-type TasksType = {
+export type TasksType = {
     id: string
     title: string
     isDone: boolean
 }
 
-type MainTasksType = {
+export type MainTasksType = {
     [key: string] : TasksType[]
 }
 
@@ -24,7 +24,7 @@ const intitiolState : MainTasksType = {
     ],
 }
 
-export const taskReducers = (state: MainTasksType = intitiolState, action: MainActionsTupe) => {
+export const taskReducers = (state: MainTasksType = intitiolState, action: MainActionsTupe) : MainTasksType => {
 switch (action.type) {
     case "REMOVE-TASK" : {
         return state

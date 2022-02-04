@@ -7,6 +7,6 @@ let rootReducer = combineReducers ({
     todolist: todolistReducers
 })
 
-export type rootReducerType = ReturnType<typeof rootReducer>
+export type rootReducerTypes = ReturnType<typeof rootReducer>
 
 export let store = createStore(rootReducer)
