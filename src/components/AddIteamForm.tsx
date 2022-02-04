@@ -3,7 +3,7 @@ import { Button } from './Button';
 
 
 type AddIteamFormType = {
-// title: string
+
 addIteam : (title: string) => void
 }
 
@@ -32,10 +32,10 @@ const onEnterHandker = (e: KeyboardEvent<HTMLInputElement>) => {
  const onCangeHandler = (e: ChangeEvent<HTMLInputElement>) => setTitle(e.currentTarget.value)
 
     return (
-        <>
+        <div>
         <input className={error ? "error2" : ""} value={title} type="text" onChange={onCangeHandler} onKeyPress={onEnterHandker}/>
         <button onClick={addIteam}>+</button>
         { error&& <div className="error1">{error}</div>}
-        </>
+        </div>
     )
 }

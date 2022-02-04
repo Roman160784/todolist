@@ -3,6 +3,9 @@
   display: flex;
 }
 
+.container {
+  display: flex;
+}
 .App > div {
   margin-right: 50px;
 }

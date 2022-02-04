@@ -2,9 +2,11 @@ import React from 'react';
 import './App.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { rootReducerTypes } from './redux/store';
-import { TodolistsType } from './redux/todolist/todolist-reducers';
+import { addTodolistAC, TodolistsType } from './redux/todolist/todolist-reducers';
 import { Todolist } from './Todolist';
 import { addTaskAC, changeTaskStatusAC, MainTasksType, removeTaskAC } from './redux/task/task-reducers';
+import { AddIteamForm } from './components/AddIteamForm';
+import { v1 } from 'uuid';
 
  
 function App() {
@@ -25,9 +27,14 @@ function App() {
         dispatch(changeTaskStatusAC(todolistID, isDone, id))
     }
 
+    const addTodolist = (title: string) => {
+        dispatch(addTodolistAC(title))
+    }
+
 
     return (
         <div className="App">
+            <AddIteamForm addIteam={addTodolist}/>
             { todolists.map(tl => {
                 return<Todolist 
                 key={tl.id}
