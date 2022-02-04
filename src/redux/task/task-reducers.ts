@@ -27,7 +27,9 @@ const intitiolState : MainTasksType = {
 export const taskReducers = (state: MainTasksType = intitiolState, action: MainActionsTupe) : MainTasksType => {
 switch (action.type) {
     case "REMOVE-TASK" : {
-        return state
+        return {...state,[action.payload.todolistID] 
+            : state[action.payload.todolistID]
+            .filter(t => t.id !== action.payload.id)}
     }
     default: return state
 }
@@ -37,11 +39,11 @@ type MainActionsTupe = removeTaskACtype
 
 export type removeTaskACtype = ReturnType<typeof removeTaskAC>
 
-export const removeTaskAC = () => {
+export const removeTaskAC = (todolistID: string, id: string) => {
     return {
         type: "REMOVE-TASK",
         payload: {
-
+            todolistID, id
         }
     }as const
 }
