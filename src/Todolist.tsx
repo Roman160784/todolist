@@ -2,13 +2,16 @@ import React, { ChangeEvent } from 'react';
 import { AddIteamForm } from './components/AddIteamForm';
 import { Button } from './components/Button';
 import { MainTasksType, TasksType } from './redux/task/task-reducers';
+import { fiterValueType } from './redux/todolist/todolist-reducers';
 
 export type TodolistPropsType = {
     title: string
     tasks: TasksType[]
     todolistID: string
+    filter: fiterValueType
     remuveTask : (todolistID: string, id: string) => void
     addTask: (todolistID: string,  title: string) => void
+    changeFilter: (value: fiterValueType, todolistID: string) => void
     changeStatus: (todolistID: string, isDone: boolean, id: string) => void
 }
 
@@ -17,6 +20,9 @@ export const Todolist = (props: TodolistPropsType) => {
 const removeTaskHandler = (id: string) => {props.remuveTask(props.todolistID, id)}
 const addIteamHandler = ( title: string) => {props.addTask(props.todolistID,  title)}
 
+const changeFilterHandler = (value: fiterValueType) => {props.changeFilter(value, props.todolistID,)}
+
+    
 
     return(
         <div> 
@@ -39,16 +45,16 @@ const addIteamHandler = ( title: string) => {props.addTask(props.todolistID,  ti
                        
                        <input type="checkbox" checked={t.isDone} onChange={onChangeHandler}/> 
                        <span>{t.title}</span>
-                       <Button title='remove' class={''} onclick={()=>{removeTaskHandler(t.id)}}/>
+                       
                        </li>    
               } })
             }
             
         </ul>
         <div>
-            <button>All</button>
-            <button>Active</button>
-            <button>Completed</button>
+        <Button title='ALL' class={''} onclick={()=>{changeFilterHandler("all")}}/>
+        <Button title='ACTIVE' class={''} onclick={()=>{changeFilterHandler("active")}}/>
+        <Button title='COMPLETED' class={''} onclick={()=>{changeFilterHandler("completed")}}/>
         </div>
     </div>
     )

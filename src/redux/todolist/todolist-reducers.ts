@@ -1,7 +1,7 @@
 import { v1 } from "uuid"
 
 
-type fiterValueType = "all" | "active" | "completed"
+export type fiterValueType = "all" | "active" | "completed"
 
 export type TodolistsType = {
 id: string
@@ -26,14 +26,20 @@ switch (action.type) {
     case "ADD-TODOLIST" : {
         return [{id: action.payload.todolistID, title: action.payload.title, filter: "all"}, ...state] 
     }
+    case "CHANGE-FILTER" : {
+        return state.map(tl => tl.id === action.payload.todolistID 
+            ? {...tl, filter: action.payload.value} : tl)
+    }
+
     default: return state
 }
 }
 
-type MainActionType = removeTodolistACType | addTodolistACType
+type MainActionType = removeTodolistACType | addTodolistACType | changeFilterACType
 
 export type removeTodolistACType = ReturnType<typeof removeTodolistAC>
 export type addTodolistACType = ReturnType<typeof addTodolistAC>
+export type changeFilterACType = ReturnType<typeof changeFilterAC>
 
 export const removeTodolistAC = () => {
     return{
@@ -50,6 +56,15 @@ export const addTodolistAC = (title: string) => {
         payload: {
             title,
             todolistID : v1(), 
+        }
+    }as const
+    } 
+export const changeFilterAC = (value: fiterValueType, todolistID: string) => {
+    return{
+        type : "CHANGE-FILTER",
+        payload: {
+            value,
+            todolistID, 
         }
     }as const
     } 

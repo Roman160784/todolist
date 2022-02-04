@@ -2,11 +2,11 @@ import React from 'react';
 import './App.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { rootReducerTypes } from './redux/store';
-import { addTodolistAC, TodolistsType } from './redux/todolist/todolist-reducers';
+import { addTodolistAC, changeFilterAC, fiterValueType, TodolistsType } from './redux/todolist/todolist-reducers';
 import { Todolist } from './Todolist';
 import { addTaskAC, changeTaskStatusAC, MainTasksType, removeTaskAC } from './redux/task/task-reducers';
 import { AddIteamForm } from './components/AddIteamForm';
-import { v1 } from 'uuid';
+
 
  
 function App() {
@@ -31,18 +31,31 @@ function App() {
         dispatch(addTodolistAC(title))
     }
 
+    const changeFilter = (value: fiterValueType, todolistID: string) => {
+        dispatch(changeFilterAC(value, todolistID))
+    }
+
 
     return (
         <div className="App">
             <AddIteamForm addIteam={addTodolist}/>
             { todolists.map(tl => {
+                let tasksForTL = tasks[tl.id]
+                if (tl.filter === "active") {
+                    tasksForTL = tasks[tl.id].filter(t => t.isDone === false) 
+                }
+                if (tl.filter === "completed") {
+                    tasksForTL = tasks[tl.id].filter(t => t.isDone === true) 
+                }
                 return<Todolist 
                 key={tl.id}
+                filter={tl.filter}
                 title={tl.title}
-                tasks={tasks[tl.id]}
+                tasks={tasksForTL}
                 todolistID={tl.id}
                 addTask={addTask}
                 remuveTask={remuveTask}
+                changeFilter={changeFilter}
                 changeStatus={changeStatus}
                 />
             })
