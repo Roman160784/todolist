@@ -33,7 +33,7 @@ const onEnterHandker = (e: KeyboardEvent<HTMLInputElement>) => {
 
     return (
         <>
-        <input value={title} type="text" onChange={onCangeHandler} onKeyPress={onEnterHandker}/>
+        <input className={error ? "error2" : ""} value={title} type="text" onChange={onCangeHandler} onKeyPress={onEnterHandker}/>
         <button onClick={addIteam}>+</button>
         { error&& <div className="error1">{error}</div>}
         </>

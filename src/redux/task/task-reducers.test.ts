@@ -44,5 +44,16 @@ test  ('correct task should be add in correct array', () => {
    
     expect(endState["todolistID1"].length).toBe(4)
     expect(endState["todolistID1"][0].title).toBe("Axios")
-    // expect(endState["todolistID1"][0].title).toBe("Axios")
+    
+})
+test  ('correct task should change status', () => {
+    let tID = "3"
+    let isDone = false
+    let tlID = "todolistID1"
+
+    const endState = taskReducers(startState, {type: "CHANGE-TASK-STATUS", payload: {todolistID: tlID, isDone: isDone, id: tID}})
+    
+    expect(endState["todolistID1"].length).toBe(3)
+    expect(endState["todolistID1"][2].isDone).toBe(false)
+    
 })

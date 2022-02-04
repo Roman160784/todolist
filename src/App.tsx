@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { rootReducerTypes } from './redux/store';
 import { TodolistsType } from './redux/todolist/todolist-reducers';
 import { Todolist } from './Todolist';
-import { addTaskAC, MainTasksType, removeTaskAC } from './redux/task/task-reducers';
+import { addTaskAC, changeTaskStatusAC, MainTasksType, removeTaskAC } from './redux/task/task-reducers';
 
  
 function App() {
@@ -21,6 +21,11 @@ function App() {
         dispatch(addTaskAC(todolistID, title))
     }
 
+    const changeStatus = (todolistID: string, isDone: boolean, id: string) => {
+        dispatch(changeTaskStatusAC(todolistID, isDone, id))
+    }
+
+
     return (
         <div className="App">
             { todolists.map(tl => {
@@ -31,6 +36,7 @@ function App() {
                 todolistID={tl.id}
                 addTask={addTask}
                 remuveTask={remuveTask}
+                changeStatus={changeStatus}
                 />
             })
             }
