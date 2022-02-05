@@ -3,7 +3,7 @@ import React from 'react';
 type ButtonType = {
     title: string
     class: string
-    onclick : () => void
+    onclick? : () => void
 }
 
 

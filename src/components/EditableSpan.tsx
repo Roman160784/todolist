@@ -28,9 +28,6 @@ const onBlurHandler = () => {
 const onDoubleClickrHandler = () => {
     setMode(true)
 }
-
-
-
     return (
         mode
         ?<input type="text" value={titleInSpan} onChange={onChangeHandler} onBlur={onBlurHandler} autoFocus/>
