@@ -17,6 +17,7 @@ test  ('correct todolist should be added', () => {
     {id: "todolistID1", title: "What to learn", filter: "all"},
     {id: "todolistID2", title: "What to Buy", filter: "all"},
     ])
+
     expect(endState.length).toEqual(3)
     expect(endState[0].title).toEqual("WWW")
     expect(endState[0].id).toEqual("3")
@@ -30,5 +31,16 @@ test  ('correct todolist should change filter', () => {
     const endState = todolistReducers(startState, {type: "CHANGE-FILTER", payload: {todolistID: tlID, value: value}})
     
     expect(endState[0].filter).toEqual("completed")
+    
+})
+test  ('correct todolist should deleted', () => {
+
+    let tlID = "todolistID1"
+    
+
+    const endState = todolistReducers(startState, {type: "REMOVE-TODOLIST", payload: {todolistID: tlID}})
+    
+    expect(endState.length).toEqual(1)
+    expect(endState[0].id).toBe("todolistID2")
     
 })

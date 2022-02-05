@@ -1,5 +1,5 @@
 import { v1 } from "uuid"
-import { addTodolistACType, todolistID1, todolistID2 } from "../todolist/todolist-reducers"
+import { addTodolistACType, removeTodolistACType, todolistID1, todolistID2 } from "../todolist/todolist-reducers"
 
 export type TasksType = {
     id: string
@@ -41,15 +41,24 @@ switch (action.type) {
             : state[action.payload.todolistID].map(t => t.id === action.payload.id
                  ? {...t, isDone : action.payload.isDone} : t)}
     }
-    case "ADD-TODOLIST" : {
-        
+    case "ADD-TODOLIST" : { 
         return {...state,[action.payload.todolistID]: []}
     }
+    case "ADD-TODOLIST" : { 
+        return {...state,[action.payload.todolistID]: []}
+    }
+    
+    case "REMOVE-TODOLIST" : { 
+        let copyStae = {...state}
+        delete copyStae[action.payload.todolistID]
+        return copyStae
+    }
+
     default: return state
 }
 }
 
-type MainActionsTupe = removeTaskACtype | addTaskACtype | changeTaskStatusACtype | addTodolistACType
+type MainActionsTupe = removeTaskACtype | addTaskACtype | changeTaskStatusACtype | addTodolistACType | removeTodolistACType
 
 export type removeTaskACtype = ReturnType<typeof removeTaskAC>
 export type addTaskACtype = ReturnType<typeof addTaskAC>
