@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { rootReducerTypes } from './redux/store';
 import { addTodolistAC, changeFilterAC, changeTitleInTLAC, fiterValueType, removeTodolistAC, TodolistsType } from './redux/todolist/todolist-reducers';
 import { Todolist } from './Todolist';
-import { addTaskAC, changeTaskStatusAC, MainTasksType, removeTaskAC } from './redux/task/task-reducers';
+import { addTaskAC, changeTaskStatusAC, changeTaskTitleAC, MainTasksType, removeTaskAC } from './redux/task/task-reducers';
 import { AddIteamForm } from './components/AddIteamForm';
 
 
@@ -43,6 +43,10 @@ function App() {
         dispatch(changeTitleInTLAC(todolistID, newTitle))
     }
 
+    const changeTitleInTask = (todolistID: string, newTitle: string, id: string) => {
+        dispatch(changeTaskTitleAC(todolistID, newTitle, id))
+    }
+
     return (
         <div className="App">
             <AddIteamForm addIteam={addTodolist} />
@@ -66,6 +70,7 @@ function App() {
                     changeStatus={changeStatus}
                     removeTodolist={removeTodolist}
                     changeTitleInTL={changeTitleInTL}
+                    changeTitleInTask={changeTitleInTask}
 
                 />
             })

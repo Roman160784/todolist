@@ -47,22 +47,28 @@ switch (action.type) {
     case "ADD-TODOLIST" : { 
         return {...state,[action.payload.todolistID]: []}
     }
-    
     case "REMOVE-TODOLIST" : { 
         let copyStae = {...state}
         delete copyStae[action.payload.todolistID]
         return copyStae
+    }
+    case "CHANGE-TASK-TITLE" : { 
+        return {...state,[action.payload.todolistID] 
+        : state[action.payload.todolistID].map(t => t.id === action.payload.id 
+        ? {...t, title : action.payload.newTitle} : t)}
     }
 
     default: return state
 }
 }
 
-type MainActionsTupe = removeTaskACtype | addTaskACtype | changeTaskStatusACtype | addTodolistACType | removeTodolistACType
+type MainActionsTupe = removeTaskACtype | addTaskACtype | changeTaskStatusACtype 
+| addTodolistACType | removeTodolistACType | changeTaskTitleACtype
 
 export type removeTaskACtype = ReturnType<typeof removeTaskAC>
 export type addTaskACtype = ReturnType<typeof addTaskAC>
 export type changeTaskStatusACtype = ReturnType<typeof changeTaskStatusAC>
+export type changeTaskTitleACtype = ReturnType<typeof changeTaskTitleAC>
 
 export const removeTaskAC = (todolistID: string, id: string) => {
     return {
@@ -85,6 +91,14 @@ export const changeTaskStatusAC = (todolistID: string, isDone: boolean, id: stri
         type: "CHANGE-TASK-STATUS",
         payload: {
             todolistID, isDone, id,
+        }
+    }as const
+}
+export const changeTaskTitleAC = (todolistID: string, newTitle: string, id: string) => {
+    return {
+        type: "CHANGE-TASK-TITLE",
+        payload: {
+            todolistID, newTitle, id,
         }
     }as const
 }

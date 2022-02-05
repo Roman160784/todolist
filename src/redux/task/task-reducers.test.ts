@@ -57,3 +57,14 @@ test  ('correct task should change status', () => {
     expect(endState["todolistID1"][2].isDone).toBe(false)
     
 })
+test  ('correct task should change title', () => {
+    let tID = "3"
+    let newTitle = "Smile)"
+    let tlID = "todolistID1"
+
+    const endState = taskReducers(startState, {type: "CHANGE-TASK-TITLE", payload: {todolistID: tlID, newTitle: newTitle, id: tID}})
+    
+    expect(endState["todolistID1"].length).toBe(3)
+    expect(endState["todolistID1"][2].title).toBe("Smile)")
+    
+})

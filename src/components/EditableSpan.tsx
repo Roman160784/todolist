@@ -12,14 +12,19 @@ export const EditableSpan = (props: EditableSpanType) => {
 const [mode, setMode] = useState<boolean> (false)
 const [titleInSpan, setTitleInSpan] = useState("")
 
+
+
 const onChangeHandler = (e:ChangeEvent<HTMLInputElement>) => {
     setTitleInSpan(e.currentTarget.value)
 }
 
 const onBlurHandler = () => {
-    setMode(false)
-    props.changeTitleinSpan(titleInSpan)
+    if(titleInSpan.trim() !== ""){
+        setMode(false)
+        props.changeTitleinSpan(titleInSpan)
+    }
 }
+
 const onDoubleClickrHandler = () => {
     setMode(true)
 }

@@ -16,22 +16,25 @@ export type TodolistPropsType = {
     changeTitleInTL: (todolistID: string, newTitle: string) => void
     changeFilter: (value: fiterValueType, todolistID: string) => void
     changeStatus: (todolistID: string, isDone: boolean, id: string) => void
+    changeTitleInTask: (todolistID: string, newTitle: string, id: string) => void
 }
 
 export const Todolist = (props: TodolistPropsType) => {
 
-    const removeTodolistHandler = () => {props.removeTodolist(props.todolistID)}
+    const removeTodolistHandler = () => { props.removeTodolist(props.todolistID) }
     const removeTaskHandler = (id: string) => { props.remuveTask(props.todolistID, id) }
     const addIteamHandler = (title: string) => { props.addTask(props.todolistID, title) }
     const changeFilterHandler = (value: fiterValueType) => { props.changeFilter(value, props.todolistID,) }
-    const changeTitleInTLHandler = (newTitle: string) => {props.changeTitleInTL(props.todolistID, newTitle)}
-
+    const changeTitleInTLHandler = (newTitle: string) => { props.changeTitleInTL(props.todolistID, newTitle) }
+    const changeTitleInTaskHandler = (newTitle: string, id: string) => {
+        props.changeTitleInTask(props.todolistID, newTitle, id)
+    }
 
     return (
         <div>
             <h3>
-            <EditableSpan title={props.title} 
-            changeTitleinSpan={(newTitle: string) => {changeTitleInTLHandler(newTitle)}}/>
+                <EditableSpan title={props.title}
+                    changeTitleinSpan={(newTitle: string) => { changeTitleInTLHandler(newTitle) }} />
                 <Button title='Remove todolist' class={""}
                     onclick={removeTodolistHandler} />
             </h3>
@@ -48,9 +51,10 @@ export const Todolist = (props: TodolistPropsType) => {
                                 props.changeStatus(props.todolistID, newIsdone, t.id)
                             }
 
-                            return <li key={t.id} className={t.isDone? "isDone" : "isDoneFalse"}>
+                            return <li key={t.id} className={t.isDone ? "isDone" : "isDoneFalse"}>
                                 <input type="checkbox" checked={t.isDone} onChange={onChangeHandler} />
-                                <span>{t.title}</span>
+                                <EditableSpan title={t.title}
+                                    changeTitleinSpan={(newTitle: string) => { changeTitleInTaskHandler(newTitle, t.id) }} />
                                 <Button title='Remove' class={""}
                                     onclick={() => { removeTaskHandler(t.id) }} />
                             </li>
