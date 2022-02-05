@@ -52,9 +52,12 @@ const changeFilterHandler = (value: fiterValueType) => {props.changeFilter(value
             
         </ul>
         <div>
-        <Button title='ALL' class={''} onclick={()=>{changeFilterHandler("all")}}/>
-        <Button title='ACTIVE' class={''} onclick={()=>{changeFilterHandler("active")}}/>
-        <Button title='COMPLETED' class={''} onclick={()=>{changeFilterHandler("completed")}}/>
+        <Button title='ALL' class={props.filter === "all" ? 'filter' : ""} 
+        onclick={()=>{changeFilterHandler("all")}}/>
+        <Button title='ACTIVE' class={props.filter === "active" ? 'filter' : ""} 
+        onclick={()=>{changeFilterHandler("active")}}/>
+        <Button title='COMPLETED' class={props.filter === "completed" ? 'filter' : ""} 
+        onclick={()=>{changeFilterHandler("completed")}}/>
         </div>
     </div>
     )

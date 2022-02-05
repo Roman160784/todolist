@@ -1,4 +1,4 @@
-import { todolistReducers, TodolistsType } from "./todolist-reducers";
+import { fiterValueType, todolistReducers, TodolistsType } from "./todolist-reducers";
 
 const startState : TodolistsType[] = [
     {id: "todolistID1", title: "What to learn", filter: "all"},
@@ -20,4 +20,15 @@ test  ('correct todolist should be added', () => {
     expect(endState.length).toEqual(3)
     expect(endState[0].title).toEqual("WWW")
     expect(endState[0].id).toEqual("3")
+})
+
+test  ('correct todolist should change filter', () => {
+
+    let tlID = "todolistID1"
+    let value: fiterValueType = "completed"
+
+    const endState = todolistReducers(startState, {type: "CHANGE-FILTER", payload: {todolistID: tlID, value: value}})
+    
+    expect(endState[0].filter).toEqual("completed")
+    
 })
