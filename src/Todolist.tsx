@@ -1,6 +1,7 @@
 import React, { ChangeEvent } from 'react';
 import { AddIteamForm } from './components/AddIteamForm';
 import { Button } from './components/Button';
+import { EditableSpan } from './components/EditableSpan';
 import { MainTasksType, TasksType } from './redux/task/task-reducers';
 import { fiterValueType } from './redux/todolist/todolist-reducers';
 
@@ -12,26 +13,29 @@ export type TodolistPropsType = {
     removeTodolist: (todolistID: string) => void
     remuveTask: (todolistID: string, id: string) => void
     addTask: (todolistID: string, title: string) => void
+    changeTitleInTL: (todolistID: string, newTitle: string) => void
     changeFilter: (value: fiterValueType, todolistID: string) => void
     changeStatus: (todolistID: string, isDone: boolean, id: string) => void
 }
 
 export const Todolist = (props: TodolistPropsType) => {
-    
+
     const removeTodolistHandler = () => {props.removeTodolist(props.todolistID)}
     const removeTaskHandler = (id: string) => { props.remuveTask(props.todolistID, id) }
     const addIteamHandler = (title: string) => { props.addTask(props.todolistID, title) }
     const changeFilterHandler = (value: fiterValueType) => { props.changeFilter(value, props.todolistID,) }
-    
+    const changeTitleInTLHandler = (newTitle: string) => {props.changeTitleInTL(props.todolistID, newTitle)}
 
 
     return (
         <div>
-            <h3>{props.title}
+            <h3>
+            <EditableSpan title={props.title} 
+            changeTitleinSpan={(newTitle: string) => {changeTitleInTLHandler(newTitle)}}/>
                 <Button title='Remove todolist' class={""}
                     onclick={removeTodolistHandler} />
             </h3>
-
+            <div className='title'>double click for correct title</div>
             <div>
                 <AddIteamForm addIteam={(title: string) => { addIteamHandler(title) }} />
             </div>
@@ -44,7 +48,7 @@ export const Todolist = (props: TodolistPropsType) => {
                                 props.changeStatus(props.todolistID, newIsdone, t.id)
                             }
 
-                            return <li key={t.id}>
+                            return <li key={t.id} className={t.isDone? "isDone" : "isDoneFalse"}>
                                 <input type="checkbox" checked={t.isDone} onChange={onChangeHandler} />
                                 <span>{t.title}</span>
                                 <Button title='Remove' class={""}

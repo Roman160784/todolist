@@ -37,10 +37,20 @@ test  ('correct todolist should deleted', () => {
 
     let tlID = "todolistID1"
     
-
     const endState = todolistReducers(startState, {type: "REMOVE-TODOLIST", payload: {todolistID: tlID}})
     
     expect(endState.length).toEqual(1)
     expect(endState[0].id).toBe("todolistID2")
+    
+})
+test  ('correct todolist should change title', () => {
+
+    let tlID = "todolistID2"
+    let newTitle = "I Know"
+    
+    const endState = todolistReducers(startState, {type: "CHANGE-TITLE-IN-TL", payload: {todolistID: tlID, newTitle: newTitle}})
+    
+    expect(endState.length).toEqual(2)
+    expect(endState[1].title).toBe("I Know")
     
 })

@@ -30,16 +30,21 @@ switch (action.type) {
         return state.map(tl => tl.id === action.payload.todolistID 
             ? {...tl, filter: action.payload.value} : tl)
     }
+    case "CHANGE-TITLE-IN-TL" : {
+        return state.map(tl => tl.id === action.payload.todolistID 
+            ? {...tl, title: action.payload.newTitle} : tl)
+    }
 
     default: return state
 }
 }
 
-type MainActionType = removeTodolistACType | addTodolistACType | changeFilterACType
+type MainActionType = removeTodolistACType | addTodolistACType | changeFilterACType | changeTitleInTLACType
 
 export type removeTodolistACType = ReturnType<typeof removeTodolistAC>
 export type addTodolistACType = ReturnType<typeof addTodolistAC>
 export type changeFilterACType = ReturnType<typeof changeFilterAC>
+export type changeTitleInTLACType = ReturnType<typeof changeTitleInTLAC>
 
 export const removeTodolistAC = (todolistID: string) => {
     return{
@@ -65,6 +70,15 @@ export const changeFilterAC = (value: fiterValueType, todolistID: string) => {
         type : "CHANGE-FILTER",
         payload: {
             value,
+            todolistID, 
+        }
+    }as const
+    } 
+export const changeTitleInTLAC = (todolistID: string, newTitle: string) => {
+    return{
+        type : "CHANGE-TITLE-IN-TL",
+        payload: {
+            newTitle,
             todolistID, 
         }
     }as const

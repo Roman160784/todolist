@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { rootReducerTypes } from './redux/store';
-import { addTodolistAC, changeFilterAC, fiterValueType, removeTodolistAC, TodolistsType } from './redux/todolist/todolist-reducers';
+import { addTodolistAC, changeFilterAC, changeTitleInTLAC, fiterValueType, removeTodolistAC, TodolistsType } from './redux/todolist/todolist-reducers';
 import { Todolist } from './Todolist';
 import { addTaskAC, changeTaskStatusAC, MainTasksType, removeTaskAC } from './redux/task/task-reducers';
 import { AddIteamForm } from './components/AddIteamForm';
@@ -39,6 +39,9 @@ function App() {
         dispatch(removeTodolistAC(todolistID))
     }
 
+    const changeTitleInTL = (todolistID: string, newTitle: string) => {
+        dispatch(changeTitleInTLAC(todolistID, newTitle))
+    }
 
     return (
         <div className="App">
@@ -62,6 +65,8 @@ function App() {
                     changeFilter={changeFilter}
                     changeStatus={changeStatus}
                     removeTodolist={removeTodolist}
+                    changeTitleInTL={changeTitleInTL}
+
                 />
             })
             }
