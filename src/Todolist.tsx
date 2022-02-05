@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, useCallback } from 'react';
 import { AddIteamForm } from './components/AddIteamForm';
 import { Button } from './components/Button';
 import { EditableSpan } from './components/EditableSpan';
@@ -21,16 +21,16 @@ export type TodolistPropsType = {
     changeTitleInTask: (todolistID: string, newTitle: string, id: string) => void  //
 }
 
-export const Todolist = (props: TodolistPropsType) => {
+export const Todolist = React.memo((props: TodolistPropsType) => {
 
-    const removeTodolistHandler = () => { props.removeTodolist(props.todolistID) }
-    const removeTaskHandler = (id: string) => { props.remuveTask(props.todolistID, id) } //
-    const addIteamHandler = (title: string) => { props.addTask(props.todolistID, title) }
-    const changeFilterHandler = (value: fiterValueType) => { props.changeFilter(value, props.todolistID,) }
-    const changeTitleInTLHandler = (newTitle: string) => { props.changeTitleInTL(props.todolistID, newTitle) }
-    const changeTitleInTaskHandler = (newTitle: string, id: string) => {
-        props.changeTitleInTask(props.todolistID, newTitle, id)
-    }
+    const removeTodolistHandler = useCallback(() => { props.removeTodolist(props.todolistID) }
+    ,[props.removeTodolist, props.todolistID])
+    const addIteamHandler = useCallback((title: string) => { props.addTask(props.todolistID, title) }, [props.todolistID])
+    const changeFilterHandler = useCallback((value: fiterValueType) => { props.changeFilter(value, props.todolistID,)}
+    ,[props.changeFilter, props.todolistID])
+    const changeTitleInTLHandler = useCallback((newTitle: string) => { props.changeTitleInTL(props.todolistID, newTitle) }
+    ,[props.changeTitleInTL, props.todolistID])
+   
 
     return (
         <div>
@@ -64,4 +64,4 @@ export const Todolist = (props: TodolistPropsType) => {
             </div>
         </div>
     )
-}
+})

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import './App.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { rootReducerTypes } from './redux/store';
@@ -15,37 +15,37 @@ function App() {
     const todolists = useSelector<rootReducerTypes, TodolistsType[]>(state => state.todolist);
     const dispatch = useDispatch();
 
-    const remuveTask = (todolistID: string, id: string) => {
+    const remuveTask = useCallback((todolistID: string, id: string) => {
         dispatch(removeTaskAC(todolistID, id))
-    }
+    }, [])
 
-    const addTask = (todolistID: string, title: string) => {
+    const addTask = useCallback((todolistID: string, title: string) => {
         dispatch(addTaskAC(todolistID, title))
-    }
+    }, [])
 
-    const changeStatus = (todolistID: string, isDone: boolean, id: string) => {
+    const changeStatus = useCallback((todolistID: string, isDone: boolean, id: string) => {
         dispatch(changeTaskStatusAC(todolistID, isDone, id))
-    }
+    }, [])
 
-    const addTodolist = (title: string) => {
+    const addTodolist = useCallback((title: string) => {
         dispatch(addTodolistAC(title))
-    }
+    }, [])
 
-    const changeFilter = (value: fiterValueType, todolistID: string) => {
+    const changeFilter = useCallback((value: fiterValueType, todolistID: string) => {
         dispatch(changeFilterAC(value, todolistID))
-    }
+    }, [])
 
-    const removeTodolist = (todolistID: string) => {
+    const removeTodolist = useCallback((todolistID: string) => {
         dispatch(removeTodolistAC(todolistID))
-    }
+    }, [])
 
-    const changeTitleInTL = (todolistID: string, newTitle: string) => {
+    const changeTitleInTL = useCallback((todolistID: string, newTitle: string) => {
         dispatch(changeTitleInTLAC(todolistID, newTitle))
-    }
+    }, [])
 
-    const changeTitleInTask = (todolistID: string, newTitle: string, id: string) => {
+    const changeTitleInTask = useCallback((todolistID: string, newTitle: string, id: string) => {
         dispatch(changeTaskTitleAC(todolistID, newTitle, id))
-    }
+    }, [])
 
     return (
         <div className="App">
