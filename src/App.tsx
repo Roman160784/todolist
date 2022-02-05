@@ -35,6 +35,10 @@ function App() {
         dispatch(changeFilterAC(value, todolistID))
     }
 
+    const removeTodolist = (todolistID: string) => {
+        
+    }
+
 
     return (
         <div className="App">

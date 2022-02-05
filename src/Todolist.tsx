@@ -45,7 +45,8 @@ const changeFilterHandler = (value: fiterValueType) => {props.changeFilter(value
                        
                        <input type="checkbox" checked={t.isDone} onChange={onChangeHandler}/> 
                        <span>{t.title}</span>
-                       
+                       <Button title='Remove' class={""}
+                       onclick={()=>{removeTaskHandler(t.id)}}/>
                        </li>    
               } })
             }
