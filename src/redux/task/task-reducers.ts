@@ -59,15 +59,9 @@ switch (action.type) {
             .filter(t => t.id !== action.payload.id)}
     }
     case "ADD-TASK" : {
-        return {...state, [action.payload.todolistID] 
-            : [{id: v1(), 
-                title: action.payload.title,
-                 status: TaskStatuses.New,
-                 todoListId: action.payload.todolistID,
-                 description: '', startDate: '', deadline: '',
-                 addedDate: '', order: 0, priority: TaskPriorities.Low
-                }, 
-                ...state[action.payload.todolistID]]}
+        const newTask = action.payload.item
+        return {...state,[action.payload.item.todoListId] 
+            :[newTask, ...state[action.payload.item.todoListId]]}
     }
     case "CHANGE-TASK-STATUS" : {
         return {...state, [action.payload.todolistID] 
@@ -94,7 +88,7 @@ switch (action.type) {
         return copyStae
     }
     case "GET-TASKS" : {
-        const copyStae = {...state}
+        const copyStae = {...state, [action.payload.tasks[0].todoListId] : action.payload.tasks}
         return copyStae
     }
 
@@ -119,11 +113,11 @@ export const removeTaskAC = (todolistID: string, id: string) => {
         }
     }as const
 }
-export const addTaskAC = (todolistID: string, title: string) => {
+export const addTaskAC = (item: TasksType) => {
     return {
         type: "ADD-TASK",
         payload: {
-            todolistID, title,
+            item
         }
     }as const
 }
@@ -158,6 +152,16 @@ export const getTasksTC = (todolistID: string) => {
         todolistsAPI.getTasks(todolistID)
         .then((res) => {
             dispatch(getTasksAC(res.data.items))
+        })
+    }
+}
+
+export const addTaskTC = (todolistID: string, title: string) => {
+    return (dispatch: Dispatch) => {
+        todolistsAPI.createTask(todolistID, title)
+        .then ((res) => {
+            debugger
+            dispatch(addTaskAC(res.data.data.item))
         })
     }
 }

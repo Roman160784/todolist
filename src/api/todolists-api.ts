@@ -17,11 +17,19 @@ export const todolistsAPI = {
         return instance.get<GetTasksResponse>(`todo-lists/${todolistId}/tasks`);
     },
     createTodolist(title: string) {
-        return instance.post<{ title: string }, AxiosResponse<ResponseType<{ item: TodolistsType }>>>('todo-lists', {title}); //
+        return instance.post<{ title: string }, AxiosResponse<ResponseType<{ item: TodolistsType }>>>('todo-lists', {title}); 
     },
     deleteTodolist(id: string) {
         return instance.delete<ResponseType>(`todo-lists/${id}`)
-    }
+    },
+    createTask(todolistId: string, title: string) {
+        debugger
+        return instance.post<{title: string}, AxiosResponse<ResponseType<{item: TasksType}>>>(`todo-lists/${todolistId}/tasks`, {title})
+    },
+    deleteTasks(todolistId: string, id: string) {
+        return instance.delete<ResponseType>(`todo-lists/${id}`)
+    },
+    
 }
 
 export type TodolistsType = {
@@ -37,7 +45,7 @@ type GetTasksResponse = {
     items: TasksType[]
 }
 
-//
+
 export type ResponseType<D = {}> = {
     resultCode: number
     messages: Array<string>
