@@ -88,7 +88,7 @@ switch (action.type) {
         return copyStae
     }
     case "GET-TASKS" : {
-        const copyStae = {...state, [action.payload.tasks[0].todoListId] : action.payload.tasks}
+        const copyStae = {...state, [action.payload.todolistID] : action.payload.tasks}
         return copyStae
     }
 
@@ -138,20 +138,22 @@ export const changeTaskTitleAC = (todolistID: string, newTitle: string, id: stri
         }
     }as const
 }
-export const getTasksAC = (tasks : TasksType[]) => {
+export const getTasksAC = (tasks : TasksType[], todolistID: string,) => {
     return {
         type: "GET-TASKS",
         payload: {
-            tasks
+            tasks,
+            todolistID,
+            
         }
     }as const
 }
 
-export const getTasksTC = (todolistID: string) => {
+export const getTasksTC = (todoListID: string) => {
     return (dispatch: Dispatch) => {
-        todolistsAPI.getTasks(todolistID)
+        todolistsAPI.getTasks(todoListID)
         .then((res) => {
-            dispatch(getTasksAC(res.data.items))
+            dispatch(getTasksAC(res.data.items, todoListID))
         })
     }
 }
@@ -160,8 +162,16 @@ export const addTaskTC = (todolistID: string, title: string) => {
     return (dispatch: Dispatch) => {
         todolistsAPI.createTask(todolistID, title)
         .then ((res) => {
-            debugger
             dispatch(addTaskAC(res.data.data.item))
+        })
+    }
+}
+
+export const removeTaskTC = (todolistID: string, id: string) => {
+    return (dispatch : Dispatch) => {
+        todolistsAPI.deleteTasks(todolistID, id)
+        .then (() => {
+            dispatch(removeTaskAC(todolistID, id))
         })
     }
 }

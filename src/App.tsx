@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { rootReducerTypes } from './redux/store';
 import { addTodolistAC, changeFilterAC, changeTitleInTLAC, createTodolistsTC, deleteTodolistTC, fiterValueType, getTodolistsTC, removeTodolistAC, TodolistsDomainType,  } from './redux/todolist/todolist-reducers';
 import { Todolist } from './Todolist';
-import { addTaskAC, addTaskTC, changeTaskStatusAC, changeTaskTitleAC, MainTasksType, removeTaskAC, TaskStatuses } from './redux/task/task-reducers';
+import { addTaskAC, addTaskTC, changeTaskStatusAC, changeTaskTitleAC, MainTasksType, removeTaskAC, removeTaskTC, TaskStatuses } from './redux/task/task-reducers';
 import { AddIteamForm } from './components/AddIteamForm';
 
 
@@ -17,7 +17,7 @@ function App() {
 
 
     const remuveTask = useCallback((todolistID: string, id: string) => {
-        dispatch(removeTaskAC(todolistID, id))
+        dispatch(removeTaskTC(todolistID, id))
     }, [])
 
     const addTask = useCallback((todolistID: string, title: string) => {
