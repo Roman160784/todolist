@@ -14,7 +14,7 @@ function App() {
     const tasks = useSelector<rootReducerTypes, MainTasksType>(state => state.task);
     const todolists = useSelector<rootReducerTypes, TodolistsDomainType[]>(state => state.todolist);
     const dispatch = useDispatch();
-console.log(tasks);
+
 
     const remuveTask = useCallback((todolistID: string, id: string) => {
         dispatch(removeTaskAC(todolistID, id))

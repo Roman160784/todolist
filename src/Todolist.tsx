@@ -1,10 +1,11 @@
-import React, { ChangeEvent, useCallback } from 'react';
+import React, { ChangeEvent, useCallback, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { AddIteamForm } from './components/AddIteamForm';
 import { Button } from './components/Button';
 import { EditableSpan } from './components/EditableSpan';
 import { Tasks } from './components/Tasks';
 
-import { MainTasksType, TaskStatuses, TasksType } from './redux/task/task-reducers';
+import { getTasksTC, MainTasksType, TaskStatuses, TasksType } from './redux/task/task-reducers';
 import { fiterValueType } from './redux/todolist/todolist-reducers';
 
 export type TodolistPropsType = {
@@ -23,6 +24,8 @@ export type TodolistPropsType = {
 
 export const Todolist = React.memo((props: TodolistPropsType) => {
 
+    const dispatch = useDispatch()
+
     const removeTodolistHandler = useCallback(() => { props.removeTodolist(props.todolistID) }
     ,[props.removeTodolist, props.todolistID])
     const addIteamHandler = useCallback((title: string) => { props.addTask(props.todolistID, title) }, [props.todolistID])
@@ -31,7 +34,9 @@ export const Todolist = React.memo((props: TodolistPropsType) => {
     const changeTitleInTLHandler = useCallback((newTitle: string) => { props.changeTitleInTL(props.todolistID, newTitle) }
     ,[props.changeTitleInTL, props.todolistID])
    
-    console.log(props.tasks);
+    useEffect(() => {
+        dispatch((getTasksTC(props.todolistID)))
+    },[])
     
     return (
         <div>

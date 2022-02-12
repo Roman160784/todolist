@@ -108,7 +108,6 @@ export const changeTitleInTLAC = (todolistID: string, newTitle: string) => {
     }
 
     export const getTodolistsTC = () => {
-        
         return (dispatch: Dispatch) => {
             todolistsAPI.getTodolists()
             .then((res) => { 

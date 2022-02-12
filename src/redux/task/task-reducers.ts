@@ -1,4 +1,6 @@
+import { Dispatch } from "redux"
 import { v1 } from "uuid"
+import { todolistsAPI } from "../../api/todolists-api"
 import { addTodolistACType, getTodolistsACType, removeTodolistACType, todolistID1, todolistID2 } from "../todolist/todolist-reducers"
 
 export type TasksType = {
@@ -93,18 +95,23 @@ switch (action.type) {
         action.payload.todolists.forEach(tl => {copyStae[tl.id] = []})
         return copyStae
     }
+    case "GET-TASKS" : {
+        const copyStae = {...state}
+        return copyStae
+    }
 
     default: return state
 }
 }
 
 type MainActionsTupe = removeTaskACtype | addTaskACtype | changeTaskStatusACtype 
-| addTodolistACType | removeTodolistACType | changeTaskTitleACtype | getTodolistsACType
+| addTodolistACType | removeTodolistACType | changeTaskTitleACtype | getTodolistsACType | getTasksACtype
 
 export type removeTaskACtype = ReturnType<typeof removeTaskAC>
 export type addTaskACtype = ReturnType<typeof addTaskAC>
 export type changeTaskStatusACtype = ReturnType<typeof changeTaskStatusAC>
 export type changeTaskTitleACtype = ReturnType<typeof changeTaskTitleAC>
+export type getTasksACtype = ReturnType<typeof getTasksAC>
 
 export const removeTaskAC = (todolistID: string, id: string) => {
     return {
@@ -130,6 +137,7 @@ export const changeTaskStatusAC = (todolistID: string, status: TaskStatuses, id:
         }
     }as const
 }
+
 export const changeTaskTitleAC = (todolistID: string, newTitle: string, id: string) => {
     return {
         type: "CHANGE-TASK-TITLE",
@@ -137,4 +145,21 @@ export const changeTaskTitleAC = (todolistID: string, newTitle: string, id: stri
             todolistID, newTitle, id,
         }
     }as const
+}
+export const getTasksAC = (tasks : TasksType[]) => {
+    return {
+        type: "GET-TASKS",
+        payload: {
+            tasks
+        }
+    }as const
+}
+
+export const getTasksTC = (todolistID: string) => {
+    return (dispatch: Dispatch) => {
+        todolistsAPI.getTasks(todolistID)
+        .then((res) => {
+            dispatch(getTasksAC(res.data.items))
+        })
+    }
 }

@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from 'axios'
+import { TasksType } from '../redux/task/task-reducers';
 
 const instance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.1/',
@@ -11,6 +12,9 @@ const instance = axios.create({
 export const todolistsAPI = {
     getTodolists() {
         return instance.get<TodolistsType[]>('todo-lists');
+    },
+    getTasks(todolistId: string) {
+        return instance.get<GetTasksResponse>(`todo-lists/${todolistId}/tasks`);
     }
 }
 
@@ -19,4 +23,10 @@ export type TodolistsType = {
     title: string
     addedDate: string
     order: number
+}
+
+type GetTasksResponse = {
+    error: string | null
+    totalCount: number
+    items: TasksType[]
 }
