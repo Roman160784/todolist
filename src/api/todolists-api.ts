@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from 'axios'
 import { TasksType } from '../redux/task/task-reducers';
+import { fiterValueType } from '../redux/todolist/todolist-reducers';
 
 const instance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.1/',
@@ -28,6 +29,9 @@ export const todolistsAPI = {
     deleteTasks(todolistId: string, taskId: string) {
         return instance.delete<ResponseType>(`todo-lists/${todolistId}/tasks/${taskId}`)
     },
+    updateTodolist(id: string, title: string) {
+        return instance.put<{title: string}, AxiosResponse<ResponseType>>(`/todo-lists/${id}/`,{title})
+    }
     
 }
 

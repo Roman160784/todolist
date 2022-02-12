@@ -120,11 +120,20 @@ export const changeTitleInTLAC = (todolistID: string, newTitle: string) => {
             })
         }
     }
-    export const deleteTodolistTC = (id: string) => {
+    export const deleteTodolistTC = (id: string) => { 
         return (dispatch: Dispatch) => {
             todolistsAPI.deleteTodolist(id)
             .then(() => { 
                 dispatch(removeTodolistAC(id))
+            })
+        }
+    }
+
+    export const changeTitltInTlTC = (todolistID: string, newTitle: string) => {
+        return(dispatch: Dispatch) => {
+            todolistsAPI.updateTodolist(todolistID, newTitle)
+            .then(() => {
+                dispatch(changeTitleInTLAC(todolistID, newTitle)) 
             })
         }
     }
