@@ -75,11 +75,9 @@ switch (action.type) {
                  ? {...t, status : action.payload.status} : t)}
     }
     case "ADD-TODOLIST" : { 
-        return {...state,[action.payload.todolistID]: []}
+        return {...state,[action.payload.item.id]: []}
     }
-    case "ADD-TODOLIST" : { 
-        return {...state,[action.payload.todolistID]: []}
-    }
+    
     case "REMOVE-TODOLIST" : { 
         let copyStae = {...state}
         delete copyStae[action.payload.todolistID]

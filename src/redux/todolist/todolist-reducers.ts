@@ -34,9 +34,7 @@ switch (action.type) {
         return state.filter(tl => tl.id !== action.payload.todolistID)
     }
     case "ADD-TODOLIST" : {
-        return state
-        // [{id: action.payload.todolistID, title: action.payload.title, filter: "all"}, ...state] 
-        
+        return [{...action.payload.item, filter: "all"}, ...state]
     }
     case "CHANGE-FILTER" : {
         return state.map(tl => tl.id === action.payload.todolistID 
@@ -69,12 +67,11 @@ export const removeTodolistAC = (todolistID: string) => {
     }as const
     } 
 
-export const addTodolistAC = (title: string) => {
+export const addTodolistAC = (item: TodolistsType) => {
     return{
         type : "ADD-TODOLIST",
         payload: {
-            title,
-            todolistID : v1(), 
+            item,
         }
     }as const
     } 
@@ -112,6 +109,14 @@ export const changeTitleInTLAC = (todolistID: string, newTitle: string) => {
             todolistsAPI.getTodolists()
             .then((res) => { 
                 dispatch(getTodolistsAC(res.data))
+            })
+        }
+    }
+    export const createTodolistsTC = (title: string) => {
+        return (dispatch: Dispatch) => {
+            todolistsAPI.createTodolist(title)
+            .then((res) => { 
+                dispatch(addTodolistAC(res.data.data.item))
             })
         }
     }
