@@ -31,7 +31,8 @@ export const Todolist = React.memo((props: TodolistPropsType) => {
     const changeTitleInTLHandler = useCallback((newTitle: string) => { props.changeTitleInTL(props.todolistID, newTitle) }
     ,[props.changeTitleInTL, props.todolistID])
    
-
+    console.log(props.tasks);
+    
     return (
         <div>
             <h3>

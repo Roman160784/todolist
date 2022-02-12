@@ -1,10 +1,10 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import './App.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { rootReducerTypes } from './redux/store';
-import { addTodolistAC, changeFilterAC, changeTitleInTLAC, fiterValueType, removeTodolistAC, TodolistsType } from './redux/todolist/todolist-reducers';
+import { addTodolistAC, changeFilterAC, changeTitleInTLAC, fiterValueType, getTodolistsTC, removeTodolistAC, TodolistsDomainType,  } from './redux/todolist/todolist-reducers';
 import { Todolist } from './Todolist';
-import { addTaskAC, changeTaskStatusAC, changeTaskTitleAC, MainTasksType, removeTaskAC } from './redux/task/task-reducers';
+import { addTaskAC, changeTaskStatusAC, changeTaskTitleAC, MainTasksType, removeTaskAC, TaskStatuses } from './redux/task/task-reducers';
 import { AddIteamForm } from './components/AddIteamForm';
 
 
@@ -12,8 +12,9 @@ import { AddIteamForm } from './components/AddIteamForm';
 function App() {
 
     const tasks = useSelector<rootReducerTypes, MainTasksType>(state => state.task);
-    const todolists = useSelector<rootReducerTypes, TodolistsType[]>(state => state.todolist);
+    const todolists = useSelector<rootReducerTypes, TodolistsDomainType[]>(state => state.todolist);
     const dispatch = useDispatch();
+console.log(tasks);
 
     const remuveTask = useCallback((todolistID: string, id: string) => {
         dispatch(removeTaskAC(todolistID, id))
@@ -47,17 +48,23 @@ function App() {
         dispatch(changeTaskTitleAC(todolistID, newTitle, id))
     }, [])
 
+    useEffect(() => {
+        dispatch(getTodolistsTC())
+    },[])
+
     return (
         <div className="App">
             <AddIteamForm addIteam={addTodolist} />
             {todolists.map(tl => {
                 let tasksForTL = tasks[tl.id]
                 if (tl.filter === "active") {
-                    tasksForTL = tasks[tl.id].filter(t => t.isDone === false)
+                    tasksForTL = tasks[tl.id].filter(t => t.status === TaskStatuses.New)
                 }
                 if (tl.filter === "completed") {
-                    tasksForTL = tasks[tl.id].filter(t => t.isDone === true)
+                    tasksForTL = tasks[tl.id].filter(t => t.status === TaskStatuses.Completed)
                 }
+                
+                
                 return <Todolist
                     key={tl.id}
                     filter={tl.filter}

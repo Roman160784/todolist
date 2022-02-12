@@ -1,5 +1,5 @@
 import React, { ChangeEvent, KeyboardEvent, useCallback, useState } from 'react';
-import { TasksType } from '../redux/task/task-reducers';
+import { TaskStatuses, TasksType } from '../redux/task/task-reducers';
 import { Button } from './Button';
 import { EditableSpan } from './EditableSpan';
 
@@ -25,8 +25,8 @@ export const Tasks = React.memo( (props: TsaksPropsType) => {
     },[props.changeTitleInTask,props.todolistID]) 
 
     return ( 
-        <li key={props.tasks.id} className={props.tasks.isDone ? "isDone" : "isDoneFalse"}>
-            <input type="checkbox" checked={props.tasks.isDone} onChange={onChangeHandler} />
+        <li key={props.tasks.id} className={props.tasks.status === TaskStatuses.Completed ? "isDone" : "isDoneFalse"}>
+            <input type="checkbox" checked={props.tasks.status === TaskStatuses.Completed} onChange={onChangeHandler} />
             <EditableSpan title={props.tasks.title} 
             changeTitleinSpan={(newTitle: string) => changeTitleInTaskHandler(newTitle, props.tasks.id) } />
             <Button title='Remove' class={""} onclick={() => { removeTaskHandler(props.tasks.id) }} />

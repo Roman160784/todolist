@@ -1,10 +1,35 @@
 import { v1 } from "uuid"
-import { addTodolistACType, removeTodolistACType, todolistID1, todolistID2 } from "../todolist/todolist-reducers"
+import { addTodolistACType, getTodolistsACType, removeTodolistACType, todolistID1, todolistID2 } from "../todolist/todolist-reducers"
 
 export type TasksType = {
-    id: string
-    title: string
-    isDone: boolean
+    // id: string
+    // title: string
+    // isDone: boolean
+description: string
+title: string
+status: TaskStatuses
+priority: TaskPriorities
+startDate: string
+deadline: string
+id: string
+todoListId: string
+order: number
+addedDate: string
+}
+
+export enum TaskStatuses {
+    New = 0,
+    InProgress = 1,
+    Completed = 2,
+    Draft = 3
+}
+
+export enum TaskPriorities {
+    Low = 0,
+    Middle = 1,
+    Hi = 2,
+    Urgently = 3,
+    Later = 4
 }
 
 export type MainTasksType = {
@@ -12,16 +37,16 @@ export type MainTasksType = {
 }
 
 const intitiolState : MainTasksType = {
-    [todolistID1] : [
-        {id: v1(), title: "react", isDone: false},
-        {id: v1(), title: "redux", isDone: false},
-        {id: v1(), title: "html", isDone: true},
-    ],
-    [todolistID2] : [
-        {id: v1(), title: "Bread", isDone: false},
-        {id: v1(), title: "Milk", isDone: false},
-        {id: v1(), title: "Water", isDone: true},
-    ],
+    // [todolistID1] : [
+    //     {id: v1(), title: "react", isDone: false},
+    //     {id: v1(), title: "redux", isDone: false},
+    //     {id: v1(), title: "html", isDone: true},
+    // ],
+    // [todolistID2] : [
+    //     {id: v1(), title: "Bread", isDone: false},
+    //     {id: v1(), title: "Milk", isDone: false},
+    //     {id: v1(), title: "Water", isDone: true},
+    // ],
 }
 
 export const taskReducers = (state: MainTasksType = intitiolState, action: MainActionsTupe) : MainTasksType => {
@@ -33,7 +58,13 @@ switch (action.type) {
     }
     case "ADD-TASK" : {
         return {...state, [action.payload.todolistID] 
-            : [{id: v1(), title: action.payload.title, isDone: false}, 
+            : [{id: v1(), 
+                title: action.payload.title,
+                 status: TaskStatuses.New,
+                 todoListId: action.payload.todolistID,
+                 description: '', startDate: '', deadline: '',
+                 addedDate: '', order: 0, priority: TaskPriorities.Low
+                }, 
                 ...state[action.payload.todolistID]]}
     }
     case "CHANGE-TASK-STATUS" : {
@@ -57,13 +88,18 @@ switch (action.type) {
         : state[action.payload.todolistID].map(t => t.id === action.payload.id 
         ? {...t, title : action.payload.newTitle} : t)}
     }
+    case "GET-TODOLISTS" : {
+        const copyStae = {...state}
+        action.payload.todolists.forEach(tl => {copyStae[tl.id] = []})
+        return copyStae
+    }
 
     default: return state
 }
 }
 
 type MainActionsTupe = removeTaskACtype | addTaskACtype | changeTaskStatusACtype 
-| addTodolistACType | removeTodolistACType | changeTaskTitleACtype
+| addTodolistACType | removeTodolistACType | changeTaskTitleACtype | getTodolistsACType
 
 export type removeTaskACtype = ReturnType<typeof removeTaskAC>
 export type addTaskACtype = ReturnType<typeof addTaskAC>
