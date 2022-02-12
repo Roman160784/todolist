@@ -2,7 +2,7 @@ import React, { useCallback, useEffect } from 'react';
 import './App.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { rootReducerTypes } from './redux/store';
-import { addTodolistAC, changeFilterAC, changeTitleInTLAC, createTodolistsTC, fiterValueType, getTodolistsTC, removeTodolistAC, TodolistsDomainType,  } from './redux/todolist/todolist-reducers';
+import { addTodolistAC, changeFilterAC, changeTitleInTLAC, createTodolistsTC, deleteTodolistTC, fiterValueType, getTodolistsTC, removeTodolistAC, TodolistsDomainType,  } from './redux/todolist/todolist-reducers';
 import { Todolist } from './Todolist';
 import { addTaskAC, changeTaskStatusAC, changeTaskTitleAC, MainTasksType, removeTaskAC, TaskStatuses } from './redux/task/task-reducers';
 import { AddIteamForm } from './components/AddIteamForm';
@@ -37,7 +37,7 @@ function App() {
     }, [])
 
     const removeTodolist = useCallback((todolistID: string) => {
-        dispatch(removeTodolistAC(todolistID))
+        dispatch(deleteTodolistTC(todolistID))
     }, [])
 
     const changeTitleInTL = useCallback((todolistID: string, newTitle: string) => {

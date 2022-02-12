@@ -80,7 +80,7 @@ switch (action.type) {
     
     case "REMOVE-TODOLIST" : { 
         let copyStae = {...state}
-        delete copyStae[action.payload.todolistID]
+        delete copyStae[action.payload.id]
         return copyStae
     }
     case "CHANGE-TASK-TITLE" : { 
