@@ -24,8 +24,8 @@ console.log(tasks);
         dispatch(addTaskAC(todolistID, title))
     }, [])
 
-    const changeStatus = useCallback((todolistID: string, isDone: boolean, id: string) => {
-        dispatch(changeTaskStatusAC(todolistID, isDone, id))
+    const changeStatus = useCallback((todolistID: string, status: TaskStatuses, id: string) => {
+        dispatch(changeTaskStatusAC(todolistID, status, id))
     }, [])
 
     const addTodolist = useCallback((title: string) => {

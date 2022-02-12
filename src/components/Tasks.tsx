@@ -7,7 +7,7 @@ type TsaksPropsType = {
 tasks: TasksType
 todolistID: string
 remuveTask: (todolistID: string, id: string) => void 
-changeStatus: (todolistID: string, isDone: boolean, id: string) => void
+changeStatus: (todolistID: string, status: TaskStatuses, id: string) => void
 changeTitleInTask: (todolistID: string, newTitle: string, id: string) => void
 }
 
@@ -18,7 +18,7 @@ export const Tasks = React.memo( (props: TsaksPropsType) => {
     , [props.remuveTask, props.todolistID])
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         let newIsdone = e.currentTarget.checked
-        props.changeStatus(props.todolistID, newIsdone, props.tasks.id)  
+        props.changeStatus(props.todolistID, newIsdone? TaskStatuses.Completed : TaskStatuses.New, props.tasks.id)  
     }
     const changeTitleInTaskHandler = useCallback((newTitle: string, id: string) => {
         props.changeTitleInTask(props.todolistID, newTitle, id)

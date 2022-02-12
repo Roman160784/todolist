@@ -4,7 +4,7 @@ import { Button } from './components/Button';
 import { EditableSpan } from './components/EditableSpan';
 import { Tasks } from './components/Tasks';
 
-import { MainTasksType, TasksType } from './redux/task/task-reducers';
+import { MainTasksType, TaskStatuses, TasksType } from './redux/task/task-reducers';
 import { fiterValueType } from './redux/todolist/todolist-reducers';
 
 export type TodolistPropsType = {
@@ -17,7 +17,7 @@ export type TodolistPropsType = {
     addTask: (todolistID: string, title: string) => void
     changeTitleInTL: (todolistID: string, newTitle: string) => void
     changeFilter: (value: fiterValueType, todolistID: string) => void
-    changeStatus: (todolistID: string, isDone: boolean, id: string) => void  //
+    changeStatus: (todolistID: string, status: TaskStatuses, id: string) => void  //
     changeTitleInTask: (todolistID: string, newTitle: string, id: string) => void  //
 }
 

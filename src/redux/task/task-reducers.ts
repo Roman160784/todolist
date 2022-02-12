@@ -70,7 +70,7 @@ switch (action.type) {
     case "CHANGE-TASK-STATUS" : {
         return {...state, [action.payload.todolistID] 
             : state[action.payload.todolistID].map(t => t.id === action.payload.id
-                 ? {...t, isDone : action.payload.isDone} : t)}
+                 ? {...t, status : action.payload.status} : t)}
     }
     case "ADD-TODOLIST" : { 
         return {...state,[action.payload.todolistID]: []}
@@ -122,11 +122,11 @@ export const addTaskAC = (todolistID: string, title: string) => {
         }
     }as const
 }
-export const changeTaskStatusAC = (todolistID: string, isDone: boolean, id: string) => {
+export const changeTaskStatusAC = (todolistID: string, status: TaskStatuses, id: string) => {
     return {
         type: "CHANGE-TASK-STATUS",
         payload: {
-            todolistID, isDone, id,
+            todolistID, status, id,
         }
     }as const
 }
