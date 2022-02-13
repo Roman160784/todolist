@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios'
-import { TasksType } from '../redux/task/task-reducers';
+import { TaskPriorities, TaskStatuses, TasksType } from '../redux/task/task-reducers';
 import { fiterValueType } from '../redux/todolist/todolist-reducers';
 
 const instance = axios.create({
@@ -31,6 +31,10 @@ export const todolistsAPI = {
     },
     updateTodolist(id: string, title: string) {
         return instance.put<{title: string}, AxiosResponse<ResponseType>>(`/todo-lists/${id}/`,{title})
+    },
+    updateTask(todolistID: string, model: UpdateTaskModelType, id: string,) {
+        return instance.put<UpdateTaskModelType, AxiosResponse<ResponseType<{ item: TasksType }>>>
+        (`/todo-lists/${todolistID}/tasks/${id}/`, model)
     }
     
 }
@@ -54,4 +58,13 @@ export type ResponseType<D = {}> = {
     messages: Array<string>
     fieldsErrors: Array<string>
     data: D
+}
+
+export type UpdateTaskModelType = {
+    title: string
+    description: string
+    status: TaskStatuses
+    priority: TaskPriorities
+    startDate: string
+    deadline: string
 }
