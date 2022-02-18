@@ -7,6 +7,7 @@ import { Todolist } from './Todolist';
 import {  addTaskTC, MainTasksType, removeTaskAC, removeTaskTC, TaskStatuses, updateTaskTC } from './redux/task/task-reducers';
 import { AddIteamForm } from './components/AddIteamForm';
 import { Preloader } from './components/preloader/Preloader';
+import {  RequestStatusType } from './redux/app/app-reducer';
 
 
 
@@ -14,6 +15,7 @@ function App() {
 
     const tasks = useSelector<rootReducerTypes, MainTasksType>(state => state.task);
     const todolists = useSelector<rootReducerTypes, TodolistsDomainType[]>(state => state.todolist);
+    const status = useSelector<rootReducerTypes, RequestStatusType>(state => state.app.status)
     const dispatch = useDispatch();
 
 
@@ -55,7 +57,9 @@ function App() {
 
     return (
         <div className="App">
-            <div><Preloader/></div>
+            <div>
+                {status === "loading" && <Preloader/>}
+            </div>
             <AddIteamForm addIteam={addTodolist} />
             {todolists.map(tl => {
                 let tasksForTL = tasks[tl.id]
