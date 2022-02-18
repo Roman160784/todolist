@@ -46,7 +46,8 @@ export const Todolist = React.memo((props: TodolistPropsType) => {
                 <EditableSpan title={props.title}
                     changeTitleinSpan={(newTitle: string) => { changeTitleInTLHandler(newTitle) }} />
                 <Button title='Remove todolist' class={""}
-                    onclick={removeTodolistHandler} />
+                    onclick={removeTodolistHandler} 
+                    disabled={props.entityStatus === 'loading' ? true : false}/>
             </h3>
             <div className='title'>double click for correct title</div>
             <div>
@@ -64,11 +65,11 @@ export const Todolist = React.memo((props: TodolistPropsType) => {
             
             <div>
                 <Button title='ALL' class={props.filter === "all" ? 'filter' : ""}
-                    onclick={() => { changeFilterHandler("all") }} />
+                onclick={() => { changeFilterHandler("all"); } } disabled={false} />
                 <Button title='ACTIVE' class={props.filter === "active" ? 'filter' : ""}
-                    onclick={() => { changeFilterHandler("active") }} />
+                onclick={() => { changeFilterHandler("active"); } } disabled={false} />
                 <Button title='COMPLETED' class={props.filter === "completed" ? 'filter' : ""}
-                    onclick={() => { changeFilterHandler("completed") }} />
+                onclick={() => { changeFilterHandler("completed"); } } disabled={false} />
             </div>
         </div>
     )

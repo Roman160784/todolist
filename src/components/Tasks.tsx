@@ -29,7 +29,7 @@ export const Tasks = React.memo( (props: TsaksPropsType) => {
             <input type="checkbox" checked={props.tasks.status === TaskStatuses.Completed} onChange={onChangeHandler} />
             <EditableSpan title={props.tasks.title} 
             changeTitleinSpan={(newTitle: string) => changeTitleInTaskHandler(newTitle, props.tasks.id) } />
-            <Button title='Remove' class={""} onclick={() => { removeTaskHandler(props.tasks.id) }} />
+            <Button title='Remove' class={""} onclick={() => { removeTaskHandler(props.tasks.id); } } disabled={false} />
         </li>
 
     )
