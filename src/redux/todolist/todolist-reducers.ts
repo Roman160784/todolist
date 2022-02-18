@@ -1,6 +1,7 @@
 import { Dispatch } from "redux"
 import { v1 } from "uuid"
 import { todolistsAPI, TodolistsType } from "../../api/todolists-api"
+import { changeAppStatusAC } from "../app/app-reducer"
 
 
 export type fiterValueType = "all" | "active" | "completed"
@@ -105,9 +106,13 @@ export const changeTitleInTLAC = (todolistID: string, newTitle: string) => {
 
     export const getTodolistsTC = () => {
         return (dispatch: Dispatch) => {
+            dispatch(changeAppStatusAC("loading"))
             todolistsAPI.getTodolists()
             .then((res) => { 
                 dispatch(getTodolistsAC(res.data))
+            })
+            .finally(() => {
+                dispatch(changeAppStatusAC("idle"))
             })
         }
     }

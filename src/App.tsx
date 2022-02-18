@@ -8,6 +8,7 @@ import {  addTaskTC, MainTasksType, removeTaskAC, removeTaskTC, TaskStatuses, up
 import { AddIteamForm } from './components/AddIteamForm';
 import { Preloader } from './components/preloader/Preloader';
 import {  RequestStatusType } from './redux/app/app-reducer';
+import { SnackBar } from './components/preloader/Snackbar';
 
 
 
@@ -60,6 +61,7 @@ function App() {
             <div>
                 {status === "loading" && <Preloader/>}
             </div>
+            <SnackBar/>
             <AddIteamForm addIteam={addTodolist} />
             {todolists.map(tl => {
                 let tasksForTL = tasks[tl.id]
