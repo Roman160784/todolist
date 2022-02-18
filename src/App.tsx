@@ -6,6 +6,7 @@ import {  changeFilterAC, changeTitltInTlTC, createTodolistsTC, deleteTodolistTC
 import { Todolist } from './Todolist';
 import {  addTaskTC, MainTasksType, removeTaskAC, removeTaskTC, TaskStatuses, updateTaskTC } from './redux/task/task-reducers';
 import { AddIteamForm } from './components/AddIteamForm';
+import { Preloader } from './components/preloader/Preloader';
 
 
 
@@ -54,6 +55,7 @@ function App() {
 
     return (
         <div className="App">
+            <div><Preloader/></div>
             <AddIteamForm addIteam={addTodolist} />
             {todolists.map(tl => {
                 let tasksForTL = tasks[tl.id]
