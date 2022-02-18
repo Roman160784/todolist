@@ -189,8 +189,12 @@ export const addTaskTC = (todolistID: string, title: string) => {
                     }
                 }
             })
+            .catch((error) => {
+                dispatch(setErrorAC(error.message))
+            })
             .finally(() => {
                 dispatch(changeAppStatusAC("idle"))
+                dispatch(changeAppStatusAC("failed"))
             })
     }
 }
@@ -244,6 +248,9 @@ export const updateTaskTC = (todolistID: string, domainModel: UpdateDomainTaskMo
             })
             .finally(() => {
                 dispatch(changeAppStatusAC("idle"))
+            })
+            .catch((error) => {
+                dispatch(setErrorAC(error.message))
             })
     }
 }
