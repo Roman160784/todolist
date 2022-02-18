@@ -10,6 +10,8 @@ type ButtonType = {
 
 export const Button = (props: ButtonType) => {
 return (
-    <button className={props.class} onClick={props.onclick} disabled={props.disabled}>{props.title}  </button>
+    <button className={props.class} onClick={props.onclick} 
+    disabled={props.disabled}>{props.title} 
+     </button>
 )
 }

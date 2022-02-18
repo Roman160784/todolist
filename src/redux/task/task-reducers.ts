@@ -1,7 +1,7 @@
 import { Dispatch } from "redux"
 import { v1 } from "uuid"
 import { todolistsAPI, UpdateTaskModelType } from "../../api/todolists-api"
-import { setErrorAC } from "../app/app-reducer"
+import { changeAppStatusAC, setErrorAC } from "../app/app-reducer"
 import { rootReducerTypes } from "../store"
 import { addTodolistACType, getTodolistsACType, removeTodolistACType, todolistID1, todolistID2 } from "../todolist/todolist-reducers"
 
@@ -106,9 +106,9 @@ export const taskReducers = (state: MainTasksType = intitiolState, action: MainA
     }
 }
 
-type MainActionsTupe = removeTaskACtype | addTaskACtype 
+type MainActionsTupe = removeTaskACtype | addTaskACtype
     | addTodolistACType | removeTodolistACType | updateTaskACtype | getTodolistsACType | getTasksACtype
-    // | changeTaskStatusACtype
+// | changeTaskStatusACtype
 
 export type removeTaskACtype = ReturnType<typeof removeTaskAC>
 export type addTaskACtype = ReturnType<typeof addTaskAC>
@@ -162,37 +162,48 @@ export const getTasksAC = (tasks: TasksType[], todolistID: string,) => {
 
 export const getTasksTC = (todoListID: string) => {
     return (dispatch: Dispatch) => {
+        dispatch(changeAppStatusAC("loading"))
         todolistsAPI.getTasks(todoListID)
             .then((res) => {
                 dispatch(getTasksAC(res.data.items, todoListID))
+            })
+            .finally(() => {
+                dispatch(changeAppStatusAC("idle"))
             })
     }
 }
 
 export const addTaskTC = (todolistID: string, title: string) => {
     return (dispatch: Dispatch) => {
+        dispatch(changeAppStatusAC("loading"))
         todolistsAPI.createTask(todolistID, title)
             .then((res) => {
-                if(res.data.resultCode === 0) {
+                if (res.data.resultCode === 0) {
                     dispatch(addTaskAC(res.data.data.item))
                 } else {
-                    if(res.data.messages.length) {
+                    if (res.data.messages.length) {
                         dispatch(setErrorAC(res.data.messages[0]))
                     }
                     else {
                         dispatch(setErrorAC("Some error occurred"))
                     }
                 }
-                
+            })
+            .finally(() => {
+                dispatch(changeAppStatusAC("idle"))
             })
     }
 }
 
 export const removeTaskTC = (todolistID: string, id: string) => {
     return (dispatch: Dispatch) => {
+        dispatch(changeAppStatusAC("loading"))
         todolistsAPI.deleteTasks(todolistID, id)
             .then(() => {
                 dispatch(removeTaskAC(todolistID, id))
+            })
+            .finally(() => {
+                dispatch(changeAppStatusAC("idle"))
             })
     }
 }
@@ -209,10 +220,11 @@ export type UpdateDomainTaskModelType = {
 
 
 export const updateTaskTC = (todolistID: string, domainModel: UpdateDomainTaskModelType, id: string) => {
-    return (dispatch: Dispatch, getState:() =>rootReducerTypes) => {
+    return (dispatch: Dispatch, getState: () => rootReducerTypes) => {
+        dispatch(changeAppStatusAC("loading"))
         const state = getState()
-        const tasks = state.task[todolistID].find(t => t.id === id) 
-        if(!tasks) {
+        const tasks = state.task[todolistID].find(t => t.id === id)
+        if (!tasks) {
             console.warn('task not found')
             return
         }
@@ -227,8 +239,11 @@ export const updateTaskTC = (todolistID: string, domainModel: UpdateDomainTaskMo
             ...domainModel
         }
         todolistsAPI.updateTask(todolistID, apiModel, id)
-        .then((res) => {
-            dispatch(updateTaskAC(todolistID, domainModel, id))
-        }) 
+            .then((res) => {
+                dispatch(updateTaskAC(todolistID, domainModel, id))
+            })
+            .finally(() => {
+                dispatch(changeAppStatusAC("idle"))
+            })
     }
 }
