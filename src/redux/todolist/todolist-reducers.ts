@@ -1,12 +1,13 @@
 import { Dispatch } from "redux"
 import { v1 } from "uuid"
 import { todolistsAPI, TodolistsType } from "../../api/todolists-api"
-import { changeAppStatusAC } from "../app/app-reducer"
+import { changeAppStatusAC, RequestStatusType } from "../app/app-reducer"
 
 
 export type fiterValueType = "all" | "active" | "completed"
 export type TodolistsDomainType = TodolistsType & {
     filter: fiterValueType
+    entityStatus: RequestStatusType
 }
 // export type TodolistsType = {
 // id: string
@@ -27,14 +28,14 @@ const intitiolState : TodolistsDomainType[] = [
 export const todolistReducers = (state : TodolistsDomainType[] = intitiolState, action: MainActionType) :TodolistsDomainType[]   => {
 switch (action.type) {
     case "GET-TODOLISTS" : {
-        return action.payload.todolists.map(tl => ({...tl, filter : "all" })) //
+        return action.payload.todolists.map(tl => ({...tl, filter : "all", entityStatus: "succeeded" })) //
     }
 
     case "REMOVE-TODOLIST" : {
         return state.filter(tl => tl.id !== action.payload.id)
     }
     case "ADD-TODOLIST" : {
-        return [{...action.payload.item, filter: "all"}, ...state]
+        return [{...action.payload.item, filter: "all", entityStatus: "succeeded"}, ...state]
     }
     case "CHANGE-FILTER" : {
         return state.map(tl => tl.id === action.payload.todolistID 
