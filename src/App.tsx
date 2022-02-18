@@ -79,6 +79,7 @@ function App() {
                     title={tl.title}
                     tasks={tasksForTL}
                     todolistID={tl.id}
+                    entityStatus={tl.entityStatus}
                     addTask={addTask}
                     remuveTask={remuveTask}
                     changeFilter={changeFilter}

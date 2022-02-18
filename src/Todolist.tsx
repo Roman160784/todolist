@@ -4,6 +4,7 @@ import { AddIteamForm } from './components/AddIteamForm';
 import { Button } from './components/Button';
 import { EditableSpan } from './components/EditableSpan';
 import { Tasks } from './components/Tasks';
+import { RequestStatusType } from './redux/app/app-reducer';
 
 import { getTasksTC, MainTasksType, TaskStatuses, TasksType } from './redux/task/task-reducers';
 import { fiterValueType } from './redux/todolist/todolist-reducers';
@@ -13,6 +14,7 @@ export type TodolistPropsType = {
     tasks: TasksType[]
     todolistID: string
     filter: fiterValueType
+    entityStatus: RequestStatusType
     removeTodolist: (todolistID: string) => void
     remuveTask: (todolistID: string, id: string) => void  //
     addTask: (todolistID: string, title: string) => void
