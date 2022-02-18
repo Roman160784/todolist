@@ -62,7 +62,9 @@ function App() {
                 {status === "loading" && <Preloader/>}
             </div>
             <SnackBar/>
-            <AddIteamForm addIteam={addTodolist} />
+            <AddIteamForm addIteam={addTodolist}
+            disabled={false}
+            />
             {todolists.map(tl => {
                 let tasksForTL = tasks[tl.id]
                 if (tl.filter === "active") {

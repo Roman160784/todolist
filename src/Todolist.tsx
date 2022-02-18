@@ -51,7 +51,9 @@ export const Todolist = React.memo((props: TodolistPropsType) => {
             </h3>
             <div className='title'>double click for correct title</div>
             <div>
-                <AddIteamForm addIteam={(title: string) => { addIteamHandler(title) }} />
+                <AddIteamForm addIteam={(title: string) => { addIteamHandler(title) }}
+                disabled={props.entityStatus === 'loading' ? true : false}
+                />
             </div>
             <ul>
                 {

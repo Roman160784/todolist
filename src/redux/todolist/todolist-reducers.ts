@@ -45,12 +45,17 @@ switch (action.type) {
         return state.map(tl => tl.id === action.payload.todolistID 
             ? {...tl, title: action.payload.newTitle} : tl)
     }
+    case "CHANGE-TODOLIST-ENTITY-STATUS" : {
+        return state.map(tl => tl.id === action.payload.todolistID 
+            ? {...tl, entityStatus: action.payload.entityStatus} : tl)
+    }
 
     default: return state
 }
 }
 
-type MainActionType = removeTodolistACType | addTodolistACType | changeFilterACType | changeTitleInTLACType | getTodolistsACType
+type MainActionType = removeTodolistACType | addTodolistACType | changeFilterACType | changeTitleInTLACType 
+| getTodolistsACType | changeTodolistEntityStatusACType
 
 
 export type removeTodolistACType = ReturnType<typeof removeTodolistAC>
@@ -58,6 +63,7 @@ export type addTodolistACType = ReturnType<typeof addTodolistAC>
 export type changeFilterACType = ReturnType<typeof changeFilterAC>
 export type changeTitleInTLACType = ReturnType<typeof changeTitleInTLAC>
 export type getTodolistsACType = ReturnType<typeof getTodolistsAC>
+export type changeTodolistEntityStatusACType = ReturnType<typeof changeTodolistEntityStatusAC>
 
 export const removeTodolistAC = (id: string) => {
     return{
@@ -104,6 +110,15 @@ export const changeTitleInTLAC = (todolistID: string, newTitle: string) => {
             }
         }as const
     }
+    export const changeTodolistEntityStatusAC  = (todolistID: string, entityStatus: RequestStatusType) => {
+        return {
+            type: "CHANGE-TODOLIST-ENTITY-STATUS",
+            payload: {
+                todolistID,
+                entityStatus
+            }
+        }as const
+    }
 
     export const getTodolistsTC = () => {
         return (dispatch: Dispatch) => {
@@ -127,6 +142,7 @@ export const changeTitleInTLAC = (todolistID: string, newTitle: string) => {
     }
     export const deleteTodolistTC = (id: string) => { 
         return (dispatch: Dispatch) => {
+            dispatch(changeTodolistEntityStatusAC(id, "loading"))
             todolistsAPI.deleteTodolist(id)
             .then(() => { 
                 dispatch(removeTodolistAC(id))

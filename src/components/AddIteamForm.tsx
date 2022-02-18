@@ -3,7 +3,7 @@ import { Button } from './Button';
 
 
 type AddIteamFormType = {
-
+disabled: boolean
 addIteam : (title: string) => void
 }
 
@@ -34,7 +34,7 @@ const onEnterHandker = (e: KeyboardEvent<HTMLInputElement>) => {
     return (
         <div>
         <input className={error ? "error2" : ""} value={title} type="text" onChange={onCangeHandler} onKeyPress={onEnterHandker}/>
-        <button onClick={addIteam}>+</button>
+        <button onClick={addIteam} disabled={props.disabled}>+</button>
         { error&& <div className="error1">{error}</div>}
         </div>
     )
