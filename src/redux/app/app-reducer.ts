@@ -3,7 +3,7 @@ export type ErrorType = string | null
 
 const initialState = {
     status: 'loading' as RequestStatusType,
-    error: "error" as ErrorType
+    error: "" as ErrorType
 }
 
 export type initialStateType = typeof initialState

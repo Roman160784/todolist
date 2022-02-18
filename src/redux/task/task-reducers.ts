@@ -1,6 +1,7 @@
 import { Dispatch } from "redux"
 import { v1 } from "uuid"
 import { todolistsAPI, UpdateTaskModelType } from "../../api/todolists-api"
+import { setErrorAC } from "../app/app-reducer"
 import { rootReducerTypes } from "../store"
 import { addTodolistACType, getTodolistsACType, removeTodolistACType, todolistID1, todolistID2 } from "../todolist/todolist-reducers"
 
@@ -172,7 +173,17 @@ export const addTaskTC = (todolistID: string, title: string) => {
     return (dispatch: Dispatch) => {
         todolistsAPI.createTask(todolistID, title)
             .then((res) => {
-                dispatch(addTaskAC(res.data.data.item))
+                if(res.data.resultCode === 0) {
+                    dispatch(addTaskAC(res.data.data.item))
+                } else {
+                    if(res.data.messages.length) {
+                        dispatch(setErrorAC(res.data.messages[0]))
+                    }
+                    else {
+                        dispatch(setErrorAC("Some error occurred"))
+                    }
+                }
+                
             })
     }
 }

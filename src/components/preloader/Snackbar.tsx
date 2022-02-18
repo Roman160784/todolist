@@ -8,12 +8,10 @@ export const SnackBar = () => {
 
     const error = useSelector<rootReducerTypes, ErrorType>(state => state.app.error)
     
-    const [open, setOpen] = useState(true);
-
     return (
-        <div className={style.center}>
-            some error 
-        </div>
+        error
+        ? <div className={style.center}>{error}</div>  
+        : <div></div>
     )
 
 }
