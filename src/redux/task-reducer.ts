@@ -14,7 +14,7 @@ export type TasksMainType ={
 const initialState : TasksMainType  = {
     [todolistId1] :
     [{id: v1(), title: "JS", isDone: false},
-    {id: v1(), title: "JS", isDone: false},],
+    {id: v1(), title: "REACT", isDone: false},],
     [todolistId2] :
     [{id: v1(), title: "milk", isDone: false},
     {id: v1(), title: "bread", isDone: false},]

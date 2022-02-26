@@ -1,4 +1,5 @@
 import React from 'react';
+import { AddIteamForm } from './componetrs/AddIteamForm';
 import { TasksType } from './redux/task-reducer';
 import { FilterValueType, TodolistType } from './redux/todolist-reducer';
 
@@ -18,8 +19,7 @@ export const Todolist = (props: TodolistPropsType) => {
         <div>
         <h3>{props.title}</h3>
         <div>
-            <input/>
-            <button>+</button>
+        <AddIteamForm title={''} addIteam={()=>{}}/>
         </div>
         <ul>
             {props.tasks.map(t => {
