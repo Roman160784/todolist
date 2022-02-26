@@ -17,10 +17,15 @@ function App() {
     const changeFilter = (value: FilterValueType) => {
      
     }
+
+    const ChangeTitleInTask = (title: string) => {
+
+    }
     
     return (
         <div className="App">
             <AddIteamForm title={''} addIteam={()=>{}}/>
+            
             {todolist.map(tl => {
                 let allTasks = tasks[tl.id]
                 let tasksForTL = allTasks
@@ -40,7 +45,8 @@ function App() {
                     filter={tl.filter} 
                     tasks={allTasks}
                     tasksForTL={tasksForTL} 
-                    changeFilter={changeFilter}              
+                    changeFilter={changeFilter}
+                    ChangeTitleInTask={ChangeTitleInTask}              
                 />
                     
                 
