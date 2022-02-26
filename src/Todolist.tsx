@@ -1,5 +1,6 @@
 import React from 'react';
 import { AddIteamForm } from './componetrs/AddIteamForm';
+import { Button } from './componetrs/Button';
 import { TasksType } from './redux/task-reducer';
 import { FilterValueType, TodolistType } from './redux/todolist-reducer';
 
@@ -8,12 +9,17 @@ export type TodolistPropsType ={
     title:string
     filter: FilterValueType
     tasks: TasksType[]
+    tasksForTL: TasksType[]
+    changeFilter: (value: FilterValueType) => void
 }
 
 
 
 export const Todolist = (props: TodolistPropsType) => {
 
+    const changeFilterHandler = (value: FilterValueType) => {
+         props.changeFilter(value)
+    }
 
     return (
         <div>
@@ -31,9 +37,9 @@ export const Todolist = (props: TodolistPropsType) => {
         
         </ul>
         <div>
-            <button>All</button>
-            <button>Active</button>
-            <button>Completed</button>
+            <Button title={'ALL'} class={''} onClick={() => {changeFilterHandler('all')} }/>
+            <Button title={'ACTIVE'} class={''} onClick={ () => {changeFilterHandler('active')}}/>
+            <Button title={'COMPLETED'} class={''} onClick={() => {changeFilterHandler('completed')} }/>
         </div>
     </div>
     )
