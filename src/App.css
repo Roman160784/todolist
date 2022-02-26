@@ -3,34 +3,6 @@
   display: flex;
 }
 
-.container {
-  display: flex;
-}
 .App > div {
   margin-right: 50px;
 }
-
-.error1 {
-  color:blue
-}
- .error2 {
-   background-color:crimson
- }
-
- .filter {
-   background-color: blueviolet;
-   color: blanchedalmond;
- }
-
- .title {
-   opacity: 0.5;
- }
-
- .isDone {
-  opacity: 0.5;
-  color: blue;
- }
-
- .isDoneFalse {
-   color: green;
- }

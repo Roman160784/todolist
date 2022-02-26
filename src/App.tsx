@@ -1,99 +1,41 @@
-import React, { useCallback, useEffect } from 'react';
-import './App.css';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { rootReducerTypes } from './redux/store';
-import {  changeFilterAC, changeTitltInTlTC, createTodolistsTC, deleteTodolistTC, fiterValueType, getTodolistsTC,  TodolistsDomainType, } from './redux/todolist/todolist-reducers';
+
+import './App.css';
+import { RootReducerType } from './redux/store';
+import { TasksMainType } from './redux/task-reducer';
+import { TodolistType } from './redux/todolist-reducer';
 import { Todolist } from './Todolist';
-import {  addTaskTC, MainTasksType, removeTaskAC, removeTaskTC, TaskStatuses, updateTaskTC } from './redux/task/task-reducers';
-import { AddIteamForm } from './components/AddIteamForm';
-import { Preloader } from './components/preloader/Preloader';
-import {  RequestStatusType } from './redux/app/app-reducer';
-import { SnackBar } from './components/preloader/Snackbar';
-
-
 
 function App() {
 
-    const tasks = useSelector<rootReducerTypes, MainTasksType>(state => state.task);
-    const todolists = useSelector<rootReducerTypes, TodolistsDomainType[]>(state => state.todolist);
-    const status = useSelector<rootReducerTypes, RequestStatusType>(state => state.app.status)
-    const dispatch = useDispatch();
+    const todolist = useSelector <RootReducerType,TodolistType[]>(state => state.todolist)
+    const tasks = useSelector <RootReducerType,TasksMainType>(state => state.tasks)
+    const dispatch = useDispatch()
 
-
-    const remuveTask = useCallback((todolistID: string, id: string) => {
-        dispatch(removeTaskTC(todolistID, id))
-    }, [dispatch])
-
-    const addTask = useCallback((todolistID: string, title: string) => {
-        dispatch(addTaskTC(todolistID, title))
-    }, [dispatch])
-
-    const changeStatus = useCallback((todolistID: string, status: TaskStatuses, id: string) => {
-        dispatch(updateTaskTC(todolistID, {status}, id))
-    }, [dispatch])
-
-    const addTodolist = useCallback((title: string) => {
-        dispatch(createTodolistsTC(title))
-    }, [dispatch])
-
-    const changeFilter = useCallback((value: fiterValueType, todolistID: string) => {
-        dispatch(changeFilterAC(value, todolistID))
-    }, [dispatch])
-
-    const removeTodolist = useCallback((todolistID: string) => {
-        dispatch(deleteTodolistTC(todolistID))
-    }, [dispatch])
-
-    const changeTitleInTL = useCallback((todolistID: string, newTitle: string) => {
-        dispatch(changeTitltInTlTC(todolistID, newTitle))
-    }, [dispatch])
-
-    const changeTitleInTask = useCallback((todolistID: string, newTitle: string, id: string) => {
-        dispatch(updateTaskTC(todolistID, {title: newTitle}, id))
-    }, [dispatch])
-
-    useEffect(() => {
-        dispatch(getTodolistsTC())
-    },[])
-
+    
+    
     return (
         <div className="App">
-            <div>
-                {status === "loading" && <Preloader/>}
-            </div>
-            <SnackBar/>
-            <AddIteamForm addIteam={addTodolist}
-            disabled={false}
-            />
-            {todolists.map(tl => {
-                let tasksForTL = tasks[tl.id]
-                if (tl.filter === "active") {
-                    tasksForTL = tasks[tl.id].filter(t => t.status === TaskStatuses.New)
-                }
-                if (tl.filter === "completed") {
-                    tasksForTL = tasks[tl.id].filter(t => t.status === TaskStatuses.Completed)
-                }
-                
-                
+            {todolist.map(tl => {
+                let allTasks = tasks[tl.id]
+
+
+
                 return <Todolist
                     key={tl.id}
-                    filter={tl.filter}
+                    todolistId={tl.id}
                     title={tl.title}
-                    tasks={tasksForTL}
-                    todolistID={tl.id}
-                    entityStatus={tl.entityStatus}
-                    addTask={addTask}
-                    remuveTask={remuveTask}
-                    changeFilter={changeFilter}
-                    changeStatus={changeStatus}
-                    removeTodolist={removeTodolist}
-                    changeTitleInTL={changeTitleInTL}
-                    changeTitleInTask={changeTitleInTask}
-
+                    filter={tl.filter} 
+                    tasks={allTasks}               
                 />
-            })
+                    
+                
             }
-
+            )
+            
+            }
+           
         </div>
     );
 }
