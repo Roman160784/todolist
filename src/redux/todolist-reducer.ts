@@ -53,11 +53,9 @@ export type getTodolistsACType = ReturnType<typeof getTodolistsAC>
 
 
  export const getTodolistsTC = () => {
-    
      return (dispatch: Dispatch) => {
         todolistAPI.getTodolist()
         .then((res) => {
-            debugger
             dispatch(getTodolistsAC(res.data))
         })
      }

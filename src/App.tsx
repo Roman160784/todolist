@@ -12,7 +12,7 @@ function App() {
 
     const todolist = useSelector <RootReducerType,TodolistDomainType[]>(state => state.todolist)
     const tasks = useSelector <RootReducerType,TasksMainType>(state => state.tasks)
-    const dispatch = useDispatch()
+    const dispatch = useDispatch() 
 
     const changeFilter = (value: FilterValueType) => {
      
@@ -35,14 +35,14 @@ function App() {
             <AddIteamForm title={''} addIteam={()=>{}}/>
             
             {todolist.map(tl => {
-                let allTasks = tasks[tl.id]
-                let tasksForTL = allTasks
+                
+                let tasksForTL = tasks[tl.id]
 
                 if(tl.filter = "all") {
-                    tasksForTL = allTasks.filter(t => t.completed === false)
+                    tasksForTL = tasks[tl.id].filter(t => t.completed === false)
                 }
                 if(tl.filter = "completed") {
-                    tasksForTL = allTasks.filter(t => t.completed === false)
+                    tasksForTL = tasks[tl.id].filter(t => t.completed === false)
                 }
               
 
@@ -51,7 +51,7 @@ function App() {
                     todolistId={tl.id}
                     title={tl.title}
                     filter={tl.filter} 
-                    tasks={allTasks}
+                    tasks={tasks[tl.id]}
                     tasksForTL={tasksForTL} 
                     changeFilter={changeFilter}
                     changeTitleInTask={changeTitleInTask}
