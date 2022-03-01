@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import { AddIteamForm } from './componetrs/AddIteamForm';
 import { Button } from './componetrs/Button';
 import { EditableSpan } from './componetrs/edditableSpan';
-import { TasksType } from './redux/task-reducer';
+import { Tasks } from './componetrs/Tasks';
+import { TaskStatuses, TasksType } from './redux/task-reducer';
 import { FilterValueType, TodolistType } from './redux/todolist-reducer';
 
 export type TodolistPropsType = {
@@ -11,8 +12,9 @@ export type TodolistPropsType = {
     filter: FilterValueType
     tasks: TasksType[]
     tasksForTL: TasksType[]
+    changeStatus: (todolistId: string, id: string, status: TaskStatuses) => void
     changeFilter: (value: FilterValueType) => void
-    ChangeTitleInTask: (title: string) => void
+    changeTitleInTask: (title: string) => void
 }
 
 
@@ -24,8 +26,10 @@ export const Todolist = (props: TodolistPropsType) => {
     }
 
     const ChangeTitleInTaskHandler = (title: string) => {
-        props.ChangeTitleInTask(title)
+        props.changeTitleInTask(title)
     }
+
+    
 
     return (
         <div>
@@ -37,10 +41,12 @@ export const Todolist = (props: TodolistPropsType) => {
             </div>
             <ul>
                 {props.tasks.map(t => {
-                    return <li key={t.id}>
-                        <input type="checkbox" checked={t.isDone} />
-                        <EditableSpan title={t.title} changeTitle={() => { }} />
-                    </li>
+                    return (
+                        <Tasks key={t.id} tasks={t} 
+                        todolistId={props.todolistId} 
+                        changeStatus={props.changeStatus}/>
+                    )
+
                 })}
 
 
@@ -53,3 +59,5 @@ export const Todolist = (props: TodolistPropsType) => {
         </div>
     )
 }
+
+

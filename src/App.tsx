@@ -1,16 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import './App.css';
 import { AddIteamForm } from './componetrs/AddIteamForm';
 import { RootReducerType } from './redux/store';
-import { TasksMainType } from './redux/task-reducer';
-import { FilterValueType, TodolistType } from './redux/todolist-reducer';
+import { TasksMainType, TaskStatuses } from './redux/task-reducer';
+import { FilterValueType, getTodolistsTC, TodolistDomainType, TodolistType } from './redux/todolist-reducer';
 import { Todolist } from './Todolist';
 
 function App() {
 
-    const todolist = useSelector <RootReducerType,TodolistType[]>(state => state.todolist)
+    const todolist = useSelector <RootReducerType,TodolistDomainType[]>(state => state.todolist)
     const tasks = useSelector <RootReducerType,TasksMainType>(state => state.tasks)
     const dispatch = useDispatch()
 
@@ -18,9 +18,17 @@ function App() {
      
     }
 
-    const ChangeTitleInTask = (title: string) => {
+    const changeTitleInTask = (title: string) => {
 
     }
+
+    const changeStatus = (todolistId: string, id: string, status: TaskStatuses) => {
+
+    }
+
+    useEffect(() => {
+        dispatch(getTodolistsTC())
+    }, [])
     
     return (
         <div className="App">
@@ -31,10 +39,10 @@ function App() {
                 let tasksForTL = allTasks
 
                 if(tl.filter = "all") {
-                    tasksForTL = allTasks.filter(t => t.isDone === false)
+                    tasksForTL = allTasks.filter(t => t.completed === false)
                 }
                 if(tl.filter = "completed") {
-                    tasksForTL = allTasks.filter(t => t.isDone === false)
+                    tasksForTL = allTasks.filter(t => t.completed === false)
                 }
               
 
@@ -46,10 +54,9 @@ function App() {
                     tasks={allTasks}
                     tasksForTL={tasksForTL} 
                     changeFilter={changeFilter}
-                    ChangeTitleInTask={ChangeTitleInTask}              
+                    changeTitleInTask={changeTitleInTask}
+                    changeStatus={changeStatus}             
                 />
-                    
-                
             }
             )
             
