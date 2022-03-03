@@ -1,4 +1,5 @@
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
+import { TasksType } from '../redux/task-reducer'
 import { TodolistType } from '../redux/todolist-reducer'
 
 const instance = axios.create({
@@ -15,7 +16,25 @@ export const todolistAPI = {
         return instance.get<TodolistType[]>('todo-lists') 
     },
     getTasks(todolistId: string) {
-        return instance.get(`todo-lists/${todolistId}/tasks`)
+        return instance.get<ResponseTasksType>(`todo-lists/${todolistId}/tasks`)
+    },
+    createTodolist(title: string) {
+        return instance.post<{title: string}, AxiosResponse<ResponseType<{item: TodolistType}>>>(`todo-lists`, {title})
+    },
+    removeTodolist(todolistId: string) {
+        return instance.delete<ResponseType>(`todo-lists/${todolistId}`)
     }
 }
 
+
+export type ResponseTasksType = {
+    totalCount: number
+    error: string | null
+    items: TasksType[]
+}
+
+export type ResponseType <D={}> = {
+    resultCode: number
+    messages: string[]
+    data: D 
+}

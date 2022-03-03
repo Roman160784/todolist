@@ -5,7 +5,7 @@ import './App.css';
 import { AddIteamForm } from './componetrs/AddIteamForm';
 import { RootReducerType } from './redux/store';
 import { TasksMainType, TaskStatuses } from './redux/task-reducer';
-import { FilterValueType, getTodolistsTC, TodolistDomainType, TodolistType } from './redux/todolist-reducer';
+import { addTodolistTC, changeFilterAC, FilterValueType, getTodolistsTC, removeTodolistTC, TodolistDomainType, TodolistType } from './redux/todolist-reducer';
 import { Todolist } from './Todolist';
 
 function App() {
@@ -14,8 +14,16 @@ function App() {
     const tasks = useSelector <RootReducerType,TasksMainType>(state => state.tasks)
     const dispatch = useDispatch() 
 
-    const changeFilter = (value: FilterValueType) => {
-     
+    const addTodolist = (title: string) => {
+        dispatch(addTodolistTC(title))
+    }
+
+    const removeTodolist = (todolistId: string) => {
+        dispatch(removeTodolistTC(todolistId))
+    }
+
+    const changeFilter = (todolistId: string, value: FilterValueType) => { 
+     dispatch(changeFilterAC(todolistId, value))
     }
 
     const changeTitleInTask = (title: string) => {
@@ -32,7 +40,7 @@ function App() {
     
     return (
         <div className="App">
-            <AddIteamForm title={''} addIteam={()=>{}}/>
+            <AddIteamForm title={''} addIteam={addTodolist}/>
             
             {todolist.map(tl => {
                 
@@ -54,12 +62,12 @@ function App() {
                     tasks={tasks[tl.id]}
                     tasksForTL={tasksForTL} 
                     changeFilter={changeFilter}
+                    removeTodolist={removeTodolist}
                     changeTitleInTask={changeTitleInTask}
                     changeStatus={changeStatus}             
                 />
             }
             )
-            
             }
            
         </div>

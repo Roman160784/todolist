@@ -14,8 +14,9 @@ export type TodolistPropsType = {
     tasks: TasksType[]
     tasksForTL: TasksType[]
     changeStatus: (todolistId: string, id: string, status: TaskStatuses) => void
-    changeFilter: (value: FilterValueType) => void
+    changeFilter: (todolistId: string, value: FilterValueType) => void
     changeTitleInTask: (title: string) => void
+    removeTodolist: (todolistId: string) => void
 }
 
 
@@ -28,10 +29,12 @@ export const Todolist = (props: TodolistPropsType) => {
         dispatch(getTasksTC(props.todolistId))
     },[])
 
-    
+    // const removeTodolistHandler = () => {
+    //     props.removeTodolist
+    // }
 
     const changeFilterHandler = (value: FilterValueType) => {
-        props.changeFilter(value)
+        props.changeFilter(props.todolistId, value)
     }
 
     const ChangeTitleInTaskHandler = (title: string) => {
@@ -44,6 +47,7 @@ export const Todolist = (props: TodolistPropsType) => {
         <div>
             <h3>
                 <EditableSpan title={props.title} changeTitle={() => { }} />
+                <Button title={"REMOVE"} class={''} onClick={() => {props.removeTodolist(props.todolistId)}}/>
             </h3>
             <div>
                 <AddIteamForm title={''} addIteam={() => { }} />
