@@ -44,23 +44,13 @@ function App() {
             
             {todolist.map(tl => {
                 
-                let tasksForTL = tasks[tl.id]
-
-                if(tl.filter = "all") {
-                    tasksForTL = tasks[tl.id].filter(t => t.completed === false)
-                }
-                if(tl.filter = "completed") {
-                    tasksForTL = tasks[tl.id].filter(t => t.completed === false)
-                }
-              
-
                 return <Todolist
                     key={tl.id}
-                    todolistId={tl.id}
-                    title={tl.title}
-                    filter={tl.filter} 
+                    // todolistId={tl.id}
+                    // title={tl.title}
+                    // filter={tl.filter} 
+                    todo={tl}
                     tasks={tasks[tl.id]}
-                    tasksForTL={tasksForTL} 
                     changeFilter={changeFilter}
                     removeTodolist={removeTodolist}
                     changeTitleInTask={changeTitleInTask}

@@ -39,7 +39,7 @@ switch(action.type) {
     }
 
     case "TL/CHANFE-FILTER" : {
-        return state.map(tl => tl.id === action.payload.todolistId ? {...tl, filer: action.payload.value} : tl)
+        return state.map(tl => tl.id === action.payload.todolistId ? {...tl, filter: action.payload.value} : tl)
     }
     default: return state
 }

@@ -5,14 +5,14 @@ import { Button } from './componetrs/Button';
 import { EditableSpan } from './componetrs/edditableSpan';
 import { Tasks } from './componetrs/Tasks';
 import { getTasksTC, TasksMainType, TaskStatuses, TasksType } from './redux/task-reducer';
-import { FilterValueType, TodolistType } from './redux/todolist-reducer';
+import { FilterValueType, TodolistDomainType, TodolistType } from './redux/todolist-reducer';
 
 export type TodolistPropsType = {
-    todolistId: string
-    title: string
-    filter: FilterValueType
+    // todolistId: string
+    // title: string
+    // filter: FilterValueType
+    todo: TodolistDomainType
     tasks: TasksType[]
-    tasksForTL: TasksType[]
     changeStatus: (todolistId: string, id: string, status: TaskStatuses) => void
     changeFilter: (todolistId: string, value: FilterValueType) => void
     changeTitleInTask: (title: string) => void
@@ -26,7 +26,7 @@ export const Todolist = (props: TodolistPropsType) => {
     const dispatch = useDispatch()
 
     useEffect(() =>{
-        dispatch(getTasksTC(props.todolistId))
+        dispatch(getTasksTC(props.todo.id))
     },[])
 
     // const removeTodolistHandler = () => {
@@ -34,29 +34,42 @@ export const Todolist = (props: TodolistPropsType) => {
     // }
 
     const changeFilterHandler = (value: FilterValueType) => {
-        props.changeFilter(props.todolistId, value)
+        props.changeFilter(props.todo.id, value)  
     }
 
     const ChangeTitleInTaskHandler = (title: string) => {
         props.changeTitleInTask(title)
     }
 
+    let tasksForTL = props.tasks
+    debugger            
+
+    if (props.todo.filter === "active") {
+        debugger
+        tasksForTL = props.tasks.filter(t => t.status === TaskStatuses.New)
+    }
+    debugger
+    if(props.todo.filter === "completed") {
+        debugger
+        tasksForTL = props.tasks.filter(t => t.status === TaskStatuses.Completed)
+    }
+    debugger
 
 
     return (
         <div>
             <h3>
-                <EditableSpan title={props.title} changeTitle={() => { }} />
-                <Button title={"REMOVE"} class={''} onClick={() => {props.removeTodolist(props.todolistId)}}/>
+                <EditableSpan title={props.todo.title} changeTitle={() => { }} />
+                <Button title={"REMOVE"} class={''} onClick={() => {props.removeTodolist(props.todo.id)}}/>
             </h3>
             <div>
                 <AddIteamForm title={''} addIteam={() => { }} />
             </div>
             <ul>
-                {props.tasks.map(t => {
+                {tasksForTL.map(t => {
                     return (
                         <Tasks key={t.id} tasks={t}
-                            todolistId={props.todolistId}
+                            todolistId={props.todo.id}
                             changeStatus={props.changeStatus} />
                     )
 
