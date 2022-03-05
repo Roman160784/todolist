@@ -9,12 +9,17 @@ import { EditableSpan } from "./edditableSpan"
 type PropsTasksType = {
     tasks: TasksType
     todolistId: string
+    removeTask: (todolistId: string, id: string) => void
     changeStatus: (todolistId: string, id: string, status: TaskStatuses) => void
 }
 
 
 
 export const Tasks = (props: PropsTasksType) => {
+
+    const removeTaskHandler = (id: string) => {
+        props.removeTask(props.todolistId, id)
+    }
 
     const changeSatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
         const newIsDone = e.currentTarget.checked
@@ -26,7 +31,7 @@ export const Tasks = (props: PropsTasksType) => {
             <input type="checkbox" checked={props.tasks.status === TaskStatuses.Completed}
                 onChange={changeSatusHandler} />
             <EditableSpan title={props.tasks.title} changeTitle={() => { }} />
-            <Button title={"Remuve"} class={''} onClick={() => { }} />
+            <Button title={"Remuve"} class={''} onClick={() => {removeTaskHandler(props.tasks.id)}} />
         </li>
     )
 }
