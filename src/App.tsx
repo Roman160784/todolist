@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import './App.css';
 import { AddIteamForm } from './componetrs/AddIteamForm';
 import { RootReducerType } from './redux/store';
-import { TasksMainType, TaskStatuses } from './redux/task-reducer';
-import { addTodolistTC, changeFilterAC, FilterValueType, getTodolistsTC, removeTodolistTC, TodolistDomainType, TodolistType } from './redux/todolist-reducer';
+import { addTaskTC, TasksMainType, TaskStatuses } from './redux/task-reducer';
+import { addTodolistTC, changeFilterAC, FilterValueType, getTodolistsTC, removeTodolistTC, TodolistDomainType, TodolistType, updateTodolistTC } from './redux/todolist-reducer';
 import { Todolist } from './Todolist';
 
 function App() {
@@ -26,12 +26,20 @@ function App() {
      dispatch(changeFilterAC(todolistId, value))
     }
 
+    const addTask = (todolistId: string, title: string) => {
+        dispatch(addTaskTC(todolistId, title))
+    }
+
     const changeTitleInTask = (title: string) => {
 
     }
 
     const changeStatus = (todolistId: string, id: string, status: TaskStatuses) => {
 
+    }
+
+    const changeTitleInTL = (todolistId: string, title: string) => {
+        dispatch(updateTodolistTC(todolistId, title))
     }
 
     useEffect(() => {
@@ -51,9 +59,11 @@ function App() {
                     // filter={tl.filter} 
                     todo={tl}
                     tasks={tasks[tl.id]}
+                    addTask={addTask}
                     changeFilter={changeFilter}
                     removeTodolist={removeTodolist}
                     changeTitleInTask={changeTitleInTask}
+                    changeTitleInTL={changeTitleInTL}
                     changeStatus={changeStatus}             
                 />
             }

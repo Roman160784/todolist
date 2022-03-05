@@ -13,6 +13,8 @@ export type TodolistPropsType = {
     // filter: FilterValueType
     todo: TodolistDomainType
     tasks: TasksType[]
+    addTask: (todolistId: string, title: string) => void
+    changeTitleInTL: (todolistId: string, title: string) => void
     changeStatus: (todolistId: string, id: string, status: TaskStatuses) => void
     changeFilter: (todolistId: string, value: FilterValueType) => void
     changeTitleInTask: (title: string) => void
@@ -29,10 +31,6 @@ export const Todolist = (props: TodolistPropsType) => {
         dispatch(getTasksTC(props.todo.id))
     },[])
 
-    // const removeTodolistHandler = () => {
-    //     props.removeTodolist
-    // }
-
     const changeFilterHandler = (value: FilterValueType) => {
         props.changeFilter(props.todo.id, value)  
     }
@@ -41,29 +39,34 @@ export const Todolist = (props: TodolistPropsType) => {
         props.changeTitleInTask(title)
     }
 
-    let tasksForTL = props.tasks
-    debugger            
+    const addTaskHandler = (title: string) => {
+        props.addTask(props.todo.id, title)
+    }
+
+    const changeTitleInTLHandler = (title: string) => {
+        props.changeTitleInTL(props.todo.id, title)
+    }
+
+    let tasksForTL = props.tasks       
 
     if (props.todo.filter === "active") {
-        debugger
         tasksForTL = props.tasks.filter(t => t.status === TaskStatuses.New)
     }
-    debugger
+
     if(props.todo.filter === "completed") {
-        debugger
         tasksForTL = props.tasks.filter(t => t.status === TaskStatuses.Completed)
     }
-    debugger
+ 
 
 
     return (
         <div>
             <h3>
-                <EditableSpan title={props.todo.title} changeTitle={() => { }} />
+                <EditableSpan title={props.todo.title} changeTitle={(title: string) => {changeTitleInTLHandler(title)}} />
                 <Button title={"REMOVE"} class={''} onClick={() => {props.removeTodolist(props.todo.id)}}/>
             </h3>
             <div>
-                <AddIteamForm title={''} addIteam={() => { }} />
+                <AddIteamForm title={""} addIteam={addTaskHandler} />
             </div>
             <ul>
                 {tasksForTL.map(t => {

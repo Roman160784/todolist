@@ -37,20 +37,25 @@ switch(action.type) {
     case "TL/REMOVE-TODOLIST" : {
         return state.filter(tl => tl.id !== action.payload.todolistId )
     }
-
     case "TL/CHANFE-FILTER" : {
         return state.map(tl => tl.id === action.payload.todolistId ? {...tl, filter: action.payload.value} : tl)
     }
+    case "TL/UPDATE-TODOLIST" : {
+        return state.map(tl => tl.id === action.payload.todolistId ? {...tl, title: action.payload.title} : tl)
+    }
+
     default: return state
 }
 }
 
-export type MainTodolistActionType = getTodolistsACType | addTodolistACType | removeTodolistACType | changeFilterACType
+export type MainTodolistActionType = getTodolistsACType | addTodolistACType | removeTodolistACType 
+| changeFilterACType | updateTodlistACType
 
 export type getTodolistsACType = ReturnType<typeof getTodolistsAC>
 export type addTodolistACType = ReturnType<typeof addTodolistAC>
 export type removeTodolistACType = ReturnType<typeof removeTodolistAC>
 export type changeFilterACType = ReturnType<typeof changeFilterAC>
+export type updateTodlistACType = ReturnType<typeof updateTodlistAC>
 
 
  export const changeFilterAC = (todolistId: string, value: FilterValueType) => {
@@ -91,6 +96,16 @@ export type changeFilterACType = ReturnType<typeof changeFilterAC>
   } as const
  }
 
+ export const updateTodlistAC = (todolistId: string, title: string) => {
+     return {
+         type : "TL/UPDATE-TODOLIST",
+         payload: {
+            todolistId,
+            title,
+         }
+     }as const
+ }
+
 
  export const getTodolistsTC = () => {
      return (dispatch: Dispatch) => {
@@ -119,3 +134,13 @@ export type changeFilterACType = ReturnType<typeof changeFilterAC>
     }
  }
  
+
+ export const updateTodolistTC = (todolistId: string, title: string) => {
+     console.log(title)
+     return (dispatch: Dispatch) => {
+        todolistAPI.updateTodolist(todolistId, title) 
+        .then(() => {
+            dispatch(updateTodlistAC(todolistId, title))
+        })
+     }
+ }
