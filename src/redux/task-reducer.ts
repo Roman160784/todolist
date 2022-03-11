@@ -1,7 +1,8 @@
 import { Dispatch } from "redux"
 import { TLSSocket } from "tls"
 import { v1 } from "uuid"
-import { todolistAPI } from "../api/api-todolist"
+import { todolistAPI, UpdateTasksType } from "../api/api-todolist"
+import { RootReducerType } from "./store"
 import { addTodolistACType, getTodolistsACType, removeTodolistACType, todolistId1, todolistId2 } from "./todolist-reducer"
 
 export type TasksType ={
@@ -145,5 +146,25 @@ export const removeTaskTC = (todolistId: string, id: string) => {
         .then(() => {
             dispatch(removeTaskAC(todolistId, id))
         }) 
+    }
+}
+
+export const changeTitleInTaskTC=(todolistId: string, id: string, title: string) => {
+    return (dispatch: Dispatch, getState: () => RootReducerType) => {
+     
+        const allAppState = getState()
+        const tasks = allAppState.tasks
+        const taskForCurrentTL = tasks[todolistId]
+        const currentTask = taskForCurrentTL.find(t => t.id === id)
+       
+        const model :any = {
+
+        }
+
+        todolistAPI.updateTaskTitle (todolistId, id, model)
+        .then(()=> {
+
+        })
+
     }
 }
