@@ -28,7 +28,7 @@ export const Tasks = (props: PropsTasksType) => {
     }
 
     const ChangeTitleInTaskHandler = (title: string) => {
-        props.changeTitleInTask(title, props.todolistId, props.tasks.id)
+        props.changeTitleInTask( props.todolistId, props.tasks.id, title)
     }
 
     return (

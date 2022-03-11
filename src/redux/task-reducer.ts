@@ -78,6 +78,13 @@ export const TaskReducer = (state: TasksMainType = initialState, action:  MainTa
             return {...state, [action.payload.todolistId] 
             :state[action.payload.todolistId].filter(t => t.id !== action.payload.id)}
         }
+
+        case "TASK/CHANGE-TASK-TITLE" : {
+
+            return {...state, [action.payload.todolistId]
+            :state[action.payload.todolistId].map(t => t.id === action.payload.id 
+            ? {...t, title: action.payload.title} : t)}
+        }
             
        
 
@@ -86,11 +93,12 @@ export const TaskReducer = (state: TasksMainType = initialState, action:  MainTa
 }
 
 export type MainTaskActionType = getTodolistsACType | getTasksACtype | addTodolistACType | removeTodolistACType 
-| addTaskACtype | removeTaskACtype
+| addTaskACtype | removeTaskACtype | channgeTaskTitleACtype
 
 export type getTasksACtype = ReturnType<typeof getTasksAC>
 export type addTaskACtype = ReturnType<typeof addTaskAC>
 export type removeTaskACtype = ReturnType<typeof removeTaskAC>
+export type channgeTaskTitleACtype = ReturnType<typeof channgeTaskTitleAC>
 
 
 export const getTasksAC = ( tasks: TasksType[], todolistId: string ) => {
@@ -123,6 +131,17 @@ export const removeTaskAC = (todolistId: string, id : string) => {
     } as const
 }
 
+export const channgeTaskTitleAC = (todolistId: string, id: string, title: string) => {
+return {
+    type: "TASK/CHANGE-TASK-TITLE",
+    payload: {
+        todolistId,
+            id,
+            title,
+    }
+}as const
+}
+
 export const getTasksTC = (todolistId: string) => {
    return (dispatch : Dispatch) =>{
     todolistAPI.getTasks(todolistId)
@@ -150,21 +169,29 @@ export const removeTaskTC = (todolistId: string, id: string) => {
 }
 
 export const changeTitleInTaskTC=(todolistId: string, id: string, title: string) => {
+
     return (dispatch: Dispatch, getState: () => RootReducerType) => {
      
         const allAppState = getState()
         const tasks = allAppState.tasks
         const taskForCurrentTL = tasks[todolistId]
         const currentTask = taskForCurrentTL.find(t => t.id === id)
-       
-        const model :any = {
-
-        }
-
+      
+        if(currentTask) {
+            const model :UpdateTasksType = {
+                description: currentTask.description,
+                title,
+                status: currentTask.status,
+                priority: currentTask.priority,
+                startDate: currentTask.startDate,
+                deadline: currentTask.deadline,
+                completed: currentTask.completed
+            } 
+        
         todolistAPI.updateTaskTitle (todolistId, id, model)
-        .then(()=> {
-
+        .then((res)=> {
+            dispatch(channgeTaskTitleAC(todolistId, id, title))
         })
-
+    }
     }
 }
