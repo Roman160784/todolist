@@ -65,9 +65,11 @@ export const TaskReducer = (state: TasksMainType = initialState, action: MainAct
     return state
 }
 
-export type MainActionTaskType = getTodolistACType | getTaskACType | createTodolistACType | removeTodolistACType
+export type MainActionTaskType = getTodolistACType | getTaskACType | createTodolistACType 
+| removeTodolistACType | createTaskACType
 
 export type getTaskACType = ReturnType<typeof getTaskAC>
+export type createTaskACType = ReturnType<typeof createTaskAC>
 
 export const getTaskAC = (  tasks: TasksType[], todolistId: string,) => {
     return {
@@ -79,6 +81,17 @@ export const getTaskAC = (  tasks: TasksType[], todolistId: string,) => {
     } as const
 } 
 
+export const createTaskAC = (todolistId: string, title: string) => {
+    return{
+        type: 'TASK/CREATE-TASK',
+        payload: {
+            todolistId,
+            title,
+        }
+    } as const
+}
+
+
 export const getTaskTC = (todolistId: string) => {
     return (dispatch: Dispatch) => {
         todolistAPI.getTasks(todolistId)
@@ -86,6 +99,15 @@ export const getTaskTC = (todolistId: string) => {
                 dispatch(getTaskAC(res.data.items, todolistId,))
             }
         )
+    }
+}
+
+export const createTaskTC = (todolistId: string, title: string) => {
+    return (dispatch: Dispatch) => {
+        todolistAPI.createTask(todolistId, title)
+        .then((res) => {
+            dispatch(createTaskAC(todolistId, res.data.data.item.title)) 
+        })
     }
 }
 
