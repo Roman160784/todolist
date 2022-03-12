@@ -34,6 +34,9 @@ export const TodolistReducer = (state: TodolistDomainType[] = initialState, acti
         case 'TODOLIST/CREATE-TODOLIST' : {
             return [{...action.payload.todoList, filter: 'all', entityStatus: 'succeeded'}, ...state]
         }
+        case 'TODOLIST/REMOVE-TODOLIST' : {
+            return state.filter(tl => tl.id !== action.payload.todolistId)
+        }
     }
  return state
 }
