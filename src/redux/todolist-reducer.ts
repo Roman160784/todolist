@@ -1,4 +1,4 @@
-import { title } from "process"
+import { rawListeners, title } from "process"
 import { Dispatch } from "redux"
 import { v1 } from "uuid"
 import { todolistAPI } from "../api/api-todolist"
@@ -27,7 +27,7 @@ let initialState : TodolistDomainType[] = [
     // {id: todolistId2, title: "What to Buy", },
 ]
 
-export const TodolistReducer = (state: TodolistDomainType[] = initialState, action: MainTodolistActionType ) => {
+export const TodolistReducer = (state: TodolistDomainType[] = initialState, action: MainTodolistActionType ): TodolistDomainType[] => {
     switch(action.type) {
         case 'TODOLIST/GET-TODOLIST': {
             return action.payload.todoList.map(tl => ({...tl, filter: 'all', entityStatus: 'succeeded'}))
@@ -41,17 +41,22 @@ export const TodolistReducer = (state: TodolistDomainType[] = initialState, acti
         case 'TODOLIST/UPDATE-TODOLIST' : {
             return state.map(tl => tl.id === action.payload.todolistId ? {...tl, title: action.payload.title} : tl)
         }
+        case 'TODOLIST/CHANGE-FILTER' : {
+            return state.map(tl => tl.id === action.payload.todolistId ? {...tl, filter: action.payload.filter} : tl)
+        }
     }
  return state
 }
 
 
 export type MainTodolistActionType = getTodolistACType | createTodolistACType | removeTodolistACType | updateTodolistACType
+| changeFlterACType
 
 export type getTodolistACType = ReturnType<typeof getTodolistAC>
 export type createTodolistACType = ReturnType<typeof createTodolistAC>
 export type removeTodolistACType = ReturnType<typeof removeTodolistAC>
 export type updateTodolistACType = ReturnType<typeof updateTodolistAC>
+export type changeFlterACType = ReturnType<typeof changeFlterAC>
 
 export const getTodolistAC = (todoList: TodolistType[]) => {
 return {
@@ -87,6 +92,16 @@ export const updateTodolistAC = (todolistId: string, title: string) => {
             title, 
         }
     }as const
+}
+
+export const changeFlterAC = (todolistId: string, filter: FilterValueType) =>{
+    return {
+        type : 'TODOLIST/CHANGE-FILTER',
+        payload: {
+            todolistId,
+            filter,
+        }
+    } as const
 }
 
 export const getTodolistTC = () => {
