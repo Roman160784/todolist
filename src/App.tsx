@@ -6,7 +6,7 @@ import './App.css';
 import { AddIteamForm } from './componetrs/AddIteamForm';
 import { RootReducerType } from './redux/store';
 import {  createTaskTC, removeTaskTC, TasksMainType, TaskStatuses } from './redux/task-reducer';
-import {  createTodolistTC, FilterValueType,  getTodolistTC,  removeTodolistTC,  TodolistDomainType, TodolistType } from './redux/todolist-reducer';
+import {  createTodolistTC, FilterValueType,  getTodolistTC,  removeTodolistTC,  TodolistDomainType, TodolistType, updateTodolistTC } from './redux/todolist-reducer';
 import { Todolist } from './Todolist';
 
 function App() {
@@ -41,7 +41,7 @@ function App() {
     }
 
     const changeTitleInTask = (todolistId: string, id: string, title: string) => {
-        
+         
     }
 
     const changeStatus = (todolistId: string, id: string, status: TaskStatuses) => {
@@ -49,7 +49,7 @@ function App() {
     }
 
     const changeTitleInTL = (todolistId: string, title: string) => {
-        
+        dispatch(updateTodolistTC(todolistId, title))
     }
 
   

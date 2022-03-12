@@ -1,3 +1,4 @@
+import { title } from "process"
 import { Dispatch } from "redux"
 import { v1 } from "uuid"
 import { todolistAPI } from "../api/api-todolist"
@@ -37,16 +38,20 @@ export const TodolistReducer = (state: TodolistDomainType[] = initialState, acti
         case 'TODOLIST/REMOVE-TODOLIST' : {
             return state.filter(tl => tl.id !== action.payload.todolistId)
         }
+        case 'TODOLIST/UPDATE-TODOLIST' : {
+            return state.map(tl => tl.id === action.payload.todolistId ? {...tl, title: action.payload.title} : tl)
+        }
     }
  return state
 }
 
 
-export type MainTodolistActionType = getTodolistACType | createTodolistACType | removeTodolistACType
+export type MainTodolistActionType = getTodolistACType | createTodolistACType | removeTodolistACType | updateTodolistACType
 
 export type getTodolistACType = ReturnType<typeof getTodolistAC>
 export type createTodolistACType = ReturnType<typeof createTodolistAC>
 export type removeTodolistACType = ReturnType<typeof removeTodolistAC>
+export type updateTodolistACType = ReturnType<typeof updateTodolistAC>
 
 export const getTodolistAC = (todoList: TodolistType[]) => {
 return {
@@ -74,6 +79,15 @@ export const removeTodolistAC = (todolistId: string) => {
         }
     }as const
 }
+export const updateTodolistAC = (todolistId: string, title: string) => {
+    return {
+        type: 'TODOLIST/UPDATE-TODOLIST',
+        payload: {
+            todolistId,
+            title, 
+        }
+    }as const
+}
 
 export const getTodolistTC = () => {
     return (dispatch: Dispatch) => {
@@ -98,6 +112,15 @@ export const removeTodolistTC = (todolistId: string) => {
         todolistAPI.deleteTodolist(todolistId)
         .then(() => {
             dispatch(removeTodolistAC(todolistId))
+        })
+    }
+}
+
+export const updateTodolistTC = (todolistId: string, title: string) => {
+    return(dispatch : Dispatch) => {
+        todolistAPI.updateTlTitle(todolistId, title)
+        .then(()=> {
+            dispatch(updateTodolistAC(todolistId, title))
         })
     }
 }
