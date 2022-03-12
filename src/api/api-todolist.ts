@@ -32,6 +32,10 @@ export const todolistAPI = {
     },
     updateTlTitle(todolistId: string, title: string) {
         return instance.put<{title: string}, AxiosResponse<ResponseType>>(`todo-lists/${todolistId}`, {title})
+    },
+    updateTask(todolistId: string, taskId: string, model: UpdateTasksType) {
+        return instance.put<UpdateTasksType, AxiosResponse<ResponseType<{item:TasksType}>>>
+        (`todo-lists/${todolistId}/tasks/${taskId}`, {...model})
     }
 }
 
@@ -49,5 +53,11 @@ export type ResponseType <D={}> = {
 }
 
 export type UpdateTasksType ={
-    
+title: string
+description: string
+completed: boolean
+status: TaskStatuses
+priority: TaskPriorities
+startDate: string
+deadline: string
 }
