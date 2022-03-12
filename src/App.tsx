@@ -1,54 +1,60 @@
-import React, { useEffect } from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import './App.css';
 import { AddIteamForm } from './componetrs/AddIteamForm';
 import { RootReducerType } from './redux/store';
-import { addTaskTC, changeTitleInTaskTC, removeTaskTC, TasksMainType, TaskStatuses } from './redux/task-reducer';
-import { addTodolistTC, changeFilterAC, FilterValueType, getTodolistsTC, removeTodolistTC, TodolistDomainType, TodolistType, updateTodolistTC } from './redux/todolist-reducer';
+import {  TasksMainType, TaskStatuses } from './redux/task-reducer';
+import {  createTodolistTC, FilterValueType,  getTodolistTC,  removeTodolistTC,  TodolistDomainType, TodolistType } from './redux/todolist-reducer';
 import { Todolist } from './Todolist';
 
 function App() {
+
+   useEffect(() => {
+    dispatch(getTodolistTC()) 
+   }, [])
+    
 
     const todolist = useSelector <RootReducerType,TodolistDomainType[]>(state => state.todolist)
     const tasks = useSelector <RootReducerType,TasksMainType>(state => state.tasks)
     const dispatch = useDispatch() 
 
     const addTodolist = (title: string) => {
-        dispatch(addTodolistTC(title))
+    dispatch(createTodolistTC(title))
     }
 
     const removeTodolist = (todolistId: string) => {
-        dispatch(removeTodolistTC(todolistId))
+      dispatch(removeTodolistTC(todolistId))
     }
 
     const changeFilter = (todolistId: string, value: FilterValueType) => { 
-     dispatch(changeFilterAC(todolistId, value))
+     
     }
 
     const addTask = (todolistId: string, title: string) => {
-        dispatch(addTaskTC(todolistId, title))
+        
     }
 
     const removeTask = (todolistId: string, id: string) => {
-        dispatch(removeTaskTC(todolistId, id))
+        
     }
 
     const changeTitleInTask = (todolistId: string, id: string, title: string) => {
-        dispatch(changeTitleInTaskTC(todolistId, id, title))
+        
     }
 
     const changeStatus = (todolistId: string, id: string, status: TaskStatuses) => {
-
+        
     }
 
     const changeTitleInTL = (todolistId: string, title: string) => {
-        dispatch(updateTodolistTC(todolistId, title))
+        
     }
 
-    useEffect(() => {
-        dispatch(getTodolistsTC())
-    }, [])
+  
+
+ 
     
     return (
         <div className="App">
