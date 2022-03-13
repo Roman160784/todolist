@@ -3,7 +3,7 @@ import { TLSSocket } from "tls"
 import { v1 } from "uuid"
 import { todolistAPI } from "../api/api-todolist"
 import { RootReducerType } from "./store"
-import { getTodolistACtype } from "./todolist-reducer"
+import { createTodolistACtype, getTodolistACtype } from "./todolist-reducer"
 
 
 
@@ -54,11 +54,14 @@ export const TaskReducer = (state: TasksMainType = initialState, action: MainAct
         case 'TASK/GET-TASK' : {
             return {...state, [action.todolistId] : action.task }
         }
+        case 'TODOLIST/CREATE-TODOLIST' : {
+            return {...state, [action.todolist.id] : []}
+        }
     }
     return state
 }
 
-export type MainActionTaskType = getTodolistACtype | getTaskACtype
+export type MainActionTaskType = getTodolistACtype | getTaskACtype | createTodolistACtype
 
 export type getTaskACtype = ReturnType<typeof getTaskAC>
 

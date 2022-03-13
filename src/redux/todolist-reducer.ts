@@ -34,14 +34,18 @@ export const TodolistReducer = (state: TodolistDomainType[] = initialState, acti
        case 'TODOLIST/GET-TODOLIST' : {
            return action.todolist.map(tl => ({...tl, filter: "all", entityStatus: "succeeded"}))
        }
+       case 'TODOLIST/CREATE-TODOLIST' : {
+           return [{...action.todolist, filter: "all", entityStatus: "succeeded"}, ...state]
+       }
    }
  return state
 }
 
 
-export type MainTodolistActionType = getTodolistACtype
+export type MainTodolistActionType = getTodolistACtype | createTodolistACtype
 
 export type getTodolistACtype = ReturnType<typeof getTodolistAC>
+export type createTodolistACtype = ReturnType<typeof createTodolistAC>
 
 
 export const getTodolistAC = (todolist: TodolistType[]) => {
@@ -51,11 +55,27 @@ export const getTodolistAC = (todolist: TodolistType[]) => {
     } as const
 }
 
+export const createTodolistAC = (todolist : TodolistType) => {
+    return {
+        type: 'TODOLIST/CREATE-TODOLIST',
+        todolist,
+    } as const
+}
+
 export const getTodolistTC = () => {
     return (dispatch: Dispatch) => {
         todolistAPI.getTodoList()
         .then((res) => {
             dispatch(getTodolistAC(res.data))
+        })
+    }
+}
+
+export const createTodolistTC = (title: string) => {
+    return (dispatch: Dispatch) => {
+        todolistAPI.createTodolist(title)
+        .then((res) => {
+            dispatch(createTodolistAC(res.data.data.item))
         })
     }
 }
