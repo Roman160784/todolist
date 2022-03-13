@@ -44,17 +44,23 @@ export const TodolistReducer = (state: TodolistDomainType[] = initialState, acti
            return state.map(tl => tl.id === action.todolistId 
             ? {...tl, title: action.title} : tl)
        }
+       case 'TODOLIST/CHANGE-FILTER' : {
+           return state.map(tl => tl.id === action.todolistId 
+            ? {...tl, filter : action.filter} : tl)
+       }
    }
  return state
 }
 
 
-export type MainTodolistActionType = getTodolistACtype | createTodolistACtype | removeTodolistACtype | uppdateTlACtype
+export type MainTodolistActionType = getTodolistACtype | createTodolistACtype | removeTodolistACtype 
+| uppdateTlACtype | changeFilterACtype
 
 export type getTodolistACtype = ReturnType<typeof getTodolistAC>
 export type createTodolistACtype = ReturnType<typeof createTodolistAC>
 export type removeTodolistACtype = ReturnType<typeof removeTodolistAC>
 export type uppdateTlACtype = ReturnType<typeof uppdateTlAC>
+export type changeFilterACtype = ReturnType<typeof changeFilterAC>
 
 
 export const getTodolistAC = (todolist: TodolistType[]) => {
@@ -83,6 +89,14 @@ export const uppdateTlAC = (todolistId: string, title: string) => {
         type: 'TODOLIST/UPDATE-TODOLIST',
         todolistId,
         title,
+    } as const
+}
+
+export const changeFilterAC = (todolistId: string, filter: FilterValueType) => {
+    return {
+        type : 'TODOLIST/CHANGE-FILTER',
+        todolistId,
+        filter,
     } as const
 }
 
