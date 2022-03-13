@@ -62,17 +62,31 @@ export const TaskReducer = (state: TasksMainType = initialState, action: MainAct
             delete coppyState[action.todolistId]
             return coppyState
         }
+        case 'TASK/ADD-TASK' :{
+            const newTask = action.task
+            return {...state, [action.todolistId] 
+            : [newTask, ...state[action.todolistId]]}
+        }
     }
     return state
 }
 
-export type MainActionTaskType = getTodolistACtype | getTaskACtype | createTodolistACtype | removeTodolistACtype
+export type MainActionTaskType = getTodolistACtype | getTaskACtype | createTodolistACtype | removeTodolistACtype | addTaskACtype
 
 export type getTaskACtype = ReturnType<typeof getTaskAC>
+export type addTaskACtype = ReturnType<typeof addTaskAC>
 
 export const getTaskAC = (todolistId: string, task: TasksType[]) => {
     return {
         type: 'TASK/GET-TASK',
+        todolistId,
+        task,
+    }as const
+}
+
+export const addTaskAC = (todolistId: string, task: TasksType) => {
+    return {
+        type: 'TASK/ADD-TASK',
         todolistId,
         task,
     }as const
@@ -83,6 +97,15 @@ export const getTaskTC = (todolistId: string) => {
         todolistAPI.getTasks(todolistId)
         .then((res) => {
             dispatch(getTaskAC( todolistId, res.data.items))
+        })
+    }
+}
+
+export const addTaskTC = (todolistId: string, title: string) => {
+    return (dispatch: Dispatch) => {
+        todolistAPI.createTask(todolistId, title)
+        .then((res) => {
+           dispatch(addTaskAC(todolistId, res.data.data.item)) 
         })
     }
 }

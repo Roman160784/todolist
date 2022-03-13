@@ -24,6 +24,9 @@ export const todolistAPI = {
     },
     removeTodolist(todolistId: string){
         return instance.delete<ResponseType>(`todo-lists/${todolistId}`)
+    },
+    createTask(todolistId: string, title: string){
+        return instance.post<{title : string}, AxiosResponse <ResponseType<{item : TasksType}>>>(`todo-lists/${todolistId}/tasks`, {title})
     }
 }
 
