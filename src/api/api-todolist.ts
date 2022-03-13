@@ -30,7 +30,11 @@ export const todolistAPI = {
     }, 
     deleteTasks(todolistId: string, taskId: string){
         return instance.delete<ResponseType>(`todo-lists/${todolistId}/tasks/${taskId}`)
+    },
+    updateTL(todolistId: string, title: string){
+        return instance.put<{title: string}, AxiosResponse <ResponseType>>(`todo-lists/${todolistId}`, {title})
     }
+
 
 }
 
