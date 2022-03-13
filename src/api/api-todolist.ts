@@ -33,8 +33,11 @@ export const todolistAPI = {
     },
     updateTL(todolistId: string, title: string){
         return instance.put<{title: string}, AxiosResponse <ResponseType>>(`todo-lists/${todolistId}`, {title})
+    },
+    updateTask(todolistId: string, taskId: string, model: UpdateTasksType) {
+        return instance.put<{model: UpdateTasksType}, AxiosResponse<ResponseType<{ item: TasksType }>>>
+        (`todo-lists/${todolistId}/tasks/${taskId}`, {...model})
     }
-
 
 }
 

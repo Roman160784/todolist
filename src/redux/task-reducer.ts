@@ -1,7 +1,7 @@
 import { Dispatch } from "redux"
 import { TLSSocket } from "tls"
 import { v1 } from "uuid"
-import { todolistAPI } from "../api/api-todolist"
+import { todolistAPI, UpdateTasksType } from "../api/api-todolist"
 import { RootReducerType } from "./store"
 import { createTodolistACtype, getTodolistACtype, removeTodolistACtype } from "./todolist-reducer"
 
@@ -71,16 +71,21 @@ export const TaskReducer = (state: TasksMainType = initialState, action: MainAct
             return {...state, [action.todolistId] 
                 : state[action.todolistId].filter(t => t.id !== action.id) }
         }
+        case 'TASK/UPDATE-TASK' : {
+            return {...state, [action.todolistId] 
+                : state[action.todolistId].map(t => t.id === action.id ? {...action.task} : t)}
+        }
     }
     return state
 }
 
 export type MainActionTaskType = getTodolistACtype | getTaskACtype | createTodolistACtype | removeTodolistACtype | addTaskACtype
-| removeTaskACtype
+| removeTaskACtype | updateTaskACtype
 
 export type getTaskACtype = ReturnType<typeof getTaskAC>
 export type addTaskACtype = ReturnType<typeof addTaskAC>
 export type removeTaskACtype = ReturnType<typeof removeTaskAC>
+export type updateTaskACtype = ReturnType<typeof updateTaskAC>
 
 export const getTaskAC = (todolistId: string, task: TasksType[]) => {
     return {
@@ -103,6 +108,15 @@ export const removeTaskAC = (todolistId: string, id: string) => {
         type: 'TASK/REMOVE-TASK',
         todolistId,
         id,
+    } as const
+}
+
+export const updateTaskAC = (todolistId: string, id: string, task: TasksType) => {
+    return {
+        type: 'TASK/UPDATE-TASK',
+        todolistId,
+        id,
+        task,
     } as const
 }
 
@@ -130,5 +144,27 @@ export const removeTaskTC = (todolistId: string, id: string) => {
         .then(() => {
             dispatch(removeTaskAC(todolistId, id))
         })
+    }
+}
+
+export const updateTaskTC = (todolistId: string, id: string, data: {status?: TaskStatuses, title?: string}) => {
+    return (dispatch: Dispatch, getState: () => RootReducerType) => {
+        const allState = getState()
+        const allTask = allState.tasks
+        const tasks = allTask[todolistId]
+        const currentTask = tasks.find(t => t.id === id)
+
+        if(currentTask){
+            const model:UpdateTasksType ={
+                ...currentTask,
+                ...data,
+            }
+
+            todolistAPI.updateTask(todolistId, id, model)
+            .then((res) => {
+                dispatch(updateTaskAC(todolistId, id, res.data.data.item))
+            })
+        }
+        
     }
 }
