@@ -1,6 +1,7 @@
 import { Dispatch } from "redux"
 import { TLSSocket } from "tls"
 import { v1 } from "uuid"
+import { todolistAPI } from "../api/api-todolist"
 import { RootReducerType } from "./store"
 import { getTodolistACtype } from "./todolist-reducer"
 
@@ -50,9 +51,30 @@ export const TaskReducer = (state: TasksMainType = initialState, action: MainAct
             action.todolist.forEach(tl => { coppy[tl.id] = [] } )
             return coppy
         }
+        case 'TASK/GET-TASK' : {
+            return {...state, [action.todolistId] : action.task }
+        }
     }
     return state
 }
 
+export type MainActionTaskType = getTodolistACtype | getTaskACtype
 
-export type MainActionTaskType = getTodolistACtype
+export type getTaskACtype = ReturnType<typeof getTaskAC>
+
+export const getTaskAC = (todolistId: string, task: TasksType[]) => {
+    return {
+        type: 'TASK/GET-TASK',
+        todolistId,
+        task,
+    }as const
+}
+
+export const getTaskTC = (todolistId: string) => {
+    return (dispatch: Dispatch) => {
+        todolistAPI.getTasks(todolistId)
+        .then((res) => {
+            dispatch(getTaskAC( todolistId, res.data.items))
+        })
+    }
+}
