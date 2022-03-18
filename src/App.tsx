@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import './App.css';
 import { AddIteamForm } from './componetrs/AddIteamForm';
 import { RootReducerType } from './redux/store';
-import {   TasksMainType, TaskStatuses, } from './redux/task-reducer';
+import {   addTaskTC, TasksMainType, TaskStatuses, } from './redux/task-reducer';
 import {   addTodolistTC, FilterValueType,  getTodolistTC,  removeTlTC,  TodolistDomainType  } from './redux/todolist-reducer';
 import { Todolist } from './Todolist';
 import { makeStyles } from '@material-ui/core/styles';
@@ -45,7 +45,7 @@ function App() {
     }
 
     const addTask = (todolistId: string, title: string) => {
-      
+      dispatch(addTaskTC(todolistId, title))
     }
 
     const removeTask = (todolistId: string, id: string) => {

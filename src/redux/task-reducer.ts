@@ -1,3 +1,4 @@
+import { StarRate } from "@material-ui/icons"
 import { Dispatch } from "redux"
 import { TLSSocket } from "tls"
 import { v1 } from "uuid"
@@ -64,21 +65,36 @@ export const TaskReducer = (state: TasksMainType = initialState, action: MainAct
         case 'TL/ADD-TODOLIST' : {
             return {...state, [action.todolist.id] : []}
         }
+        case 'TASK/ADD-TASK' : {
+            return {...state,[action.todolistId] : [action.task, ...state[action.todolistId]]}
+        }
     }
     return state
 }
 
-export type MainActionTaskType = getTodolistACtype | getTasksACtype | removeTodolistACtype | addTodolistACtype
+export type MainActionTaskType = getTodolistACtype | getTasksACtype | removeTodolistACtype | addTodolistACtype | addTasksACtype
 
 export type getTasksACtype = ReturnType<typeof getTasksAC>
+export type addTasksACtype = ReturnType<typeof addTasksAC>
 
 export const getTasksAC = (tasks: TasksType[], todolistId: string) => ({type: 'TASK/GET-TASK',  tasks,  todolistId} as const)
+export const addTasksAC = (todolistId: string, task: TasksType, ) => ({type: 'TASK/ADD-TASK', todolistId, task  } as const)
 
 export const getTaskTC = (todolistId: string) => {
     return (dispatch: Dispatch) => {
         todolistAPI.getTasks(todolistId)
         .then((res) => {
-           dispatch(getTasksAC(res.data.items, todolistId)) 
+            dispatch(getTasksAC(res.data.items, todolistId)) 
+        })
+    }
+}
+
+
+export const addTaskTC = (todolistId: string, title: string ) => {
+    return(dispatch: Dispatch) => {
+        todolistAPI.createTask(todolistId, title)
+        .then((res)=> {
+            dispatch(addTasksAC(todolistId, res.data.data.item))
         })
     }
 }
