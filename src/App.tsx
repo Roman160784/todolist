@@ -16,7 +16,7 @@ import './App.css';
 import { AddIteamForm } from './componetrs/AddIteamForm';
 import { RootReducerType } from './redux/store';
 import {   addTaskTC, removeTaskTC, TasksMainType, TaskStatuses, } from './redux/task-reducer';
-import {   addTodolistTC, FilterValueType,  getTodolistTC,  removeTlTC,  TodolistDomainType, updateTlTC  } from './redux/todolist-reducer';
+import {   addTodolistTC, changeFiltertAC, FilterValueType,  getTodolistTC,  removeTlTC,  TodolistDomainType, updateTlTC  } from './redux/todolist-reducer';
 import { Todolist } from './Todolist';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -41,7 +41,7 @@ function App() {
     }
 
     const changeFilter = (todolistId: string, value: FilterValueType) => { 
-    
+       dispatch(changeFiltertAC(todolistId, value))
     }
 
     const addTask = (todolistId: string, title: string) => {
