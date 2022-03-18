@@ -4,7 +4,7 @@ import { v1 } from "uuid"
 import { todolistAPI } from "../api/api-todolist"
 
 import { RootReducerType } from "./store"
-import { getTodolistACtype, removeTodolistACtype } from "./todolist-reducer"
+import { addTodolistACtype, getTodolistACtype, removeTodolistACtype } from "./todolist-reducer"
 
 
 
@@ -61,11 +61,14 @@ export const TaskReducer = (state: TasksMainType = initialState, action: MainAct
             delete copySate[action.todolistId]
             return copySate
         }
+        case 'TL/ADD-TODOLIST' : {
+            return {...state, [action.todolist.id] : []}
+        }
     }
     return state
 }
 
-export type MainActionTaskType = getTodolistACtype | getTasksACtype | removeTodolistACtype
+export type MainActionTaskType = getTodolistACtype | getTasksACtype | removeTodolistACtype | addTodolistACtype
 
 export type getTasksACtype = ReturnType<typeof getTasksAC>
 
