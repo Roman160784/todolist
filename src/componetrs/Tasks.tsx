@@ -1,3 +1,6 @@
+import { Checkbox } from "@material-ui/core"
+import IconButton from "@material-ui/core/IconButton/IconButton"
+import { Delete } from "@material-ui/icons"
 import React from "react"
 import { ChangeEvent } from "react"
 import { TaskStatuses, TasksType } from "../redux/task-reducer"
@@ -33,10 +36,12 @@ export const Tasks = (props: PropsTasksType) => {
 
     return (
         <li key={props.tasks.id}>
-            <input type="checkbox" checked={props.tasks.status === TaskStatuses.Completed}
+            <Checkbox size={"small"} checked={props.tasks.status === TaskStatuses.Completed}
                 onChange={changeSatusHandler} />
             <EditableSpan title={props.tasks.title} changeTitle={(title: string) => {ChangeTitleInTaskHandler(title)}} />
-            <Button title={"Remuve"} class={''} onClick={() => {removeTaskHandler(props.tasks.id)}} />
+            <IconButton color={"primary"} aria-label="delete" size="small" onClick={() => {removeTaskHandler(props.tasks.id)}}>
+                <Delete fontSize="small" />
+            </IconButton>
         </li>
     )
 }

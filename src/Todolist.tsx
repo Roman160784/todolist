@@ -1,11 +1,15 @@
+import Button from '@material-ui/core/Button/Button';
+import IconButton from '@material-ui/core/IconButton/IconButton';
+import { Delete } from '@material-ui/icons';
 import React, { ChangeEvent, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { AddIteamForm } from './componetrs/AddIteamForm';
-import { Button } from './componetrs/Button';
+// import { Button } from './componetrs/Button';
 import { EditableSpan } from './componetrs/edditableSpan';
 import { Tasks } from './componetrs/Tasks';
 import {   getTaskTC, TaskStatuses, TasksType } from './redux/task-reducer';
 import { FilterValueType, TodolistDomainType } from './redux/todolist-reducer';
+
 
 export type TodolistPropsType = {
     // todolistId: string
@@ -60,7 +64,9 @@ export const Todolist = (props: TodolistPropsType) => {
         <div>
             <h3>
                 <EditableSpan title={props.todo.title} changeTitle={(title: string) => {changeTitleInTLHandler(title)}} />
-                <Button title={"REMOVE"} class={''} onClick={() => {props.removeTodolist(props.todo.id)}}/>
+                <IconButton aria-label="delete" color={'primary'} size={'medium'} onClick={() => {props.removeTodolist(props.todo.id)}}>
+                    <Delete fontSize="inherit" />
+                </IconButton>
             </h3>
             <div>
                 <AddIteamForm title={""} addIteam={addTaskHandler} />
@@ -79,9 +85,16 @@ export const Todolist = (props: TodolistPropsType) => {
                 })}
             </ul>
             <div>
-                <Button title={'ALL'} class={''} onClick={() => { changeFilterHandler('all') }} />
-                <Button title={'ACTIVE'} class={''} onClick={() => { changeFilterHandler('active') }} />
-                <Button title={'COMPLETED'} class={''} onClick={() => { changeFilterHandler('completed') }} />
+            <Button variant={props.todo.filter === 'all'? 'contained' : 'text'} size={'small'} 
+            color={'primary'} onClick={() => { changeFilterHandler('all') }}>ALL
+            </Button>
+            <Button variant={props.todo.filter === 'active' ? 'contained' : 'text'} size={'small'}
+             color={'primary'} onClick={() => { changeFilterHandler('active') }}>ACTIVE
+             </Button>
+            <Button  variant={props.todo.filter ===  'completed' ? 'contained' : 'text'} size={'small'}
+             color={'primary'} onClick={() => { changeFilterHandler('completed') }}>COMPLETED
+             </Button>
+               
             </div>
         </div>
     )

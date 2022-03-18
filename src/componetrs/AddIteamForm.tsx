@@ -1,3 +1,7 @@
+import Button from '@material-ui/core/Button/Button';
+import IconButton from '@material-ui/core/IconButton/IconButton';
+import TextField from '@material-ui/core/TextField/TextField';
+import { AddCircleOutline } from '@material-ui/icons';
 import React, { ChangeEvent, useState, KeyboardEvent } from 'react';
 import s from './AddIteamForm.module.css'
 
@@ -37,9 +41,13 @@ export const AddIteamForm = (props: AddIteamFormPropsType) => {
 
     return (
         <div>
-            <input type="text" value={title} onKeyPress={onKeyPressHandler} onChange={onChangeHandler}/>
-            <button onClick={addTitleHandler}>ADD</button>
-            {error && <div className={error? s.error : ""}>{error}</div>}
+            <TextField value={title} id="filled-basic" label="some text" variant="filled" size={'small'} 
+            onKeyPress={onKeyPressHandler} onChange={onChangeHandler} error={!!error} helperText={error}/>
+            {/* <input type="text" value={title} onKeyPress={onKeyPressHandler} onChange={onChangeHandler}/> */}
+            <IconButton  onClick={addTitleHandler}  color={'primary'} size={'small'}>
+                <AddCircleOutline/>
+            </IconButton>
+            {/* {error && <div className={error? s.error : ""}>{error}</div>} */}
         </div>
     )
 
