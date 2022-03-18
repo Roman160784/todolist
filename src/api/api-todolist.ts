@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios'
 import { TaskPriorities, TaskStatuses, TasksType } from '../redux/task-reducer'
-import { TodolistType } from '../redux/todolist-reducer'
+import { RequestStatusType, TodolistType } from '../redux/todolist-reducer'
 
 const instance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.1/',
@@ -32,6 +32,10 @@ export const todolistAPI = {
     updateTodlist(todolistId: string, title: string){
         return instance.put<{title: string}, AxiosResponse<ResponseType>>(`todo-lists/${todolistId}`, {title})
     },
+    updateTask(todolistId: string, taskId: string, data : UpdateTasksType){
+        return instance.put<{data : UpdateTasksType}, AxiosResponse<ResponseType<{item: TasksType}>>>
+        (`todo-lists/${todolistId}/tasks/${taskId}`, {...data})
+    }
 }
 
 export type ResponseTasksType = {

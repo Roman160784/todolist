@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import './App.css';
 import { AddIteamForm } from './componetrs/AddIteamForm';
 import { RootReducerType } from './redux/store';
-import {   addTaskTC, removeTaskTC, TasksMainType, TaskStatuses, } from './redux/task-reducer';
+import {   addTaskTC, removeTaskTC, TasksMainType, TaskStatuses, updateTaskTC, } from './redux/task-reducer';
 import {   addTodolistTC, changeFiltertAC, FilterValueType,  getTodolistTC,  removeTlTC,  TodolistDomainType, updateTlTC  } from './redux/todolist-reducer';
 import { Todolist } from './Todolist';
 import { makeStyles } from '@material-ui/core/styles';
@@ -53,18 +53,16 @@ function App() {
     }
 
     const changeTitleInTask = (todolistId: string, id: string, title: string) => {
-        
+        dispatch(updateTaskTC(todolistId, id, {title}))
     }
 
     const changeStatus = (todolistId: string, id: string, status: TaskStatuses) => {
-        
+        dispatch(updateTaskTC(todolistId, id, {status}))
     }
 
     const changeTitleInTL = (todolistId: string, title: string) => {
         dispatch(updateTlTC(todolistId, title))
     }
-
-    
 
     
     return <div className="App">
