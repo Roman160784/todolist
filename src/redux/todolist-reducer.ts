@@ -1,3 +1,4 @@
+import { SportsTennis } from "@material-ui/icons"
 import { type } from "os"
 import { rawListeners, title } from "process"
 import { Dispatch } from "redux"
@@ -41,21 +42,26 @@ export const TodolistReducer = (state: TodolistDomainType[] = initialState, acti
       case 'TL/ADD-TODOLIST': {
         return  [{...action.todolist, filter: 'all', entityStatus: 'succeeded'}, ...state]
       }
+      case 'TL/UPDATE-TODOLIST': {
+          return state.map(tl => tl.id === action.todolistId ? {...tl, title: action.title} : tl)
+      }
   }
  return state
 }
 
 
-export type MainTodolistActionType = getTodolistACtype | removeTodolistACtype | addTodolistACtype
+export type MainTodolistActionType = getTodolistACtype | removeTodolistACtype | addTodolistACtype | updateTodolistACtype
 
 export type getTodolistACtype = ReturnType<typeof getTodolistAC>
 export type removeTodolistACtype = ReturnType<typeof removeTodolistAC>
 export type addTodolistACtype = ReturnType<typeof addTodolistAC>
+export type updateTodolistACtype = ReturnType<typeof updateTodolistAC>
 
 
 export const getTodolistAC = (todolist: TodolistType[]) => ({type: 'TL/GET-TODOLIST', todolist} as const)
 export const removeTodolistAC = (todolistId: string) => ({type: 'TL/REMOVE-TODOLIST', todolistId} as const)
 export const addTodolistAC = (todolist: TodolistType) => ({type: 'TL/ADD-TODOLIST', todolist} as const)
+export const updateTodolistAC = (todolistId: string, title: string) => ({type: 'TL/UPDATE-TODOLIST', todolistId, title} as const)
 
 export const getTodolistTC = () => {
     return (dispatch: Dispatch) => {
@@ -80,6 +86,15 @@ export const addTodolistTC = (title: string) => {
         todolistAPI.addTodolist(title)
         .then((res) => {
          dispatch(addTodolistAC(res.data.data.item))   
+        })
+    }
+}
+
+export const updateTlTC = (todolistId: string, title: string) => {
+    return(dispatch: Dispatch) => {
+        todolistAPI.updateTodlist(todolistId, title)
+        .then((res) => {
+            dispatch(updateTodolistAC(todolistId, title))
         })
     }
 }
