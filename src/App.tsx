@@ -1,3 +1,13 @@
+import AppBar from '@material-ui/core/AppBar/AppBar';
+import Box from '@material-ui/core/Box/Box';
+import Button from '@material-ui/core/Button/Button';
+import Container from '@material-ui/core/Container/Container';
+import Grid from '@material-ui/core/Grid/Grid';
+import IconButton from '@material-ui/core/IconButton/IconButton';
+import Paper from '@material-ui/core/Paper/Paper';
+import Toolbar from '@material-ui/core/Toolbar/Toolbar';
+import Typography from '@material-ui/core/Typography/Typography';
+import { Menu } from '@material-ui/icons';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,6 +18,9 @@ import { RootReducerType } from './redux/store';
 import {   TasksMainType, TaskStatuses, } from './redux/task-reducer';
 import {   FilterValueType,  getTodolistTC,  TodolistDomainType  } from './redux/todolist-reducer';
 import { Todolist } from './Todolist';
+import { makeStyles } from '@material-ui/core/styles';
+
+
 
 function App() {
 
@@ -51,21 +64,38 @@ function App() {
         
     }
 
-  
-
- 
     
-    return (
-        <div className="App">
+
+    
+    return <div className="App">
+    
+      <AppBar position="static" >
+        <Toolbar>
+          <IconButton
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+          >
+            <Menu />
+          </IconButton>
+          <Typography >
+            News
+          </Typography>
+          <Button color="inherit">Login</Button>
+        </Toolbar>
+      </AppBar>
+   
+        <Container fixed>
+            <Grid  style={{padding: "30px"}} container>
             <AddIteamForm title={''} addIteam={addTodolist}/>
-            
+            </Grid>
+            <Grid container spacing={5}>
             {todolist.map(tl => {
                 
-                return <Todolist
+                return <Grid item> 
+               <Paper elevation={5} style={{padding: "10px"}}>
+                    <Todolist 
                     key={tl.id}
-                    // todolistId={tl.id}
-                    // title={tl.title}
-                    // filter={tl.filter} 
                     todo={tl}
                     tasks={tasks[tl.id]}
                     addTask={addTask}
@@ -74,14 +104,15 @@ function App() {
                     changeTitleInTask={changeTitleInTask}
                     changeTitleInTL={changeTitleInTL}
                     changeStatus={changeStatus} 
-                    removeTask={removeTask}            
-                />
+                    removeTask={removeTask} /> 
+                      </Paper>  
+                        </Grid>  
+            })
             }
-            )
-            }
-           
+              </Grid>
+            </Container>
         </div>
-    );
+  
 }
 
 export default App;

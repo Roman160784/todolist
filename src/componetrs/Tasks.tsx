@@ -35,13 +35,13 @@ export const Tasks = (props: PropsTasksType) => {
     }
 
     return (
-        <li key={props.tasks.id}>
+        <div key={props.tasks.id}>
             <Checkbox size={"small"} checked={props.tasks.status === TaskStatuses.Completed}
                 onChange={changeSatusHandler} />
             <EditableSpan title={props.tasks.title} changeTitle={(title: string) => {ChangeTitleInTaskHandler(title)}} />
             <IconButton color={"primary"} aria-label="delete" size="small" onClick={() => {removeTaskHandler(props.tasks.id)}}>
                 <Delete fontSize="small" />
             </IconButton>
-        </li>
+        </div>
     )
 }
