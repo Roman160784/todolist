@@ -2,6 +2,7 @@ import { type } from "os"
 import { rawListeners, title } from "process"
 import { Dispatch } from "redux"
 import { v1 } from "uuid"
+import { todolistAPI } from "../api/api-todolist"
 
 
 
@@ -30,11 +31,27 @@ let initialState : TodolistDomainType[] = [
 ]
 
 export const TodolistReducer = (state: TodolistDomainType[] = initialState, action: MainTodolistActionType ): TodolistDomainType[] => {
-  
+  switch(action.type) {
+      case 'TL/GET-TODOLIST' : {
+          return action.todolist.map(tl => ({...tl, filter: 'all', entityStatus: 'succeeded'} ))
+      }
+  }
  return state
 }
 
 
-export type MainTodolistActionType = ""
+export type MainTodolistActionType = getTodolistACtype
+
+export type getTodolistACtype = ReturnType<typeof getTodolistAC>
 
 
+export const getTodolistAC = (todolist: TodolistType[]) => ({type: 'TL/GET-TODOLIST', todolist} as const)
+
+export const getTodolistTC = () => {
+    return (dispatch: Dispatch) => {
+        todolistAPI.getTodolist()
+        .then((res) => {
+            dispatch(getTodolistAC(res.data))
+        })
+    }
+}

@@ -6,12 +6,14 @@ import './App.css';
 import { AddIteamForm } from './componetrs/AddIteamForm';
 import { RootReducerType } from './redux/store';
 import {   TasksMainType, TaskStatuses, } from './redux/task-reducer';
-import {   FilterValueType,  TodolistDomainType  } from './redux/todolist-reducer';
+import {   FilterValueType,  getTodolistTC,  TodolistDomainType  } from './redux/todolist-reducer';
 import { Todolist } from './Todolist';
 
 function App() {
 
-  
+  useEffect(() => {
+      dispatch(getTodolistTC())
+  }, [])
 
     const todolist = useSelector <RootReducerType,TodolistDomainType[]>(state => state.todolist)
     const tasks = useSelector <RootReducerType,TasksMainType>(state => state.tasks)
