@@ -112,7 +112,12 @@ export const addTaskTC = (todolistId: string, title: string ) => {
             if(res.data.resultCode === ResultCode.succes){
                 dispatch(addTasksAC(todolistId, res.data.data.item))
             } else {
-                dispatch(setErrorAC(res.data.messages[0]))
+                if(res.data.messages.length){
+                    dispatch(setErrorAC(res.data.messages[0]))
+                }else {
+                    dispatch(setErrorAC("ERRROOOOR!!!"))
+                }
+                
             }
         })
         .finally(() => {

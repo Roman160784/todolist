@@ -32,7 +32,7 @@ function App() {
     const todolist = useSelector <RootReducerType,TodolistDomainType[]>(state => state.todolist)
     const tasks = useSelector <RootReducerType,TasksMainType>(state => state.tasks)
     const status = useSelector<RootReducerType, RequestStatusType>(state => state.app.entityStatus)
-    const error = useSelector<RootReducerType, AppErrorType>(state => state.app.error)
+    
     const dispatch = useDispatch() 
 
     const addTodolist = (title: string) => {

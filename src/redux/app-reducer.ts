@@ -4,7 +4,7 @@ export type AppErrorType = string | null
 
 const initialState = {
     entityStatus: 'loading' as RequestStatusType,
-    error: "Error" as AppErrorType
+    error: null as AppErrorType
 }
 
 export type initialAppStateType = typeof initialState
