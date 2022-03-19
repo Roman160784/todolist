@@ -4,14 +4,16 @@ import { rawListeners, title } from "process"
 import { Dispatch } from "redux"
 import { v1 } from "uuid"
 import { todolistAPI } from "../api/api-todolist"
-import { setStatusAC } from "./app-reducer"
-
-
-
+import { setErrorAC, setStatusAC } from "./app-reducer"
 
 
 export type FilterValueType = "all" | "active" | "completed"
 export type RequestStatusType = "idle" | "loading" | "succeeded" | "failed"
+
+export enum ResultCode  {
+    succes = 0,
+    fail = 1,
+}
 
 export type TodolistType = {
     id: string
@@ -101,7 +103,11 @@ export const addTodolistTC = (title: string) => {
         dispatch(setStatusAC('loading'))
         todolistAPI.addTodolist(title)
         .then((res) => {
-         dispatch(addTodolistAC(res.data.data.item))   
+            if(res.data.resultCode === ResultCode.succes){
+                dispatch(addTodolistAC(res.data.data.item))
+            } else {
+                dispatch(setErrorAC(res.data.messages[0]))
+            }
         })
         .finally(() => {
             dispatch(setStatusAC('succeeded')) 
