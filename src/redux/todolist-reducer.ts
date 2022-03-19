@@ -2,6 +2,7 @@ import { SportsTennis } from "@material-ui/icons"
 import { type } from "os"
 import { rawListeners, title } from "process"
 import { Dispatch } from "redux"
+import { textSpanContainsTextSpan } from "typescript"
 import { v1 } from "uuid"
 import { todolistAPI } from "../api/api-todolist"
 import { setErrorAC, setStatusAC } from "./app-reducer"
@@ -51,19 +52,23 @@ export const TodolistReducer = (state: TodolistDomainType[] = initialState, acti
       case 'TL/CHANGE-FILTER': {
           return state.map(tl => tl.id === action.todolistId ? {...tl, filter: action.filter} : tl)
       }
+      case 'TL/DISABLE-BUTTON' : {
+          return state.map(tl => tl.id === action.todolistId ? {...tl, entityStatus: action.entityStatus} : tl)
+      }
   }
  return state
 }
 
 
 export type MainTodolistActionType = getTodolistACtype | removeTodolistACtype | addTodolistACtype | updateTodolistACtype
-|changeFiltertACtype
+|changeFiltertACtype | disableRemoveButtonACtype
 
 export type getTodolistACtype = ReturnType<typeof getTodolistAC>
 export type removeTodolistACtype = ReturnType<typeof removeTodolistAC>
 export type addTodolistACtype = ReturnType<typeof addTodolistAC>
 export type updateTodolistACtype = ReturnType<typeof updateTodolistAC>
 export type changeFiltertACtype = ReturnType<typeof changeFiltertAC>
+export type disableRemoveButtonACtype = ReturnType<typeof disableRemoveButtonAC>
 
 
 export const getTodolistAC = (todolist: TodolistType[]) => ({type: 'TL/GET-TODOLIST', todolist} as const)
@@ -71,6 +76,8 @@ export const removeTodolistAC = (todolistId: string) => ({type: 'TL/REMOVE-TODOL
 export const addTodolistAC = (todolist: TodolistType) => ({type: 'TL/ADD-TODOLIST', todolist} as const)
 export const updateTodolistAC = (todolistId: string, title: string) => ({type: 'TL/UPDATE-TODOLIST', todolistId, title} as const)
 export const changeFiltertAC = (todolistId: string, filter: FilterValueType) => ({type: 'TL/CHANGE-FILTER', todolistId, filter} as const)
+export const disableRemoveButtonAC = (todolistId: string, entityStatus: RequestStatusType) => ({type: 'TL/DISABLE-BUTTON', todolistId, entityStatus} as const)
+
 
 export const getTodolistTC = () => {
     return (dispatch: Dispatch) => {
@@ -88,6 +95,7 @@ export const getTodolistTC = () => {
 export const removeTlTC = (todolistId: string) => {
     return (dispatch: Dispatch) => {
         dispatch(setStatusAC('loading'))
+        dispatch(disableRemoveButtonAC(todolistId, 'loading'))
         todolistAPI.removeTodolist(todolistId)
         .then((res) => {
             dispatch(removeTodolistAC(todolistId))

@@ -64,7 +64,10 @@ export const Todolist = (props: TodolistPropsType) => {
         <div>
             <h3>
                 <EditableSpan title={props.todo.title} changeTitle={(title: string) => {changeTitleInTLHandler(title)}} />
-                <IconButton aria-label="delete" color={'primary'} size={'medium'} onClick={() => {props.removeTodolist(props.todo.id)}}>
+                <IconButton aria-label="delete" color={'primary'} 
+                size={'medium'} 
+                disabled={props.todo.entityStatus === "loading"}
+                onClick={() => {props.removeTodolist(props.todo.id)}}>
                     <Delete fontSize="inherit" />
                 </IconButton>
             </h3>
