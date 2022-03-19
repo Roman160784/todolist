@@ -1,10 +1,10 @@
 
+import {  AxiosError } from "axios"
 import { Dispatch } from "redux"
 import { todolistAPI, UpdateTasksType } from "../api/api-todolist"
 import { setErrorAC, setStatusAC } from "./app-reducer"
 import { RootReducerType } from "./store"
-import { addTodolistACtype, getTodolistACtype, removeTodolistACtype, ResultCode } from "./todolist-reducer"
-
+import { addTodolistACtype, disableRemoveButtonAC, getTodolistACtype, removeTodolistACtype, ResultCode } from "./todolist-reducer"
 
 
 
@@ -97,6 +97,9 @@ export const getTaskTC = (todolistId: string) => {
         .then((res) => {
             dispatch(getTasksAC(res.data.items, todolistId)) 
         })
+        .catch((err: AxiosError) => {
+            dispatch(setErrorAC(err.message))
+        })
         .finally(() => {
             dispatch(setStatusAC('succeeded')) 
         })
@@ -107,6 +110,7 @@ export const getTaskTC = (todolistId: string) => {
 export const addTaskTC = (todolistId: string, title: string ) => {
     return(dispatch: Dispatch) => {
         dispatch(setStatusAC('loading'))
+        dispatch(disableRemoveButtonAC(todolistId, 'loading'))
         todolistAPI.createTask(todolistId, title)
         .then((res)=> {
             if(res.data.resultCode === ResultCode.succes){
@@ -118,6 +122,9 @@ export const addTaskTC = (todolistId: string, title: string ) => {
                     dispatch(setErrorAC("ERRROOOOR!!!"))
                 }
             }
+        })
+        .catch((err: AxiosError) => {
+            dispatch(setErrorAC(err.message))
         })
         .finally(() => {
             dispatch(setStatusAC('succeeded')) 
@@ -131,6 +138,9 @@ export const removeTaskTC = (todolistId: string, id: string) => {
         todolistAPI.removeTask(todolistId, id)
         .then((res) => {
             dispatch(removeTasksAC(todolistId, id))
+        })
+        .catch((err: AxiosError) => {
+            dispatch(setErrorAC(err.message))
         })
         .finally(() => {
             dispatch(setStatusAC('succeeded')) 
@@ -154,6 +164,9 @@ export const updateTaskTC = (todolistId: string, id: string, data: {title?: stri
             todolistAPI.updateTask(todolistId, id, model)
             .then((res) => {
                 dispatch(updateTasksAC(todolistId, id, res.data.data.item))
+            })
+            .catch((err: AxiosError) => {
+                dispatch(setErrorAC(err.message))
             })
             .finally(() => {
                 dispatch(setStatusAC('succeeded')) 

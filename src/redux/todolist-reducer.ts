@@ -1,4 +1,5 @@
 import { SportsTennis } from "@material-ui/icons"
+import { AxiosError } from "axios"
 import { type } from "os"
 import { rawListeners, title } from "process"
 import { Dispatch } from "redux"
@@ -86,6 +87,9 @@ export const getTodolistTC = () => {
         .then((res) => {
             dispatch(getTodolistAC(res.data))
         })
+        .catch((err: AxiosError) => {
+            dispatch(setErrorAC(err.message))
+        })
         .finally(() => {
             dispatch(setStatusAC('succeeded')) 
         })
@@ -99,6 +103,9 @@ export const removeTlTC = (todolistId: string) => {
         todolistAPI.removeTodolist(todolistId)
         .then((res) => {
             dispatch(removeTodolistAC(todolistId))
+        })
+        .catch((err: AxiosError) => {
+            dispatch(setErrorAC(err.message))
         })
         .finally(() => {
             dispatch(setStatusAC('succeeded')) 
@@ -121,6 +128,9 @@ export const addTodolistTC = (title: string) => {
                 }
             }
         })
+        .catch((err: AxiosError) => {
+            dispatch(setErrorAC(err.message))
+        })
         .finally(() => {
             dispatch(setStatusAC('succeeded')) 
         })
@@ -133,6 +143,9 @@ export const updateTlTC = (todolistId: string, title: string) => {
         todolistAPI.updateTodlist(todolistId, title)
         .then((res) => {
             dispatch(updateTodolistAC(todolistId, title))
+        })
+        .catch((err: AxiosError) => {
+            dispatch(setErrorAC(err.message))
         })
         .finally(() => {
             dispatch(setStatusAC('succeeded')) 
