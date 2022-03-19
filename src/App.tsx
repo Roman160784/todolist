@@ -8,17 +8,18 @@ import Paper from '@material-ui/core/Paper/Paper';
 import Toolbar from '@material-ui/core/Toolbar/Toolbar';
 import Typography from '@material-ui/core/Typography/Typography';
 import { Menu } from '@material-ui/icons';
-import axios from 'axios';
+
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import './App.css';
 import { AddIteamForm } from './componetrs/AddIteamForm';
 import { RootReducerType } from './redux/store';
-import {   addTaskTC, removeTaskTC, TasksMainType, TaskStatuses, updateTaskTC, } from './redux/task-reducer';
-import {   addTodolistTC, changeFiltertAC, FilterValueType,  getTodolistTC,  removeTlTC,  TodolistDomainType, updateTlTC  } from './redux/todolist-reducer';
+import { addTaskTC, removeTaskTC, TasksMainType, TaskStatuses, updateTaskTC } from './redux/task-reducer';
+import { addTodolistTC, changeFiltertAC, FilterValueType,  getTodolistTC,  removeTlTC, RequestStatusType, TodolistDomainType, updateTlTC } from './redux/todolist-reducer';
 import { Todolist } from './Todolist';
-import { makeStyles } from '@material-ui/core/styles';
+import LinearProgress from '@material-ui/core/LinearProgress/LinearProgress';
+
 
 
 
@@ -30,6 +31,7 @@ function App() {
 
     const todolist = useSelector <RootReducerType,TodolistDomainType[]>(state => state.todolist)
     const tasks = useSelector <RootReducerType,TasksMainType>(state => state.tasks)
+    const status = useSelector<RootReducerType, RequestStatusType>(state => state.app.entityStatus)
     const dispatch = useDispatch() 
 
     const addTodolist = (title: string) => {
@@ -82,7 +84,7 @@ function App() {
           <Button color="inherit">Login</Button>
         </Toolbar>
       </AppBar>
-   
+      {status === "loading" && <LinearProgress color="secondary"/> }
         <Container fixed>
             <Grid  style={{padding: "30px"}} container>
             <AddIteamForm title={''} addIteam={addTodolist}/>

@@ -1,9 +1,6 @@
-import { StarRate } from "@material-ui/icons"
-import { Dispatch } from "redux"
-import { TLSSocket } from "tls"
-import { v1 } from "uuid"
-import { todolistAPI, UpdateTasksType } from "../api/api-todolist"
 
+import { Dispatch } from "redux"
+import { todolistAPI, UpdateTasksType } from "../api/api-todolist"
 import { RootReducerType } from "./store"
 import { addTodolistACtype, getTodolistACtype, removeTodolistACtype } from "./todolist-reducer"
 
