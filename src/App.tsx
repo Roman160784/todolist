@@ -8,10 +8,8 @@ import Paper from '@material-ui/core/Paper/Paper';
 import Toolbar from '@material-ui/core/Toolbar/Toolbar';
 import Typography from '@material-ui/core/Typography/Typography';
 import { Menu } from '@material-ui/icons';
-
-import React, { useEffect, useState } from 'react';
+import React, { useEffect,  } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
 import './App.css';
 import { AddIteamForm } from './componetrs/AddIteamForm';
 import { RootReducerType } from './redux/store';
@@ -20,6 +18,7 @@ import { addTodolistTC, changeFiltertAC, FilterValueType,  getTodolistTC,  remov
 import { Todolist } from './Todolist';
 import LinearProgress from '@material-ui/core/LinearProgress/LinearProgress';
 import { ErrorSnackbar } from './componetrs/ErrorSnackbar';
+import { AppErrorType } from './redux/app-reducer';
 
 
 
@@ -33,6 +32,7 @@ function App() {
     const todolist = useSelector <RootReducerType,TodolistDomainType[]>(state => state.todolist)
     const tasks = useSelector <RootReducerType,TasksMainType>(state => state.tasks)
     const status = useSelector<RootReducerType, RequestStatusType>(state => state.app.entityStatus)
+    const error = useSelector<RootReducerType, AppErrorType>(state => state.app.error)
     const dispatch = useDispatch() 
 
     const addTodolist = (title: string) => {
@@ -69,7 +69,7 @@ function App() {
 
     
     return <div className="App">
-    <ErrorSnackbar/>
+    { <ErrorSnackbar/> }
       <AppBar position="static" >
         <Toolbar>
           <IconButton
