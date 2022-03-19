@@ -19,6 +19,7 @@ import { addTaskTC, removeTaskTC, TasksMainType, TaskStatuses, updateTaskTC } fr
 import { addTodolistTC, changeFiltertAC, FilterValueType,  getTodolistTC,  removeTlTC, RequestStatusType, TodolistDomainType, updateTlTC } from './redux/todolist-reducer';
 import { Todolist } from './Todolist';
 import LinearProgress from '@material-ui/core/LinearProgress/LinearProgress';
+import { ErrorSnackbar } from './componetrs/ErrorSnackbar';
 
 
 
@@ -68,7 +69,7 @@ function App() {
 
     
     return <div className="App">
-    
+    <ErrorSnackbar/>
       <AppBar position="static" >
         <Toolbar>
           <IconButton
