@@ -4,6 +4,7 @@ import { rawListeners, title } from "process"
 import { Dispatch } from "redux"
 import { v1 } from "uuid"
 import { todolistAPI } from "../api/api-todolist"
+import { setStatusAC } from "./app-reducer"
 
 
 
@@ -71,36 +72,52 @@ export const changeFiltertAC = (todolistId: string, filter: FilterValueType) => 
 
 export const getTodolistTC = () => {
     return (dispatch: Dispatch) => {
+        dispatch(setStatusAC('loading'))
         todolistAPI.getTodolist()
         .then((res) => {
             dispatch(getTodolistAC(res.data))
+        })
+        .finally(() => {
+            dispatch(setStatusAC('succeeded')) 
         })
     }
 }
 
 export const removeTlTC = (todolistId: string) => {
     return (dispatch: Dispatch) => {
+        dispatch(setStatusAC('loading'))
         todolistAPI.removeTodolist(todolistId)
         .then((res) => {
             dispatch(removeTodolistAC(todolistId))
+        })
+        .finally(() => {
+            dispatch(setStatusAC('succeeded')) 
         })
     }
 }
 
 export const addTodolistTC = (title: string) => {
     return (dispatch: Dispatch) => {
+        dispatch(setStatusAC('loading'))
         todolistAPI.addTodolist(title)
         .then((res) => {
          dispatch(addTodolistAC(res.data.data.item))   
+        })
+        .finally(() => {
+            dispatch(setStatusAC('succeeded')) 
         })
     }
 }
 
 export const updateTlTC = (todolistId: string, title: string) => {
     return(dispatch: Dispatch) => {
+        dispatch(setStatusAC('loading'))
         todolistAPI.updateTodlist(todolistId, title)
         .then((res) => {
             dispatch(updateTodolistAC(todolistId, title))
+        })
+        .finally(() => {
+            dispatch(setStatusAC('succeeded')) 
         })
     }
 }
