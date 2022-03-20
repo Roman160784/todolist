@@ -3,7 +3,7 @@ import {  AxiosError } from "axios"
 import { Dispatch } from "redux"
 import {  todiListAPI, UpdateTasksType } from "../api/api-todolist"
 import { RootReducerType } from "./store"
-import {  addTodolistACtype, getTodolistACtype, ResultCode } from "./todolist-reducer"
+import {  addTodolistACtype, getTodolistACtype, removeTodolistACtype, ResultCode } from "./todolist-reducer"
 
 
 
@@ -59,12 +59,17 @@ export const TaskReducer = (state: TasksMainType = initialState, action: MainAct
             coppyState[action.todolist.id] = []
             return coppyState
         }
+        case 'TL/REMOVE-TODOLIST' : {
+            let coppyState = {...state}
+            delete coppyState[action.todolistId]
+            return coppyState
+        }
     }
 
     return state
 }
 
-export type MainActionTaskType = getTodolistACtype | getTasksACtype | addTodolistACtype
+export type MainActionTaskType = getTodolistACtype | getTasksACtype | addTodolistACtype | removeTodolistACtype
 
 export type getTasksACtype = ReturnType<typeof getTasksAC>
 

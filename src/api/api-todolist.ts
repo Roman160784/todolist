@@ -44,6 +44,10 @@ const instance = axios.create({
     },
     addTodolist(title: string) {
         return instance.post<{title: string}, AxiosResponse<ResponseType<{item:TodolistType}>>>('todo-lists', {title})
-    }
+    },
+    removeTodolist(todolistId: string) {
+        return instance.delete<ResponseType>(`todo-lists/${todolistId}`)
+    },
+    
 
 }
