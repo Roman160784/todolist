@@ -2,6 +2,7 @@
 import {  AxiosError } from "axios"
 import { Dispatch } from "redux"
 import {  todiListAPI, UpdateTasksType } from "../api/api-todolist"
+import { appStatusAC } from "./app-reducer"
 import { RootReducerType } from "./store"
 import {  addTodolistACtype, getTodolistACtype, removeTodolistACtype, ResultCode } from "./todolist-reducer"
 
@@ -95,32 +96,45 @@ export const updateTaskAC = (todolistId: string, id: string, task: TasksType) =>
 
 export const getTaskTC = (todolistId: string) => {
     return (dispatch: Dispatch) => {
+        dispatch(appStatusAC('loading'))
         todiListAPI.getTask(todolistId)
         .then((res) => {
             dispatch(getTasksAC(todolistId, res.data.items))
+        })
+        .finally(() =>{
+            dispatch(appStatusAC('succeeded'))
         })
     }
 }
 
 export const createTaskTC = (todolistId: string, title: string) => {
     return (dispatch: Dispatch) => {
+        dispatch(appStatusAC('loading'))
         todiListAPI.createTask(todolistId, title)
         .then((res) => {
             dispatch(createTaskAC(todolistId, res.data.data.item)) 
+        })
+        .finally(() =>{
+            dispatch(appStatusAC('succeeded'))
         })
     }
 }
 
 export const removeTaskTC = (todolistId: string, id: string) => {
     return (dispatch: Dispatch) => {
+        dispatch(appStatusAC('loading'))
         todiListAPI.removeTask(todolistId, id)
         .then((res) => {
             dispatch(removeTaskAC(todolistId, id))
+        })
+        .finally(() =>{
+            dispatch(appStatusAC('succeeded'))
         })
     }
 }
 export const updateTaskTC = (todolistId: string, id: string, data: {title?: string, status?: TaskStatuses}) => {
     return (dispatch: Dispatch, getState: () => RootReducerType) => {
+        dispatch(appStatusAC('loading'))
         const state = getState()
         const allTasks = state.tasks
         const currentTasks = allTasks[todolistId]
@@ -134,6 +148,9 @@ export const updateTaskTC = (todolistId: string, id: string, data: {title?: stri
             todiListAPI.updateTask(todolistId, id, model)
             .then((res) => {
                 dispatch(updateTaskAC(todolistId, id, res.data.data.item))
+            })
+            .finally(() =>{
+                dispatch(appStatusAC('succeeded'))
             })
 
         }

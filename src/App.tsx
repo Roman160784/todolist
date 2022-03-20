@@ -14,7 +14,7 @@ import './App.css';
 import { AddIteamForm } from './componetrs/AddIteamForm';
 import { RootReducerType } from './redux/store';
 import {  createTaskTC, removeTaskTC, TasksMainType, TaskStatuses, updateTaskTC } from './redux/task-reducer';
-import {  addTodolistTC, changeFilterAC, changeTitleTC, FilterValueType,  getTodolistTC, removeTlTC, TodolistDomainType } from './redux/todolist-reducer';
+import {  addTodolistTC, changeFilterAC, changeTitleTC, FilterValueType,  getTodolistTC, removeTlTC, RequestStatusType, TodolistDomainType } from './redux/todolist-reducer';
 import { Todolist } from './Todolist';
 import LinearProgress from '@material-ui/core/LinearProgress/LinearProgress';
 import { ErrorSnackbar } from './componetrs/ErrorSnackbar';
@@ -30,8 +30,9 @@ function App() {
   }, [])
  
 
-    const todolist = useSelector <RootReducerType,TodolistDomainType[]>(state => state.todolist)
-    const tasks = useSelector <RootReducerType,TasksMainType>(state => state.tasks)
+    const todolist = useSelector <RootReducerType, TodolistDomainType[]>(state => state.todolist)
+    const tasks = useSelector <RootReducerType, TasksMainType>(state => state.tasks)
+    const status = useSelector <RootReducerType, RequestStatusType>(state => state.app.status)
     
     
     const dispatch = useDispatch() 
@@ -86,7 +87,7 @@ function App() {
           <Button color="inherit">Login</Button>
         </Toolbar>
       </AppBar>
-      {<LinearProgress color="secondary"/> }
+      { status === 'loading' &&  <LinearProgress color="secondary"/>  }
         <Container fixed>
             <Grid  style={{padding: "30px"}} container>
             <AddIteamForm title={''} addIteam={addTodolist}/>

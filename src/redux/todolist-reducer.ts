@@ -7,6 +7,7 @@ import { Dispatch } from "redux"
 import { textSpanContainsTextSpan } from "typescript"
 import { v1 } from "uuid"
 import { todiListAPI } from "../api/api-todolist"
+import { appStatusAC } from "./app-reducer"
 
 
 
@@ -77,36 +78,52 @@ export const changeTitleAC = (todolistId: string, title: string) => ({type: 'TL/
 
 export const getTodolistTC = () => {
     return (dispatch: Dispatch) => {
+        dispatch(appStatusAC('loading'))
         todiListAPI.getTodolist()
         .then((res) => {
             dispatch(getTodolistAC(res.data))
+        })
+        .finally(() =>{
+            dispatch(appStatusAC('succeeded'))
         })
     }
 }
 
 export const addTodolistTC = (title: string) => {
-    return (dispath: Dispatch) => {
+    return (dispatch: Dispatch) => {
+        dispatch(appStatusAC('loading'))
         todiListAPI.addTodolist(title)
         .then((res) => {
-            dispath(addTodolistAC(res.data.data.item))
+            dispatch(addTodolistAC(res.data.data.item))
+        })
+        .finally(() =>{
+            dispatch(appStatusAC('succeeded'))
         })
     }
 }
 
 export const removeTlTC = (todolistId: string) => {
-    return (dispath: Dispatch) => {
+    return (dispatch: Dispatch) => {
+        dispatch(appStatusAC('loading'))
         todiListAPI.removeTodolist(todolistId)
         .then((res) => {
-            dispath(removeTodolistAC(todolistId))
+            dispatch(removeTodolistAC(todolistId))
+        })
+        .finally(() =>{
+            dispatch(appStatusAC('succeeded'))
         })
     }
 }
 
 export const changeTitleTC = (todolistId: string, title: string) => {
-    return (dispath: Dispatch) => {
+    return (dispatch: Dispatch) => {
+        dispatch(appStatusAC('loading'))
         todiListAPI.changeTlTitle(todolistId, title)
         .then((res) => {
-            dispath(changeTitleAC(todolistId, title))
+            dispatch(changeTitleAC(todolistId, title))
+        })
+        .finally(() =>{
+            dispatch(appStatusAC('succeeded'))
         })
     }
 }
