@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import './App.css';
 import { AddIteamForm } from './componetrs/AddIteamForm';
 import { RootReducerType } from './redux/store';
-import {  createTaskTC, TasksMainType, TaskStatuses } from './redux/task-reducer';
+import {  createTaskTC, removeTaskTC, TasksMainType, TaskStatuses } from './redux/task-reducer';
 import {  addTodolistTC, FilterValueType,  getTodolistTC, removeTlTC, TodolistDomainType } from './redux/todolist-reducer';
 import { Todolist } from './Todolist';
 import LinearProgress from '@material-ui/core/LinearProgress/LinearProgress';
@@ -53,7 +53,7 @@ function App() {
     }
 
     const removeTask = (todolistId: string, id: string) => {
-        
+        dispatch(removeTaskTC(todolistId, id))
     }
 
     const changeTitleInTask = (todolistId: string, id: string, title: string) => {
