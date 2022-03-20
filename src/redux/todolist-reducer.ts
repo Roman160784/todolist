@@ -104,6 +104,9 @@ export const addTodolistTC = (title: string) => {
                 }  
             }
         })
+        .catch((res: AxiosError)=> {
+            dispatch(appErrorAC(res.message))
+        })
         .finally(() =>{
             dispatch(appStatusAC('succeeded'))
         })
