@@ -52,22 +52,28 @@ export const TodolistReducer = (state: TodolistDomainType[] = initialState, acti
         case 'TL/CHANGE-FILTER' : {
             return state.map(tl => tl.id === action.todolistId ? {...tl, filter: action.filter} : tl)
         }
+        case 'TL/CHANGE-TITLE' : {
+            return state.map(tl => tl.id === action.todolistId ? {...tl, title: action.title} : tl)
+             
+        }
     }
 
  return state
 }
 
-export type MainTodolistActionType = getTodolistACtype | addTodolistACtype | removeTodolistACtype | changeFilterACtype 
+export type MainTodolistActionType = getTodolistACtype | addTodolistACtype | removeTodolistACtype | changeFilterACtype | changeTitleACtype
 
 export type getTodolistACtype = ReturnType<typeof getTodolistAC>
 export type addTodolistACtype = ReturnType<typeof addTodolistAC>
 export type removeTodolistACtype = ReturnType<typeof removeTodolistAC>
 export type changeFilterACtype = ReturnType<typeof changeFilterAC>
+export type changeTitleACtype = ReturnType<typeof changeTitleAC>
 
 export const getTodolistAC = (todolist: TodolistType[]) => ({type: 'TL/GET-TODOLIST', todolist } as const)
 export const addTodolistAC = (todolist: TodolistType) => ({type: 'TL/ADD-TODOLIST', todolist} as const)
 export const removeTodolistAC = (todolistId: string) => ({type: 'TL/REMOVE-TODOLIST', todolistId} as const)
 export const changeFilterAC = (todolistId: string, filter: FilterValueType) => ({type: 'TL/CHANGE-FILTER', todolistId, filter} as const)
+export const changeTitleAC = (todolistId: string, title: string) => ({type: 'TL/CHANGE-TITLE', todolistId, title} as const)
 
 export const getTodolistTC = () => {
     return (dispatch: Dispatch) => {
@@ -92,6 +98,15 @@ export const removeTlTC = (todolistId: string) => {
         todiListAPI.removeTodolist(todolistId)
         .then((res) => {
             dispath(removeTodolistAC(todolistId))
+        })
+    }
+}
+
+export const changeTitleTC = (todolistId: string, title: string) => {
+    return (dispath: Dispatch) => {
+        todiListAPI.changeTlTitle(todolistId, title)
+        .then((res) => {
+            dispath(changeTitleAC(todolistId, title))
         })
     }
 }
