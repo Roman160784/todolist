@@ -14,7 +14,7 @@ import './App.css';
 import { AddIteamForm } from './componetrs/AddIteamForm';
 import { RootReducerType } from './redux/store';
 import {  TasksMainType, TaskStatuses } from './redux/task-reducer';
-import {  FilterValueType,  RequestStatusType, TodolistDomainType } from './redux/todolist-reducer';
+import {  FilterValueType,  getTodolistTC, TodolistDomainType } from './redux/todolist-reducer';
 import { Todolist } from './Todolist';
 import LinearProgress from '@material-ui/core/LinearProgress/LinearProgress';
 import { ErrorSnackbar } from './componetrs/ErrorSnackbar';
@@ -25,6 +25,9 @@ import { ErrorSnackbar } from './componetrs/ErrorSnackbar';
 
 function App() {
 
+  useEffect(() => {
+    dispatch(getTodolistTC())
+  }, [])
  
 
     const todolist = useSelector <RootReducerType,TodolistDomainType[]>(state => state.todolist)

@@ -28,13 +28,15 @@ deadline: string
 }
 
 const instance = axios.create({
-    baseURL : 'https://social-network.samuraijs.com/api/1.1',
+    baseURL : 'https://social-network.samuraijs.com/api/1.1/',
     withCredentials: true,
     headers: {
         'API-KEY' : '97175220-c190-496e-865d-5113b6c78275'
     }
 })
 
-const todilistAPI = {
-    
+ export const todiListAPI = {
+    getTodolist() {
+       return instance.get<TodolistType[]>('todo-lists')
+    }
 }

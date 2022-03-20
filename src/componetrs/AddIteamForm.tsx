@@ -15,7 +15,8 @@ type AddIteamFormPropsType = {
 
 export const AddIteamForm = (props: AddIteamFormPropsType) => {
 
-    const status = useSelector<RootReducerType, RequestStatusType>(state => state.app.entityStatus)
+    
+    
 
     const [title, setTitle] = useState<string>(props.title)
     const [error, setError] = useState<null | string>(null)
@@ -47,9 +48,9 @@ export const AddIteamForm = (props: AddIteamFormPropsType) => {
     return (
         <div>
             <TextField value={title} id="filled-basic" label="some text" variant="filled" size={'small'} 
-            onKeyPress={onKeyPressHandler} onChange={onChangeHandler} error={!!error} helperText={error} disabled={status === 'loading'}/>
+            onKeyPress={onKeyPressHandler} onChange={onChangeHandler} error={!!error} helperText={error} />
           
-            <IconButton  onClick={addTitleHandler}  color={'primary'} size={'small'} disabled={status === 'loading'}>
+            <IconButton  onClick={addTitleHandler}  color={'primary'} size={'small'} >
                 <AddCircleOutline/>
             </IconButton>
             {/* {error && <div className={error? s.error : ""}>{error}</div>} */}
