@@ -70,22 +70,28 @@ export const TaskReducer = (state: TasksMainType = initialState, action: MainAct
         case 'TASK/REMOVE-TASK' : {
             return {...state, [action.todolistId] : state[action.todolistId].filter(t => t.id !== action.id)}
         }
+        case 'TASK/UPDATE-TASK' : {
+            return {...state, [action.todolistId] 
+                : state[action.todolistId]. map(t => t.id === action.id ? {...action.task} : t)}
+        }
     }
 
     return state
 }
 
 export type MainActionTaskType = getTodolistACtype | getTasksACtype | addTodolistACtype | removeTodolistACtype | createTaskACtype
-| removeTaskACACtype
+| removeTaskACtype | updateTaskACtype
 
 export type getTasksACtype = ReturnType<typeof getTasksAC>
 export type createTaskACtype = ReturnType<typeof createTaskAC>
-export type removeTaskACACtype = ReturnType<typeof removeTaskAC>
+export type removeTaskACtype = ReturnType<typeof removeTaskAC>
+export type updateTaskACtype = ReturnType<typeof updateTaskAC>
 
 
 export const getTasksAC = (todolistId: string, tasks: TasksType[]) => ({type: 'TASK/GET-TASK', todolistId, tasks} as const) 
 export const createTaskAC = (todolistId: string, task: TasksType) => ({type: 'TASK/CREATE-TASK', todolistId, task} as const)
 export const removeTaskAC = (todolistId: string, id: string) => ({type: 'TASK/REMOVE-TASK', todolistId, id} as const)
+export const updateTaskAC = (todolistId: string, id: string, task: TasksType) => ({type: 'TASK/UPDATE-TASK', todolistId, id, task} as const)
 
 export const getTaskTC = (todolistId: string) => {
     return (dispatch: Dispatch) => {
@@ -111,5 +117,26 @@ export const removeTaskTC = (todolistId: string, id: string) => {
         .then((res) => {
             dispatch(removeTaskAC(todolistId, id))
         })
+    }
+}
+export const updateTaskTC = (todolistId: string, id: string, data: {title?: string, status?: TaskStatuses}) => {
+    return (dispatch: Dispatch, getState: () => RootReducerType) => {
+        const state = getState()
+        const allTasks = state.tasks
+        const currentTasks = allTasks[todolistId]
+        const task = currentTasks.find(t => t.id === id)
+
+        if(task){
+            const model: UpdateTasksType = {
+                ...task,
+                ...data,
+            }
+            todiListAPI.updateTask(todolistId, id, model)
+            .then((res) => {
+                dispatch(updateTaskAC(todolistId, id, res.data.data.item))
+            })
+
+        }
+       
     }
 }
