@@ -5,8 +5,8 @@ import { rawListeners, title } from "process"
 import { Dispatch } from "redux"
 import { textSpanContainsTextSpan } from "typescript"
 import { v1 } from "uuid"
-import { todolistAPI } from "../api/api-todolist"
-import { setErrorAC, setStatusAC } from "./app-reducer"
+
+
 
 
 export type FilterValueType = "all" | "active" | "completed"
@@ -37,118 +37,8 @@ let initialState : TodolistDomainType[] = [
 ]
 
 export const TodolistReducer = (state: TodolistDomainType[] = initialState, action: MainTodolistActionType ): TodolistDomainType[] => {
-  switch(action.type) {
-      case 'TL/GET-TODOLIST' : {
-          return action.todolist.map(tl => ({...tl, filter: 'all', entityStatus: 'succeeded'} ))
-      }
-      case 'TL/REMOVE-TODOLIST': {
-          return state.filter(tl => tl.id !== action.todolistId)
-      }
-      case 'TL/ADD-TODOLIST': {
-        return  [{...action.todolist, filter: 'all', entityStatus: 'succeeded'}, ...state]
-      }
-      case 'TL/UPDATE-TODOLIST': {
-          return state.map(tl => tl.id === action.todolistId ? {...tl, title: action.title} : tl)
-      }
-      case 'TL/CHANGE-FILTER': {
-          return state.map(tl => tl.id === action.todolistId ? {...tl, filter: action.filter} : tl)
-      }
-      case 'TL/DISABLE-BUTTON' : {
-          return state.map(tl => tl.id === action.todolistId ? {...tl, entityStatus: action.entityStatus} : tl)
-      }
-  }
+
  return state
 }
 
-
-export type MainTodolistActionType = getTodolistACtype | removeTodolistACtype | addTodolistACtype | updateTodolistACtype
-|changeFiltertACtype | disableRemoveButtonACtype
-
-export type getTodolistACtype = ReturnType<typeof getTodolistAC>
-export type removeTodolistACtype = ReturnType<typeof removeTodolistAC>
-export type addTodolistACtype = ReturnType<typeof addTodolistAC>
-export type updateTodolistACtype = ReturnType<typeof updateTodolistAC>
-export type changeFiltertACtype = ReturnType<typeof changeFiltertAC>
-export type disableRemoveButtonACtype = ReturnType<typeof disableRemoveButtonAC>
-
-
-export const getTodolistAC = (todolist: TodolistType[]) => ({type: 'TL/GET-TODOLIST', todolist} as const)
-export const removeTodolistAC = (todolistId: string) => ({type: 'TL/REMOVE-TODOLIST', todolistId} as const)
-export const addTodolistAC = (todolist: TodolistType) => ({type: 'TL/ADD-TODOLIST', todolist} as const)
-export const updateTodolistAC = (todolistId: string, title: string) => ({type: 'TL/UPDATE-TODOLIST', todolistId, title} as const)
-export const changeFiltertAC = (todolistId: string, filter: FilterValueType) => ({type: 'TL/CHANGE-FILTER', todolistId, filter} as const)
-export const disableRemoveButtonAC = (todolistId: string, entityStatus: RequestStatusType) => ({type: 'TL/DISABLE-BUTTON', todolistId, entityStatus} as const)
-
-
-export const getTodolistTC = () => {
-    return (dispatch: Dispatch) => {
-        dispatch(setStatusAC('loading'))
-        todolistAPI.getTodolist()
-        .then((res) => {
-            dispatch(getTodolistAC(res.data))
-        })
-        .catch((err: AxiosError) => {
-            dispatch(setErrorAC(err.message))
-        })
-        .finally(() => {
-            dispatch(setStatusAC('succeeded')) 
-        })
-    }
-}
-
-export const removeTlTC = (todolistId: string) => {
-    return (dispatch: Dispatch) => {
-        dispatch(setStatusAC('loading'))
-        dispatch(disableRemoveButtonAC(todolistId, 'loading'))
-        todolistAPI.removeTodolist(todolistId)
-        .then((res) => {
-            dispatch(removeTodolistAC(todolistId))
-        })
-        .catch((err: AxiosError) => {
-            dispatch(setErrorAC(err.message))
-        })
-        .finally(() => {
-            dispatch(setStatusAC('succeeded')) 
-        })
-    }
-}
-
-export const addTodolistTC = (title: string) => {
-    return (dispatch: Dispatch) => {
-        dispatch(setStatusAC('loading'))
-        todolistAPI.addTodolist(title)
-        .then((res) => {
-            if(res.data.resultCode === ResultCode.succes){
-                dispatch(addTodolistAC(res.data.data.item))
-            } else {
-                if(res.data.messages.length){
-                    dispatch(setErrorAC(res.data.messages[0])) 
-                } else{
-                    dispatch(setErrorAC("ERRROOOOR!!!"))
-                }
-            }
-        })
-        .catch((err: AxiosError) => {
-            dispatch(setErrorAC(err.message))
-        })
-        .finally(() => {
-            dispatch(setStatusAC('succeeded')) 
-        })
-    }
-}
-
-export const updateTlTC = (todolistId: string, title: string) => {
-    return(dispatch: Dispatch) => {
-        dispatch(setStatusAC('loading'))
-        todolistAPI.updateTodlist(todolistId, title)
-        .then((res) => {
-            dispatch(updateTodolistAC(todolistId, title))
-        })
-        .catch((err: AxiosError) => {
-            dispatch(setErrorAC(err.message))
-        })
-        .finally(() => {
-            dispatch(setStatusAC('succeeded')) 
-        })
-    }
-}
+export type MainTodolistActionType = ""
