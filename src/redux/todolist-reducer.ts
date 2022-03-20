@@ -7,7 +7,7 @@ import { Dispatch } from "redux"
 import { textSpanContainsTextSpan } from "typescript"
 import { v1 } from "uuid"
 import { todiListAPI } from "../api/api-todolist"
-import { appStatusAC } from "./app-reducer"
+import { appErrorAC, appStatusAC } from "./app-reducer"
 
 
 
@@ -94,7 +94,15 @@ export const addTodolistTC = (title: string) => {
         dispatch(appStatusAC('loading'))
         todiListAPI.addTodolist(title)
         .then((res) => {
-            dispatch(addTodolistAC(res.data.data.item))
+            if(res.data.resultCode === ResultCode.succes){
+                dispatch(addTodolistAC(res.data.data.item))
+            } else {
+                if (res.data.messages.length){
+                dispatch(appErrorAC(res.data.messages[0]))
+                } else {
+                    dispatch(appErrorAC('Error'))
+                }  
+            }
         })
         .finally(() =>{
             dispatch(appStatusAC('succeeded'))
