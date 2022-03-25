@@ -14,7 +14,7 @@ import './App.css';
 import { AddIteamForm } from './componetrs/AddIteamForm';
 import { RootReducerType } from './redux/store';
 import {  TasksMainType, TaskStatuses,  } from './redux/task-reducer';
-import {  addTodolistTC, FilterValueType, getTodolistTC, RequestStatusType, TodolistDomainType } from './redux/todolist-reducer';
+import {  addTodolistTC, FilterValueType, getTodolistTC, removeTodolistTC, RequestStatusType, TodolistDomainType } from './redux/todolist-reducer';
 import { Todolist } from './Todolist';
 import LinearProgress from '@material-ui/core/LinearProgress/LinearProgress';
 import { ErrorSnackbar } from './componetrs/ErrorSnackbar';
@@ -43,7 +43,7 @@ function App() {
     }
 
     const removeTodolist = (todolistId: string) => {
-     
+      dispatch(removeTodolistTC(todolistId))
     }
 
     const changeFilter = (todolistId: string, value: FilterValueType) => { 
