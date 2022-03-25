@@ -30,6 +30,8 @@ function App() {
 
     const todolist = useSelector <RootReducerType, TodolistDomainType[]>(state => state.todolist)
     const tasks = useSelector <RootReducerType, TasksMainType>(state => state.tasks)
+    const appStatus = useSelector<RootReducerType, RequestStatusType> (state => state.app.appStatus)
+
     const dispatch = useDispatch() 
 
     useEffect(()=> {
@@ -88,7 +90,7 @@ function App() {
           <Button color="inherit">Login</Button>
         </Toolbar>
       </AppBar>
-      {/* { status === 'loading' &&  <LinearProgress color="secondary"/>  } */}
+      { appStatus === 'loading' &&  <LinearProgress color="secondary"/>  }
         <Container fixed>
             <Grid  style={{padding: "30px"}} container>
             <AddIteamForm title={''} addIteam={addTodolist}/>

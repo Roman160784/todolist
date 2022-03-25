@@ -1,10 +1,8 @@
 
 import {  AxiosError } from "axios"
 import { Dispatch } from "redux"
-import { TLSSocket } from "tls"
 import { todolistAPI, UpdateTasksType } from "../api/api-todolist"
-
-
+import { setAppStatusAC } from "./app-reducer"
 import { RootReducerType } from "./store"
 import { addTodolistACtype, getTodolistACtype, removeTodolistACtype } from "./todolist-reducer"
 
@@ -98,33 +96,46 @@ export const updateTaskAC = (todolistId: string, id: string, model: UpdateTasksT
 
 export const getTasksTC = (todolistId: string) => {
     return (dispatch: Dispatch) => {
+        dispatch(setAppStatusAC('loading'))
         todolistAPI.getTasks(todolistId)
         .then((res) => {
             dispatch(getTasksAC(todolistId, res.data.items))
+        })
+        .finally(() => {
+            dispatch(setAppStatusAC('succeeded'))  
         })
     }
 }
 
 export const addTaskTC = (todolistId: string, title: string) => {
     return (dispatch: Dispatch) => {
+        dispatch(setAppStatusAC('loading'))
         todolistAPI.addTask(todolistId, title)
             .then((res) => {
                 dispatch(addTaskAC(todolistId, res.data.data.item)) 
+            })
+            .finally(() => {
+                dispatch(setAppStatusAC('succeeded'))  
             })
     }
 }
 
 export const removeTaskTC = (todolistId: string, id: string) => {
     return (dispatch: Dispatch) => {
+        dispatch(setAppStatusAC('loading'))
         todolistAPI.removeTask(todolistId, id)
         .then((res) => {
             dispatch(removeTaskAC(todolistId, id))
+        })
+        .finally(() => {
+            dispatch(setAppStatusAC('succeeded'))  
         })
     }
 }
 
 export const updateTaskTC = (todolistId: string, id: string, data: {status?: TaskStatuses, title?: string}) => {
     return (dispatch: Dispatch, getState: () => RootReducerType) => {
+        dispatch(setAppStatusAC('loading'))
         const state = getState()
         const allTasks = state.tasks
         const currentTask = allTasks[todolistId]
@@ -138,6 +149,9 @@ export const updateTaskTC = (todolistId: string, id: string, data: {status?: Tas
             todolistAPI.updateTask(todolistId, id, model)
             .then((res) => {
                dispatch(updateTaskAC(todolistId, id, res.data.data.item)) 
+            })
+            .finally(() => {
+                dispatch(setAppStatusAC('succeeded'))  
             })
         }
     }

@@ -1,15 +1,8 @@
-import { SportsTennis } from "@material-ui/icons"
+
 import { AxiosError } from "axios"
-import { type } from "os"
-import { rawListeners, title } from "process"
 import { Dispatch } from "redux"
-
-import { textSpanContainsTextSpan } from "typescript"
-import { v1 } from "uuid"
 import { todolistAPI } from "../api/api-todolist"
-
-
-
+import { setAppStatusAC } from "./app-reducer"
 
 
 
@@ -36,8 +29,7 @@ export type TodolistDomainType = TodolistType & {
 
 
 let initialState: TodolistDomainType[] = [
-    // {id: todolistId1, title: "What to learn", addedDate: "11.11.2011"},
-    // {id: todolistId2, title: "What to Buy", },
+  
 ]
 
 export const TodolistReducer = (state: TodolistDomainType[] = initialState, action: MainTodolistActionType): TodolistDomainType[] => {
@@ -79,36 +71,52 @@ export const updateTlTitleAC = (todolistId: string, title: string) => ({type:'TL
 
 export const getTodolistTC = () => {
     return (dispatch: Dispatch) => {
+        dispatch(setAppStatusAC('loading'))
         todolistAPI.getTodolist()
         .then((res) => {
             dispatch(getTodolistAC(res.data))
+        })
+        .finally(() => {
+            dispatch(setAppStatusAC('succeeded'))  
         })
     }
 }
 
 export const addTodolistTC = (title: string) => {
     return (dispatch: Dispatch) => {
+        dispatch(setAppStatusAC('loading'))
         todolistAPI.addTodolist(title)
         .then((res) => {
             dispatch(addTodolistAC(res.data.data.item))
+        })
+        .finally(() => {
+            dispatch(setAppStatusAC('succeeded'))  
         })
     }
 }
 
 export const removeTodolistTC = (todolistId: string) => {
     return (dispatch: Dispatch) => {
+        dispatch(setAppStatusAC('loading'))
         todolistAPI.removeTodolist(todolistId)
         .then((res) => {
             dispatch(removeTodolistAC(todolistId))
+        })
+        .finally(() => {
+            dispatch(setAppStatusAC('succeeded'))  
         })
     }
 }
 
 export const updateTlTitleTC = (todolistId: string, title: string) => {
     return (dispatch: Dispatch) => {
+        dispatch(setAppStatusAC('loading'))
         todolistAPI.updateTlTitle(todolistId, title)
         .then((res) => {
             dispatch(updateTlTitleAC(todolistId, title))
+        })
+        .finally(() => {
+            dispatch(setAppStatusAC('succeeded'))  
         })
     }
 } 
