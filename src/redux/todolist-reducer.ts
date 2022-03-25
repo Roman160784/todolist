@@ -2,7 +2,7 @@
 import { AxiosError } from "axios"
 import { Dispatch } from "redux"
 import { todolistAPI } from "../api/api-todolist"
-import { setAppStatusAC } from "./app-reducer"
+import { setAppErrorAC, setAppStatusAC } from "./app-reducer"
 
 
 
@@ -87,7 +87,16 @@ export const addTodolistTC = (title: string) => {
         dispatch(setAppStatusAC('loading'))
         todolistAPI.addTodolist(title)
         .then((res) => {
-            dispatch(addTodolistAC(res.data.data.item))
+            if(res.data.resultCode === ResultCode.succes){
+              dispatch(addTodolistAC(res.data.data.item))
+            } else if (res.data.messages.length){
+                dispatch(setAppErrorAC(res.data.messages[0]))
+            } else {
+                dispatch(setAppErrorAC('Somthing bad'))
+                }   
+        })
+        .catch((err: AxiosError) => {
+            dispatch(setAppErrorAC(err.message))
         })
         .finally(() => {
             dispatch(setAppStatusAC('succeeded'))  

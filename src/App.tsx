@@ -74,7 +74,7 @@ function App() {
 
     
     return <div className="App">
-    {/* { <ErrorSnackbar/> } */}
+    { <ErrorSnackbar/> }
       <AppBar position="static" >
         <Toolbar>
           <IconButton
