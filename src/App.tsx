@@ -18,6 +18,7 @@ import {  addTodolistTC, changeFilterAC, FilterValueType, getTodolistTC, removeT
 import { Todolist } from './Todolist';
 import LinearProgress from '@material-ui/core/LinearProgress/LinearProgress';
 import { ErrorSnackbar } from './componetrs/ErrorSnackbar';
+import { Login } from './componetrs/Login';
 
 
 
@@ -94,6 +95,7 @@ function App() {
         <Container fixed>
             <Grid  style={{padding: "30px"}} container>
             <AddIteamForm title={''} addIteam={addTodolist}/>
+            <Login/>
             </Grid>
             <Grid container spacing={5}>
             {todolist.map(tl => {
