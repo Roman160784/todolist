@@ -13,8 +13,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import './App.css';
 import { AddIteamForm } from './componetrs/AddIteamForm';
 import { RootReducerType } from './redux/store';
-import {  createTaskTC, removeTaskTC, TasksMainType, TaskStatuses, updateTaskTC } from './redux/task-reducer';
-import {  addTodolistTC, changeFilterAC, changeTitleTC, FilterValueType,  getTodolistTC, removeTlTC, RequestStatusType, TodolistDomainType } from './redux/todolist-reducer';
+import {  TasksMainType, TaskStatuses,  } from './redux/task-reducer';
+import {  FilterValueType, RequestStatusType, TodolistDomainType } from './redux/todolist-reducer';
 import { Todolist } from './Todolist';
 import LinearProgress from '@material-ui/core/LinearProgress/LinearProgress';
 import { ErrorSnackbar } from './componetrs/ErrorSnackbar';
@@ -25,9 +25,7 @@ import { ErrorSnackbar } from './componetrs/ErrorSnackbar';
 
 function App() {
 
-  useEffect(() => {
-    dispatch(getTodolistTC())
-  }, [])
+  
  
 
     const todolist = useSelector <RootReducerType, TodolistDomainType[]>(state => state.todolist)
@@ -38,35 +36,35 @@ function App() {
     const dispatch = useDispatch() 
 
     const addTodolist = (title: string) => {
-        dispatch(addTodolistTC(title))
+       
     }
 
     const removeTodolist = (todolistId: string) => {
-      dispatch(removeTlTC(todolistId))
+     
     }
 
     const changeFilter = (todolistId: string, value: FilterValueType) => { 
-      dispatch(changeFilterAC(todolistId, value))
+     
     }
 
     const addTask = (todolistId: string, title: string) => {
-        dispatch(createTaskTC(todolistId, title))
+        
     }
 
     const removeTask = (todolistId: string, id: string) => {
-        dispatch(removeTaskTC(todolistId, id))
+       
     }
 
     const changeTitleInTask = (todolistId: string, id: string, title: string) => {
-        dispatch(updateTaskTC(todolistId, id, {title}))
+        
     }
 
     const changeStatus = (todolistId: string, id: string, status: TaskStatuses) => {
-      dispatch(updateTaskTC(todolistId, id, {status}))
+      
     }
 
     const changeTitleInTL = (todolistId: string, title: string) => {
-        dispatch(changeTitleTC(todolistId, title))
+        
     }
 
     

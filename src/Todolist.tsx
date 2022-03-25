@@ -7,7 +7,7 @@ import { AddIteamForm } from './componetrs/AddIteamForm';
 // import { Button } from './componetrs/Button';
 import { EditableSpan } from './componetrs/edditableSpan';
 import { Tasks } from './componetrs/Tasks';
-import {   getTaskTC, TaskStatuses, TasksType } from './redux/task-reducer';
+import {  TaskStatuses, TasksType } from './redux/task-reducer';
 import { FilterValueType, TodolistDomainType } from './redux/todolist-reducer';
 
 
@@ -30,9 +30,7 @@ export type TodolistPropsType = {
 
 export const Todolist = (props: TodolistPropsType) => {
 
-    useEffect(() => {
-        dispatch(getTaskTC(props.todo.id))
-    }, [])
+  
 
     const dispatch = useDispatch()
 
