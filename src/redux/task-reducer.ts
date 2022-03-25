@@ -6,7 +6,7 @@ import { todolistAPI } from "../api/api-todolist"
 
 
 import { RootReducerType } from "./store"
-import { getTodolistACtype } from "./todolist-reducer"
+import { addTodolistACtype, getTodolistACtype } from "./todolist-reducer"
 
 
 
@@ -58,12 +58,15 @@ export const TaskReducer = (state: TasksMainType = initialState, action: MainAct
        case 'TASKS/DET-TASK' : {
            return {...state, [action.todolistId] : action.tasks}
        }
+       case 'TL/ADD-TODOLIST' : {
+          return {...state, [action.todolist.id] : []}
+       }
    }
 
     return state
 }
 
-export type MainActionTaskType = getTodolistACtype | getTasksACtype
+export type MainActionTaskType = getTodolistACtype | getTasksACtype | addTodolistACtype
 
 export type getTasksACtype = ReturnType<typeof getTasksAC>
 
