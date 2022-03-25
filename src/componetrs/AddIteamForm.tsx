@@ -3,10 +3,10 @@ import IconButton from '@material-ui/core/IconButton/IconButton';
 import TextField from '@material-ui/core/TextField/TextField';
 import { AddCircleOutline } from '@material-ui/icons';
 import React, { ChangeEvent, useState, KeyboardEvent } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { errorType } from '../redux/app-reducer';
 import { RootReducerType } from '../redux/store';
-import { RequestStatusType, TodolistDomainType } from '../redux/todolist-reducer';
+import { RequestStatusType, TodolistDomainType} from '../redux/todolist-reducer';
 import s from './AddIteamForm.module.css'
  
 type AddIteamFormPropsType = {
@@ -15,10 +15,8 @@ type AddIteamFormPropsType = {
 }
 
 export const AddIteamForm = (props: AddIteamFormPropsType) => {
-
  
-
-
+   
     const [title, setTitle] = useState<string>(props.title)
     const [error, setError] = useState<null | string>(null)
 

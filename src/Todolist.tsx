@@ -81,7 +81,8 @@ export const Todolist = (props: TodolistPropsType) => {
                     return (
                         <Tasks key={t.id} tasks={t}
                             todolistId={props.todo.id}
-                            changeStatus={props.changeStatus} 
+                            changeStatus={props.changeStatus}
+                             
                             removeTask={props.removeTask}
                             changeTitleInTask={props.changeTitleInTask}
                             />
