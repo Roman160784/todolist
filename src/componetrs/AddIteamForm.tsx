@@ -3,11 +3,7 @@ import IconButton from '@material-ui/core/IconButton/IconButton';
 import TextField from '@material-ui/core/TextField/TextField';
 import { AddCircleOutline } from '@material-ui/icons';
 import React, { ChangeEvent, useState, KeyboardEvent } from 'react';
-import { useSelector } from 'react-redux';
-import { errorType } from '../redux/app-reducer';
-import { RootReducerType } from '../redux/store';
-import { RequestStatusType, TodolistDomainType} from '../redux/todolist-reducer';
-import s from './AddIteamForm.module.css'
+
  
 type AddIteamFormPropsType = {
     title: string

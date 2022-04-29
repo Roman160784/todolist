@@ -1,14 +1,15 @@
 import Button from '@material-ui/core/Button/Button';
 import IconButton from '@material-ui/core/IconButton/IconButton';
 import { Delete } from '@material-ui/icons';
-import React, { ChangeEvent, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { ChangeEvent, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { AddIteamForm } from './componetrs/AddIteamForm';
 // import { Button } from './componetrs/Button';
 import { EditableSpan } from './componetrs/edditableSpan';
 import { Tasks } from './componetrs/Tasks';
-import {  getTasksTC, TaskStatuses, TasksType } from './redux/task-reducer';
-import { FilterValueType, TodolistDomainType } from './redux/todolist-reducer';
+import { RootReducerType } from './redux/store';
+import { getTasksTC, TaskStatuses, TasksType } from './redux/task-reducer';
+import { FilterValueType, RequestStatusType, TodolistDomainType } from './redux/todolist-reducer';
 
 
 export type TodolistPropsType = {
@@ -30,14 +31,14 @@ export type TodolistPropsType = {
 
 export const Todolist = (props: TodolistPropsType) => {
 
-  
-
     const dispatch = useDispatch()
+    const appStatus = useSelector<RootReducerType, RequestStatusType>(state => state.app.appStatus)
 
-    useEffect(() => {
-        dispatch(getTasksTC(props.todo.id))
-    }, [])
+  useEffect(() => {
+    dispatch(getTasksTC(props.todo.id))
+  }, [])
 
+  
     const changeFilterHandler = (value: FilterValueType) => {
         props.changeFilter(props.todo.id, value)  
     }
@@ -68,7 +69,7 @@ export const Todolist = (props: TodolistPropsType) => {
                 <EditableSpan title={props.todo.title} changeTitle={(title: string) => {changeTitleInTLHandler(title)}} />
                 <IconButton aria-label="delete" color={'primary'} 
                 size={'medium'} 
-                disabled={props.todo.entityStatus === "loading"}
+                disabled={appStatus === "loading"}
                 onClick={() => {props.removeTodolist(props.todo.id)}}>
                     <Delete fontSize="inherit" />
                 </IconButton>

@@ -10,34 +10,69 @@ const instance = axios.create({
     }
 })
 
-export const todolistAPI ={
-    getTodolist(){
+export const todolistAPI = {
+    getTodolists(){
         return instance.get<TodolistType[]>('todo-lists')
     },
-    getTasks(todolistId: string){
-        return instance.get<ResponseTasksType>(`todo-lists/${todolistId}/tasks`)
-    },
-    addTodolist(title: string){
+    addTodolist(title: string) {
         return instance.post<{ title: string }, AxiosResponse<ResponseType<{ item: TodolistType }>>>('todo-lists', {title})
     },
-    removeTodolist(todolistId: string){
+    removeTodolist(todolistId: string) {
         return instance.delete<ResponseType>(`todo-lists/${todolistId}`)
+    },
+    changeTodolistTitle(todolistId: string, title: string){
+        return instance.put<{ title: string }, AxiosResponse<ResponseType<{ item: TodolistType }>>>(`todo-lists/${todolistId}`, {title})
+    },
+}
+
+export const tasksAPI = {
+    getTasks(todolistId: string){
+        return instance.get<ResponseTasksType>(`todo-lists/${todolistId}/tasks`)
     },
     addTask(todolistId: string, title: string){
         return instance.post<{ title: string }, AxiosResponse<ResponseType<{ item: TasksType }>>>(`todo-lists/${todolistId}/tasks`, {title})
     },
     removeTask(todolistId: string, taskId: string){
-        return instance.delete<ResponseTasksType>(`todo-lists/${todolistId}/tasks/${taskId}`)
+        return instance.delete<ResponseType>(`todo-lists/${todolistId}/tasks/${taskId}`)
     },
-    updateTlTitle(todolistId: string, title: string){
-        return instance.put<{ title: string }, AxiosResponse<ResponseType<{ item: TodolistType }>>>(`todo-lists/${todolistId}`, {title})
-    },
-    updateTask(todolistId: string, taskId:string, model: UpdateTasksType) {
+    updateTask(todolistId: string, taskId: string, model: UpdateTasksType){
         return instance.put<{ model: UpdateTasksType }, AxiosResponse<ResponseType<{ item: TasksType }>>>
         (`todo-lists/${todolistId}/tasks/${taskId}`, {...model})
+    }
+}
+
+export const authAPI = {
+    login(logIn: LoginType){
+       return instance.post<LoginType, AxiosResponse<LoginResponseType>>('auth/login', logIn)
+    },
+    logOut(){
+        return instance.delete<ResponseType>('auth/login')
+    },
+    me(){
+        return instance.get<ResponseType<MeResponseType>>('auth/me')
     },
 }
 
+export type MeResponseType = {
+    id: number
+    email: string
+    login: string
+}
+
+export type LoginType = {
+    email: string
+    password: string
+    rememberMe: boolean
+    captcha?: boolean
+}
+
+export type LoginResponseType = {
+    resultCode: number
+    messages: Array<string>
+    data: {
+      userId: string
+    }
+}
 
 
 export type ResponseTasksType = {
@@ -45,6 +80,8 @@ export type ResponseTasksType = {
     totalCount: number
     items: TasksType[]
 }
+
+
 
 export type ResponseType <D={}> = {
     resultCode: number
