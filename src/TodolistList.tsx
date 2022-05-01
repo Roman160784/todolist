@@ -37,7 +37,7 @@ export const TodolistList = () => {
     }
 
     const changeFilter = (todolistId: string, value: FilterValueType) => { 
-        dispatch(changeTodolistFilterAC(todolistId, value))
+        dispatch(changeTodolistFilterAC({todolistId, value}))
     }
 
     const addTask = (todolistId: string, title: string) => {

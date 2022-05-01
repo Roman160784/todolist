@@ -1,6 +1,7 @@
 
+import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 import { applyMiddleware, combineReducers, createStore } from "redux";
-import thunk from "redux-thunk";
+import thunkMiddleware from "redux-thunk";
 import { appReducer } from "./app-reducer";
 import { authReducer } from "./auth-reducer";
 import { TaskReducer } from "./task-reducer";
@@ -16,7 +17,12 @@ auth: authReducer,
 
 export type RootReducerType = ReturnType<typeof rootReducer>
 
-export const store = createStore(rootReducer,applyMiddleware(thunk))
+//created store
+export const store = configureStore({
+    reducer: rootReducer,
+    middleware: getDefaultMiddleware => getDefaultMiddleware().prepend(thunkMiddleware)
+          
+})
 
 //@ts-ignore
 window.store = store;

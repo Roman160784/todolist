@@ -1,4 +1,5 @@
 
+import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { AxiosError } from "axios"
 import { Dispatch } from "redux"
 import { authAPI, LoginType } from "../api/api-todolist"
@@ -6,63 +7,60 @@ import { serverErrorHandler } from "../util/errorUtils"
 import { setAppErrorAC, setAppStatusAC } from "./app-reducer"
 import { ResultCode } from "./todolist-reducer"
 
-export type InitialStateType = {
-    isLogin : boolean
-}
 
-export const initialState: InitialStateType = {
+export const initialState = {
     isLogin: false
 }
 
-export const authReducer = (state: InitialStateType = initialState, action: AuthActionsType): InitialStateType => {
-    switch(action.type){
-        case 'AUTH/LOG-IN': {
-            return {...state, isLogin : action.isLogin}
+const slice = createSlice({
+    name: 'auth',
+    initialState: initialState,
+    reducers: {
+        setIsloggedInAC(state, action: PayloadAction<{isLogin: boolean}>){
+            state.isLogin = action.payload.isLogin
         }
-        default:
-            return state
     }
+})
 
-}
+export const authReducer = slice.reducer
+export const {setIsloggedInAC} = slice.actions
 
-export type AuthActionsType = logInACType
 
-export type logInACType = ReturnType<typeof logInAC>
-
-export const logInAC = (isLogin: boolean) => ({type: 'AUTH/LOG-IN', isLogin} as const)
 
 export const setIsLoginTC = (logIn: LoginType) => {
     return (dispatch: Dispatch) => {
-        dispatch(setAppStatusAC('loading'))
+        dispatch(setAppStatusAC({status: 'loading'}))
         authAPI.login(logIn)
         .then((res) => {
             if(res.data.resultCode === ResultCode.succes){
-                dispatch(logInAC(true))
-            }
+                dispatch(setIsloggedInAC({isLogin: true}))
+            } 
         })
         .catch((err: AxiosError) => {
-            dispatch(setAppErrorAC('Somthing bad'))
+            dispatch(setAppErrorAC({error: err.message}))
         })
         .finally(() => {
-            dispatch(setAppStatusAC('succeeded'))  
+            dispatch(setAppStatusAC({status: 'succeeded'}))  
         })
     }
 }
 
 export const logOutTC = () => {
     return (dispatch: Dispatch) => {
-        dispatch(setAppStatusAC('loading'))
+        dispatch(setAppStatusAC({status: 'loading'}))
         authAPI.logOut()
         .then((res) => {
             if(res.data.resultCode === ResultCode.succes){
-                dispatch(logInAC(false))
+                dispatch(setIsloggedInAC({isLogin: false}))
+            }else {
+                serverErrorHandler(dispatch, res.data) 
             }
         })
         .catch((err: AxiosError) => {
-            dispatch(setAppErrorAC('Somthing bad'))
+            dispatch(setAppErrorAC({error: err.message}))
         })
         .finally(() => {
-            dispatch(setAppStatusAC('succeeded'))  
+            dispatch(setAppStatusAC({status: 'succeeded'}))  
         })
     }
 }
