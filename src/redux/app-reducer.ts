@@ -8,8 +8,13 @@ import { RequestStatusType, ResultCode } from "./todolist-reducer";
 
 export type errorType = string | null 
 
+export type AppReducerType = {
+    appStatus: RequestStatusType
+    error: errorType
+    autorise: boolean
+}
 
-const initialState = {
+const initialState: AppReducerType = {
   appStatus: "succeeded" as RequestStatusType,
   error: null as errorType,
   autorise: false,
