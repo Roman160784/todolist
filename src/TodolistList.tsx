@@ -41,11 +41,11 @@ export const TodolistList = () => {
     }
 
     const addTask = (todolistId: string, title: string) => {
-     dispatch(addTaskTC(todolistId, title))
+     dispatch(addTaskTC({todolistId, title}))
     }
 
     const removeTask = (todolistId: string, id: string) => {
-       dispatch(removeTaskTC(todolistId, id))
+       dispatch(removeTaskTC({todolistId, id}))
     }
 
     const changeTitleInTask = (todolistId: string, id: string, title: string) => {

@@ -1,4 +1,4 @@
-import { addTaskAC, getTasksAC, removeTaskAC, TaskPriorities, TaskReducer, TasksMainType, TaskStatuses, TasksType, updateTaskAC } from "../task-reducer";
+import {   addTaskTC, getTasksTC, removeTaskTC, TaskPriorities, TaskReducer, TasksMainType, TaskStatuses, TasksType, updateTaskAC } from "../task-reducer";
 import { addTodolistAC, getTodolistAC, removeTodolistAC, TodolistType } from "../todolist-reducer";
 
 let startState: TasksMainType = {}
@@ -46,7 +46,7 @@ let todolist: TodolistType = {
 
 test('correct task should be deleted from correct array', () => {
 
-    const action = removeTaskAC({todolistId:'todolistId2',id: "2"})
+    const action = removeTaskTC.fulfilled({todolistId:'todolistId2',id: "2"}, 'requestId', {todolistId: 'todolistId2', id: "2"})
 
     const endState = TaskReducer(startState, action)
 
@@ -58,7 +58,7 @@ test('correct task should be deleted from correct array', () => {
 
 test('correct task should be added in correct array', () => {
 
-    const action = addTaskAC({ tasks: task, todolistId: 'todolistId1'})
+    const action = addTaskTC.fulfilled({ tasks: task, todolistId: 'todolistId1'}, 'requestId', {todolistId: 'todolistId1', title: 'RDUX'})
     
 
     const endState = TaskReducer(startState, action)
@@ -139,7 +139,7 @@ test('empty array should be added when we add todolists', () => {
 
 test('tasks should be added for todolist', () => {
 
-    const action = getTasksAC({tasks: startState['todolistId1'], todolistId: 'todolistId1'})
+    const action = getTasksTC.fulfilled({tasks: startState['todolistId1'], todolistId: 'todolistId1'}, 'requestId', 'todolistId1')
 
     const endState = TaskReducer({
         'todolistId1' : [], 

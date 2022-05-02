@@ -8,7 +8,7 @@ import { AddIteamForm } from './componetrs/AddIteamForm';
 import { EditableSpan } from './componetrs/edditableSpan';
 import { Tasks } from './componetrs/Tasks';
 import { RootReducerType } from './redux/store';
-import { getTasksTC, TaskStatuses, TasksType } from './redux/task-reducer';
+import {  getTasksTC, TaskStatuses, TasksType } from './redux/task-reducer';
 import { FilterValueType, RequestStatusType, TodolistDomainType } from './redux/todolist-reducer';
 
 
