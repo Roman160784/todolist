@@ -3,7 +3,7 @@ import { appReducer, AppReducerType, setAppErrorAC, setAppStatusAC, setIsLoginIn
 let startState: AppReducerType
 
 beforeEach(() => {
-    startState ={
+    startState = {
         error: null,
         appStatus: 'idle',
         autorise: false,

@@ -7,8 +7,11 @@ import { serverErrorHandler } from "../util/errorUtils"
 import { setAppErrorAC, setAppStatusAC } from "./app-reducer"
 import { ResultCode } from "./todolist-reducer"
 
+export type AuthReducerType = {
+    isLogin: boolean
+}
 
-export const initialState = {
+export const initialState: AuthReducerType = {
     isLogin: false
 }
 
