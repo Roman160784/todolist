@@ -53,7 +53,7 @@ export const Login = () => {
           },
 
         onSubmit: values => {
-            dispatch(setIsLoginTC(values))
+            dispatch(setIsLoginTC({logIn: values}))
         },
       });
     

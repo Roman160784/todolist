@@ -1,5 +1,5 @@
-import {   addTaskTC, getTasksTC, removeTaskTC, TaskPriorities, TaskReducer, TasksMainType, TaskStatuses, TasksType, updateTaskAC } from "../task-reducer";
-import { addTodolistAC, getTodolistAC, removeTodolistAC, TodolistType } from "../todolist-reducer";
+import {   addTaskTC, getTasksTC, removeTaskTC, TaskPriorities, TaskReducer, TasksMainType, TaskStatuses, TasksType, updateTaskTC } from "../task-reducer";
+import { addTodolistAC, getTodolistsTC, removeTodolistAC, TodolistType } from "../todolist-reducer";
 
 let startState: TasksMainType = {}
 
@@ -72,7 +72,8 @@ test('correct task should be added in correct array', () => {
 
 test('correct task should changed status', () => {
 
-    const action = updateTaskAC({todolistId: 'todolistId2', id: '3', task: task})
+    const action = updateTaskTC.fulfilled(
+{todolistId: 'todolistId2', id: '3', task: task}, 'requestId', {todolistId: 'todolistId1', id: '3', data:{status: TaskStatuses.Completed}} )
 
     const endState = TaskReducer(startState, action)
 
@@ -85,7 +86,8 @@ test('correct task should changed status', () => {
 
 test('correct task should changed title', () => {
 
-    const action = updateTaskAC({todolistId: 'todolistId1', id: '1', task: task})
+    const action = updateTaskTC.fulfilled(
+{todolistId: 'todolistId1', id: '1', task: task}, 'requestId', {todolistId: 'todolistId1', id: '1', data:{title: 'RDUX'}})
 
     const endState = TaskReducer(startState, action)
 
@@ -124,10 +126,10 @@ test('task should be deleted, when todolist deleled', () => {
 })
 
 test('empty array should be added when we add todolists', () => {
-    const action = getTodolistAC({todolist: [
+    const action = getTodolistsTC.fulfilled({todolist: [
         {id: '888', addedDate: '', order: 0, title: 'TEST1'},
         {id: '555', addedDate: '', order: 0, title: 'TEST2'},
-    ] } )
+    ] }, 'requestId' )
 
     const endState = TaskReducer({}, action)
     const keys = Object.keys(endState)

@@ -1,5 +1,5 @@
 import { v1 } from "uuid";
-import { addTodolistAC, changeTodolistFilterAC, changeTodolistTitleAC, getTodolistAC, removeTodolistAC, TodolistDomainType, TodolistReducer, TodolistType } from "../todolist-reducer";
+import { addTodolistAC, changeTodolistFilterAC, changeTodolistTitleAC, getTodolistsTC, removeTodolistAC, TodolistDomainType, TodolistReducer, TodolistType } from "../todolist-reducer";
 
 
 let startState: TodolistDomainType[] = []
@@ -54,7 +54,7 @@ test ('correct todolist sould change filter', () => {
 
 test ('todolist should be added', () => {
 
-    const action = getTodolistAC({todolist: startState})
+    const action = getTodolistsTC.fulfilled({todolist: startState}, 'requestId')
     const endState = TodolistReducer([], action)
 
     expect(endState.length).toBe(2)

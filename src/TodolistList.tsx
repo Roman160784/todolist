@@ -49,11 +49,11 @@ export const TodolistList = () => {
     }
 
     const changeTitleInTask = (todolistId: string, id: string, title: string) => {
-       dispatch(updateTaskTC(todolistId, id, {title}))
+       dispatch(updateTaskTC({todolistId, id, data: {title}}))
     }
 
     const changeStatus = (todolistId: string, id: string, status: TaskStatuses) => {
-      dispatch(updateTaskTC(todolistId, id, {status}))
+      dispatch(updateTaskTC({todolistId, id, data: {status}}))
     }
 
     const changeTitleInTL = (todolistId: string, title: string) => {

@@ -6,7 +6,7 @@ import { tasksAPI, UpdateTasksType } from "../api/api-todolist"
 import { serverErrorHandler } from "../util/errorUtils"
 import { setAppErrorAC, setAppStatusAC } from "./app-reducer"
 import { RootReducerType } from "./store"
-import { addTodolistAC, getTodolistAC, removeTodolistAC, ResultCode } from "./todolist-reducer"
+import { addTodolistAC, getTodolistsTC, removeTodolistAC, ResultCode } from "./todolist-reducer"
 
 
 export type TasksType = {
@@ -52,6 +52,11 @@ export const getTasksTC = createAsyncThunk('tasks/getTasks', async (todolistId: 
         const res = await tasksAPI.getTasks(todolistId);
          // thunkAPI.dispatch(getTasksAC({ tasks: res.data.items, todolistId: todolistId }))
     return { tasks: res.data.items, todolistId: todolistId };
+    }
+    catch (err) {
+        if (axios.isAxiosError(err)) {
+            thunkAPI.dispatch(setAppErrorAC({ error: err.message }))
+        }
     }
     finally{
         thunkAPI.dispatch(setAppStatusAC({ status: 'succeeded' }))
@@ -99,24 +104,59 @@ export const addTaskTC = createAsyncThunk('tasks/addTask', async (param: { todol
      
 })
 
+export const updateTaskTC = createAsyncThunk('tasks/updateTask',
+ async (param: {todolistId: string, id: string, data: { status?: TaskStatuses, title?: string, }}, thunkAPI) => {
+    thunkAPI.dispatch(setAppStatusAC({ status: 'loading' }))
+
+    const allState = thunkAPI.getState() as RootReducerType 
+    const currentTask = allState.tasks[param.todolistId].find(t => t.id === param.id)
+
+    if (currentTask) {
+        const model: UpdateTasksType = {
+            ...currentTask,
+            ...param.data,
+        }
+        try{
+           const res = await tasksAPI.updateTask(param.todolistId, param.id, model) 
+           if (res.data.resultCode === ResultCode.succes) {
+            return { todolistId: param.todolistId, id: param.id, task: res.data.data.item }
+        } else {
+            serverErrorHandler(thunkAPI.dispatch, res.data)
+            thunkAPI.rejectWithValue(null)
+        }
+        }
+        catch(err) {
+            if(axios.isAxiosError(err)){
+                thunkAPI.dispatch(setAppErrorAC({ error: err.message }))
+                thunkAPI.rejectWithValue(null)           
+             }
+        }
+        finally{
+            thunkAPI.dispatch(setAppStatusAC({ status: 'succeeded' })) 
+        }
+    }
+ })
+
+
 const slice = createSlice({
     name: 'tasks',
     initialState: initialState,
     reducers: {
         //for reducers which use in different componets
 
-        updateTaskAC(state, action: PayloadAction<{ todolistId: string, id: string, task: TasksType }>) {
-            const tasks = state[action.payload.todolistId]
-            const index = tasks.findIndex(t => t.id === action.payload.id)
-            if (index > -1) {
-                tasks[index] = { ...tasks[index], ...action.payload.task }
-            }
-        }
+        // updateTaskAC(state, action: PayloadAction<{ todolistId: string, id: string, task: TasksType }>) {
+        //     const tasks = state[action.payload.todolistId]
+        //     const index = tasks.findIndex(t => t.id === action.payload.id)
+        //     if (index > -1) {
+        //         tasks[index] = { ...tasks[index], ...action.payload.task }
+        //     }
+        // }
     },
+
     //for reducers from other reducer and actions which we use once
     extraReducers: (builder) => {
-        builder.addCase(getTodolistAC, (state, action) => {
-            action.payload.todolist.forEach(tl => { state[tl.id] = [] })
+        builder.addCase(getTodolistsTC.fulfilled, (state, action) => {
+            action.payload!.todolist.forEach(tl => { state[tl.id] = [] })
         })
         builder.addCase(addTodolistAC, (state, action) => {
             state[action.payload.todolist.id] = []
@@ -125,7 +165,7 @@ const slice = createSlice({
             delete state[action.payload.todolistId]
         })
         builder.addCase(getTasksTC.fulfilled, (state, action) => {
-            state[action.payload.todolistId] = action.payload.tasks
+            state[action.payload!.todolistId] = action.payload!.tasks
         })
         builder.addCase(removeTaskTC.fulfilled, (state, action) => {
             const task = state[action.payload!.todolistId]
@@ -138,40 +178,16 @@ const slice = createSlice({
             state[action.payload!.todolistId].unshift(action.payload!.tasks)
             
         })
+        builder.addCase(updateTaskTC.fulfilled, (state, action) => {
+            const tasks = state[action.payload!.todolistId]
+            const index = tasks.findIndex(t => t.id === action.payload!.id)
+            if (index > -1) {
+                tasks[index] = { ...tasks[index], ...action.payload!.task }
+            } 
+        })
     }
 })
 
 export const TaskReducer = slice.reducer
-export const { updateTaskAC } = slice.actions
 
 
-export const updateTaskTC = (todolistId: string, id: string, data: { status?: TaskStatuses, title?: string, }) => {
-    return (dispatch: Dispatch, getState: () => RootReducerType) => {
-        dispatch(setAppStatusAC({ status: 'loading' }))
-        const allState = getState()
-        const tasks = allState.tasks
-        const tasksFromTL = tasks[todolistId]
-        const currentTask = tasksFromTL.find(t => t.id === id)
-
-        if (currentTask) {
-            const model: UpdateTasksType = {
-                ...currentTask,
-                ...data,
-            }
-            tasksAPI.updateTask(todolistId, id, model)
-                .then((res) => {
-                    if (res.data.resultCode === ResultCode.succes) {
-                        dispatch(updateTaskAC({ todolistId: todolistId, id: id, task: res.data.data.item }))
-                    } else {
-                        serverErrorHandler(dispatch, res.data)
-                    }
-                })
-                .catch((err: AxiosError) => {
-                    dispatch(setAppErrorAC({ error: err.message }))
-                })
-                .finally(() => {
-                    dispatch(setAppStatusAC({ status: 'succeeded' }))
-                })
-        }
-    }
-}

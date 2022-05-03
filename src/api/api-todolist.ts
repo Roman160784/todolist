@@ -43,7 +43,7 @@ export const tasksAPI = {
 
 export const authAPI = {
     login(logIn: LoginType){
-       return instance.post<LoginType, AxiosResponse<LoginResponseType>>('auth/login', logIn)
+       return instance.post<LoginType, AxiosResponse<ResponseType>>('auth/login', logIn)
     },
     logOut(){
         return instance.delete<ResponseType>('auth/login')
@@ -86,7 +86,7 @@ export type ResponseTasksType = {
 export type ResponseType <D={}> = {
     resultCode: number
     messages: Array<string>
-    fieldsErrors: Array<string>
+    fieldsErrors?: Array<string>
     data: D
 }
 
