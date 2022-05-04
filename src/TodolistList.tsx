@@ -29,11 +29,11 @@ export const TodolistList = () => {
    
 
     const addTodolist = (title: string) => {
-      dispatch(addTodolistTC(title))
+      dispatch(addTodolistTC({title}))
     }
 
     const removeTodolist = (todolistId: string) => {
-      dispatch(removeTodolistTC(todolistId))
+      dispatch(removeTodolistTC({todolistId}))
     }
 
     const changeFilter = (todolistId: string, value: FilterValueType) => { 
@@ -57,7 +57,7 @@ export const TodolistList = () => {
     }
 
     const changeTitleInTL = (todolistId: string, title: string) => {
-        dispatch(changeTodolistTitleTC(todolistId, title))
+        dispatch(changeTodolistTitleTC({todolistId, title}))
     }
 
     if(!isLogin){
