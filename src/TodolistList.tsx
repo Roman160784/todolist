@@ -2,23 +2,25 @@
 import React from "react"
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { RootReducerType } from "./redux/store"
-import { addTaskTC, removeTaskTC, TasksMainType, TaskStatuses, updateTaskTC } from "./redux/task-reducer"
-import { addTodolistTC, changeTodolistFilterAC, changeTodolistTitleTC, FilterValueType, getTodolistsTC, removeTodolistTC, RequestStatusType, TodolistDomainType } from "./redux/todolist-reducer"
+import { addTaskTC, removeTaskTC, TaskStatuses, updateTaskTC } from "./redux/task-reducer"
+import { addTodolistTC, changeTodolistFilterAC, changeTodolistTitleTC, FilterValueType, getTodolistsTC, removeTodolistTC, } from "./redux/todolist-reducer"
 import Grid from '@material-ui/core/Grid/Grid';
 import Paper from '@material-ui/core/Paper/Paper';
 import { AddIteamForm } from './componetrs/AddIteamForm';
 import { Todolist } from './Todolist';
 import { Navigate } from "react-router-dom"
+import { selectIsLogin } from "./redux/selectors/auth-selectors"
+import { selectTasks } from "./redux/selectors/task-selectors"
+import { selectTodolists } from "./redux/selectors/todolist-selectors"
 
 
 
 
 export const TodolistList = () => {
     
-    const todolist = useSelector <RootReducerType, TodolistDomainType[]>(state => state.todolist)
-    const tasks = useSelector <RootReducerType, TasksMainType>(state => state.tasks)
-    const isLogin = useSelector<RootReducerType, boolean>(state => state.auth.isLogin)
+    const todolist = useSelector(selectTodolists)
+    const tasks = useSelector(selectTasks)
+    const isLogin = useSelector(selectIsLogin)
 
     const dispatch = useDispatch() 
 

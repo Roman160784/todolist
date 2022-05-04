@@ -14,17 +14,18 @@ import { ErrorSnackbar } from './componetrs/ErrorSnackbar';
 import { Login } from './componetrs/Login';
 import { Route, Routes } from 'react-router-dom';
 import { TodolistList } from './TodolistList';
-import { RequestStatusType } from './redux/todolist-reducer';
 import { logOutTC } from './redux/auth-reducer';
 import { initializeAppTC } from './redux/app-reducer';
-
+import { selectAutorised, selectStatus } from './redux/selectors/app-selectors';
+import { selectIsLogin } from './redux/selectors/auth-selectors';
+import { isExportDeclaration } from 'typescript';
 
 
 function App() {
 
-  const appStatus = useSelector<RootReducerType, RequestStatusType>(state => state.app.appStatus)
-  const isLogin = useSelector<RootReducerType, boolean>(state => state.auth.isLogin)
-  const autorised = useSelector<RootReducerType, boolean>(state => state.app.autorise)
+  const appStatus = useSelector(selectStatus)
+  const isLogin = useSelector(selectIsLogin)
+  const autorised = useSelector(selectAutorised)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -70,4 +71,5 @@ function App() {
 
 }
 
-export default App;
+export default App
+

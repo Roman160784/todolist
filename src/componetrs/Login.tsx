@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setIsLoginTC } from '../redux/auth-reducer';
 import { RootReducerType } from '../redux/store';
 import { Navigate } from 'react-router-dom';
+import { selectIsLogin } from '../redux/selectors/auth-selectors';
 
 
 export type ErroeFormikType ={
@@ -24,7 +25,7 @@ export type ErroeFormikType ={
 export const Login = () => {
     
     const dispatch = useDispatch()
-    const isLogin = useSelector<RootReducerType, boolean>(state => state.auth.isLogin)
+    const isLogin = useSelector(selectIsLogin)
 
     const formik = useFormik({
         initialValues: {
