@@ -1,3 +1,4 @@
+import { PropTypes } from '@material-ui/core';
 import Button from '@material-ui/core/Button/Button';
 import IconButton from '@material-ui/core/IconButton/IconButton';
 import { Delete } from '@material-ui/icons';
@@ -62,6 +63,14 @@ export const Todolist = (props: TodolistPropsType) => {
         tasksForTL = props.tasks.filter(t => t.status === TaskStatuses.Completed)
     }
  
+    const renderFilterButton = (buttonFirler: FilterValueType, 
+    color: PropTypes.Color, text: string) => {
+        return (
+            <Button variant={props.todo.filter === buttonFirler ? 'contained' : 'text'} size={'small'} 
+            color={'primary'} onClick={() => { changeFilterHandler(buttonFirler) }}>{text}
+            </Button>
+        )
+    }
 
 
     return (
@@ -84,7 +93,6 @@ export const Todolist = (props: TodolistPropsType) => {
                         <Tasks key={t.id} tasks={t}
                             todolistId={props.todo.id}
                             changeStatus={props.changeStatus}
-                             
                             removeTask={props.removeTask}
                             changeTitleInTask={props.changeTitleInTask}
                             />
@@ -93,19 +101,13 @@ export const Todolist = (props: TodolistPropsType) => {
                 })}
             </ul>
             <div>
-            <Button variant={props.todo.filter === 'all'? 'contained' : 'text'} size={'small'} 
-            color={'primary'} onClick={() => { changeFilterHandler('all') }}>ALL
-            </Button>
-            <Button variant={props.todo.filter === 'active' ? 'contained' : 'text'} size={'small'}
-             color={'primary'} onClick={() => { changeFilterHandler('active') }}>ACTIVE
-             </Button>
-            <Button  variant={props.todo.filter ===  'completed' ? 'contained' : 'text'} size={'small'}
-             color={'primary'} onClick={() => { changeFilterHandler('completed') }}>COMPLETED
-             </Button>
-               
+                {renderFilterButton('all','primary', 'ALL')}
+                {renderFilterButton('active','primary', 'ACTIVE')}
+                {renderFilterButton('completed','primary', 'COMPLETED')}
             </div>
         </div>
     )
 }
+
 
 
