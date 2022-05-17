@@ -42,7 +42,7 @@ export const AddIteamForm = (props: AddIteamFormPropsType) => {
             <TextField value={title} id="filled-basic" label="some text" variant="filled" size={'small'} 
             onKeyPress={onKeyPressHandler} onChange={onChangeHandler} error={!!error} helperText={error} disabled={false}/>
           
-            <IconButton  onClick={addTitleHandler}  color={'primary'} size={'small'} disabled={false}>
+            <IconButton  onClick={addTitleHandler}  color={'primary'} size={'small'} disabled={false} style={{marginLeft: '10px'}}>
                 <AddCircleOutline/>
             </IconButton>
             {/* {error && <div className={error? s.error : ""}>{error}</div>} */}

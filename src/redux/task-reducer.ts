@@ -91,11 +91,13 @@ export const addTaskTC = createAsyncThunk('tasks/addTask', async (param: { todol
             return { tasks: res.data.data.item, todolistId: param.todolistId }
         } else {
             serverErrorHandler(thunkAPI.dispatch, res.data)
+            thunkAPI.rejectWithValue(null)
         }
     }
     catch (err) {
         if (axios.isAxiosError(err)) {
             thunkAPI.dispatch(setAppErrorAC({ error: err.message }))
+            thunkAPI.rejectWithValue(null)
         }
     }
     finally {

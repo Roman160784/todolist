@@ -31,6 +31,7 @@ export const TodolistList = () => {
    
 
     const addTodolist = (title: string) => {
+      console.log('title', title)
       dispatch(addTodolistTC({title}))
     }
 
@@ -71,10 +72,11 @@ export const TodolistList = () => {
     <AddIteamForm title={''} addIteam={addTodolist}/>
     </Grid>
     <Grid container spacing={5}>
+    
     {todolist.map(tl => {
         
         return <Grid item> 
-       <Paper elevation={5} style={{padding: "10px"}}>
+       <Paper elevation={5} style={{padding: "10px", width: "100%"}}>
             <Todolist 
             key={tl.id}
             todo={tl}

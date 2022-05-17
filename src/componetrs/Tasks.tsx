@@ -40,12 +40,13 @@ export const Tasks = (props: PropsTasksType) => {
     }
 
     return (
-        <div key={props.tasks.id}>
+        <div key={props.tasks.id} style={{position: 'relative'}}>
             <Checkbox size={"small"} checked={props.tasks.status === TaskStatuses.Completed}
                 onChange={changeSatusHandler} />
             <EditableSpan title={props.tasks.title} changeTitle={(title: string) => {ChangeTitleInTaskHandler(title)}} />
             <IconButton color={"primary"} aria-label="delete" size="small" 
-            onClick={() => {removeTaskHandler(props.tasks.id)}} disabled={appStatus === "loading"}>
+            onClick={() => {removeTaskHandler(props.tasks.id)}} disabled={appStatus === "loading"} 
+            style={{position: 'absolute', top: '2px', right: '5px'}}>
                 <Delete fontSize="small" />
             </IconButton>
         </div>

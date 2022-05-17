@@ -74,15 +74,16 @@ export const Todolist = (props: TodolistPropsType) => {
 
 
     return (
-        <div>
-            <h3>
-                <EditableSpan title={props.todo.title} changeTitle={(title: string) => {changeTitleInTLHandler(title)}} />
-                <IconButton aria-label="delete" color={'primary'} 
+        <div style={{position: 'relative'}}>
+            <IconButton aria-label="delete" color={'primary'} 
                 size={'medium'} 
                 disabled={appStatus === "loading"}
-                onClick={() => {props.removeTodolist(props.todo.id)}}>
+                onClick={() => {props.removeTodolist(props.todo.id)}} style={{position: 'absolute', right: '5px', top: '-20px'}}>
                     <Delete fontSize="inherit" />
                 </IconButton>
+            <h3>
+                <EditableSpan title={props.todo.title} changeTitle={(title: string) => {changeTitleInTLHandler(title)}} />
+                
             </h3>
             <div>
                 <AddIteamForm title={""} addIteam={addTaskHandler} />
@@ -99,6 +100,9 @@ export const Todolist = (props: TodolistPropsType) => {
                     )
 
                 })}
+
+                {!tasksForTL.length && <span>Create your first task!!!</span>}
+
             </ul>
             <div>
                 {renderFilterButton('all','primary', 'ALL')}

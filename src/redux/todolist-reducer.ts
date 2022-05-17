@@ -56,7 +56,13 @@ export const addTodolistTC = createAsyncThunk('todolist/addTodolist', async (par
     thunkAPI.dispatch(setAppStatusAC({ status: 'loading' }))
     try {
         const res = await todolistAPI.addTodolist(param.title);
+        if (res.data.resultCode === ResultCode.succes) {
         return { todolist: res.data.data.item }
+        }
+        else {
+            serverErrorHandler(thunkAPI.dispatch, res.data)
+            thunkAPI.rejectWithValue(null)
+        }
     }
     catch (err) {
         if (axios.isAxiosError(err)) {
@@ -118,7 +124,7 @@ const slice = createSlice({
             return action.payload!.todolist.map(tl => ({ ...tl, filter: 'all', entityStatus: 'succeeded' }))
         })
         builder.addCase(addTodolistTC.fulfilled, (state, action) => {
-            state.unshift({ ...action.payload!.todolist, filter: 'all', entityStatus: 'succeeded' })
+            action.payload && state.unshift({ ...action.payload!.todolist, filter: 'all', entityStatus: 'succeeded' })
         })
         builder.addCase(removeTodolistTC.fulfilled, (state, action) => {
             const index = state.findIndex(tl => tl.id === action.payload!.todolistId)
