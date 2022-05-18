@@ -79,7 +79,13 @@ export const removeTodolistTC = createAsyncThunk('todolist/removeTodolist', asyn
     thunkAPI.dispatch(setAppStatusAC({ status: 'loading' }))
     try {
         const res = await todolistAPI.removeTodolist(param.todolistId);
-        return { todolistId: param.todolistId }
+        if (res.data.resultCode === ResultCode.succes) {
+            return { todolistId: param.todolistId }
+        }
+        else {
+            serverErrorHandler(thunkAPI.dispatch, res.data)
+            thunkAPI.rejectWithValue(null)
+        }
     }
     catch (err) {
         if (axios.isAxiosError(err)) {
@@ -96,7 +102,12 @@ export const changeTodolistTitleTC = createAsyncThunk('todolist/chengeTodolistTi
     thunkAPI.dispatch(setAppStatusAC({ status: 'loading' }))
     try {
         const res = await todolistAPI.changeTodolistTitle(param.todolistId, param.title);
+        if (res.data.resultCode === ResultCode.succes) {
         return { todolistId: param.todolistId, title: param.title }
+        } else {
+            serverErrorHandler(thunkAPI.dispatch, res.data)
+            thunkAPI.rejectWithValue(null)
+        }   
     }
     catch (err) {
         if (axios.isAxiosError(err)) {
@@ -121,7 +132,10 @@ const slice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(getTodolistsTC.fulfilled, (state, action) => {
-            return action.payload!.todolist.map(tl => ({ ...tl, filter: 'all', entityStatus: 'succeeded' }))
+            if(action.payload) {
+                return action.payload.todolist.map(tl => ({ ...tl, filter: 'all', entityStatus: 'succeeded' }))
+            }
+              
         })
         builder.addCase(addTodolistTC.fulfilled, (state, action) => {
             action.payload && state.unshift({ ...action.payload!.todolist, filter: 'all', entityStatus: 'succeeded' })

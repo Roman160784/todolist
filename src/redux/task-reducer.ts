@@ -158,16 +158,16 @@ const slice = createSlice({
     //for reducers from other reducer and actions which we use once
     extraReducers: (builder) => {
         builder.addCase(getTodolistsTC.fulfilled, (state, action) => {
-            action.payload!.todolist.forEach(tl => { state[tl.id] = [] })
+            action.payload && action.payload!.todolist.forEach(tl => { state[tl.id] = [] })
         })
         builder.addCase(addTodolistTC.fulfilled, (state, action) => {
-            state[action.payload!.todolist.id] = []
+            action.payload && (state[action.payload.todolist.id] = [])
         })
         builder.addCase(removeTodolistTC.fulfilled, (state, action) => {
-            delete state[action.payload!.todolistId]
+            action.payload && delete state[action.payload.todolistId]
         })
         builder.addCase(getTasksTC.fulfilled, (state, action) => {
-            state[action.payload!.todolistId] = action.payload!.tasks
+            action.payload && (state[action.payload!.todolistId] = action.payload!.tasks)
         })
         builder.addCase(removeTaskTC.fulfilled, (state, action) => {
             const task = state[action.payload!.todolistId]
@@ -177,15 +177,18 @@ const slice = createSlice({
             }
         })
         builder.addCase(addTaskTC.fulfilled, (state, action) => {
-            state[action.payload!.todolistId].unshift(action.payload!.tasks)
+            action.payload && state[action.payload.todolistId].unshift(action.payload.tasks)
 
         })
         builder.addCase(updateTaskTC.fulfilled, (state, action) => {
-            const tasks = state[action.payload!.todolistId]
-            const index = tasks.findIndex(t => t.id === action.payload!.id)
-            if (index > -1) {
-                tasks[index] = { ...tasks[index], ...action.payload!.task }
+            if (action.payload) {
+                const tasks =   state[action.payload.todolistId]
+                const index = tasks.findIndex(t => t.id === action.payload!.id)
+                if (index > -1) {
+                    tasks[index] = { ...tasks[index], ...action.payload!.task }
+                }
             }
+            
         })
     }
 })
