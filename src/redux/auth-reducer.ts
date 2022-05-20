@@ -67,11 +67,12 @@ const slice = createSlice({
             state.isLogin = action.payload.isLogin
         }
     },
-    extraReducers: (builder) => {
-        builder.addCase(setIsLoginTC.fulfilled, (state, action) => {
+    extraReducers: builder => {
+        builder
+        .addCase(setIsLoginTC.fulfilled, (state, action) => {
             state.isLogin = action.payload!.isLogin
         })
-        builder.addCase(logOutTC.fulfilled, (state) => {
+        .addCase(logOutTC.fulfilled, (state) => {
             state.isLogin = false
         })
     }

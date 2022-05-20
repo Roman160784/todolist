@@ -156,31 +156,32 @@ const slice = createSlice({
     },
 
     //for reducers from other reducer and actions which we use once
-    extraReducers: (builder) => {
-        builder.addCase(getTodolistsTC.fulfilled, (state, action) => {
+    extraReducers: builder => {
+        builder
+        .addCase(getTodolistsTC.fulfilled, (state, action) => {
             action.payload && action.payload!.todolist.forEach(tl => { state[tl.id] = [] })
         })
-        builder.addCase(addTodolistTC.fulfilled, (state, action) => {
+        .addCase(addTodolistTC.fulfilled, (state, action) => {
             action.payload && (state[action.payload.todolist.id] = [])
         })
-        builder.addCase(removeTodolistTC.fulfilled, (state, action) => {
+        .addCase(removeTodolistTC.fulfilled, (state, action) => {
             action.payload && delete state[action.payload.todolistId]
         })
-        builder.addCase(getTasksTC.fulfilled, (state, action) => {
+        .addCase(getTasksTC.fulfilled, (state, action) => {
             action.payload && (state[action.payload!.todolistId] = action.payload!.tasks)
         })
-        builder.addCase(removeTaskTC.fulfilled, (state, action) => {
+        .addCase(removeTaskTC.fulfilled, (state, action) => {
             const task = state[action.payload!.todolistId]
             const index = task.findIndex(t => t.id === action.payload!.id)
             if (index > -1) {
                 task.splice(index, 1)
             }
         })
-        builder.addCase(addTaskTC.fulfilled, (state, action) => {
+        .addCase(addTaskTC.fulfilled, (state, action) => {
             action.payload && state[action.payload.todolistId].unshift(action.payload.tasks)
 
         })
-        builder.addCase(updateTaskTC.fulfilled, (state, action) => {
+        .addCase(updateTaskTC.fulfilled, (state, action) => {
             if (action.payload) {
                 const tasks =   state[action.payload.todolistId]
                 const index = tasks.findIndex(t => t.id === action.payload!.id)

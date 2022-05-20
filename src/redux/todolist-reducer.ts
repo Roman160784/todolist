@@ -130,24 +130,25 @@ const slice = createSlice({
             state[index].filter = action.payload.value
         }
     },
-    extraReducers: (builder) => {
-        builder.addCase(getTodolistsTC.fulfilled, (state, action) => {
+    extraReducers: builder => {
+        builder
+        .addCase(getTodolistsTC.fulfilled, (state, action) => {
             if(action.payload) {
                 return action.payload.todolist.map(tl => ({ ...tl, filter: 'all', entityStatus: 'succeeded' }))
             }
               
         })
-        builder.addCase(addTodolistTC.fulfilled, (state, action) => {
+       .addCase(addTodolistTC.fulfilled, (state, action) => {
             action.payload && state.unshift({ ...action.payload!.todolist, filter: 'all', entityStatus: 'succeeded' })
         })
-        builder.addCase(removeTodolistTC.fulfilled, (state, action) => {
+        .addCase(removeTodolistTC.fulfilled, (state, action) => {
             const index = state.findIndex(tl => tl.id === action.payload!.todolistId)
             if (index > -1) {
                 //remove with the index 1 element
                 state.splice(index, 1)
             }
         })
-        builder.addCase(changeTodolistTitleTC.fulfilled, (state, action) => {
+        .addCase(changeTodolistTitleTC.fulfilled, (state, action) => {
             const index = state.findIndex(tl => tl.id === action.payload!.todolistId)
             state[index].title = action.payload!.title
         })

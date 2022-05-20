@@ -54,7 +54,7 @@ const slice = createSlice({
             state.autorise = action.payload.autorise
         },
     },
-    extraReducers: (builder) => {
+    extraReducers: builder => {
         builder.addCase(initializeAppTC.fulfilled, (state) => {
             state.autorise = true
         })
